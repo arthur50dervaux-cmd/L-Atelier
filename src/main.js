@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { createScene } from './scene.js';
+import { createViewer } from './viewer.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -147,6 +148,16 @@ filterBtns.forEach((btn) => {
   });
 });
 
+/* ---------- HD images: apply data-image to cards if provided ---------- */
+projectCards.forEach((card) => {
+  const img = card.dataset.image;
+  if (img) {
+    const visual = card.querySelector('.project-visual');
+    visual.style.backgroundImage = `url("${img}")`;
+    visual.classList.remove('art-sea', 'art-vine', 'art-villa', 'art-cliff', 'art-interior', 'art-domaine');
+  }
+});
+
 /* ---------- Project modal ---------- */
 const modal = document.getElementById('modal');
 const modalTitle = modal.querySelector('.modal-title');
@@ -159,7 +170,14 @@ projectCards.forEach((card) => {
     modalTitle.textContent = card.dataset.title;
     modalPlace.textContent = `${card.dataset.place} — ${card.dataset.year}`;
     modalDesc.innerHTML = card.dataset.desc;
-    modalVisual.className = `modal-visual ${card.querySelector('.project-visual').classList[1]}`;
+    const img = card.dataset.image;
+    if (img) {
+      modalVisual.className = 'modal-visual';
+      modalVisual.style.backgroundImage = `url("${img}")`;
+    } else {
+      modalVisual.className = `modal-visual ${card.querySelector('.project-visual').classList[1] || ''}`;
+      modalVisual.style.backgroundImage = '';
+    }
     modal.classList.add('open');
   });
 });
@@ -204,5 +222,58 @@ document.getElementById('contact-form').addEventListener('submit', (e) => {
 function playIntro() {
   gsap.fromTo('.act-0', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 1.4, ease: 'power2.out' });
 }
+
+/* ---------- 3D model viewer (Revit / scan) ---------- */
+const viewerEl = document.getElementById('model-viewer');
+if (viewerEl) {
+  const viewer = createViewer(viewerEl);
+  viewerEl.querySelector('[data-viewer-rotate]')?.addEventListener('click', viewer.toggleRotate);
+  viewerEl.querySelector('[data-viewer-reset]')?.addEventListener('click', viewer.reset);
+}
+
+/* ---------- Film lightbox ---------- */
+const filmModal = document.getElementById('film-modal');
+const filmVideo = filmModal.querySelector('.film-video');
+
+function openFilm(src, poster) {
+  // Vérifie que la vidéo existe avant de l'afficher (sinon message d'aide).
+  fetch(src, { method: 'HEAD' })
+    .then((res) => {
+      if (res.ok) {
+        filmVideo.src = src;
+        if (poster) filmVideo.poster = poster;
+        filmModal.classList.add('has-video');
+        filmVideo.play().catch(() => {});
+      } else {
+        filmVideo.removeAttribute('src');
+        filmModal.classList.remove('has-video');
+      }
+    })
+    .catch(() => {
+      filmVideo.removeAttribute('src');
+      filmModal.classList.remove('has-video');
+    });
+  filmModal.classList.add('open');
+}
+
+function closeFilm() {
+  filmModal.classList.remove('open');
+  filmVideo.pause();
+  filmVideo.removeAttribute('src');
+  filmVideo.load();
+}
+
+document.querySelectorAll('[data-film]').forEach((el) => {
+  el.addEventListener('click', () => openFilm(el.dataset.film, el.dataset.poster || ''));
+});
+filmModal.querySelectorAll('[data-film-close]').forEach((el) => el.addEventListener('click', closeFilm));
+window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeFilm(); });
+
+/* Posters HD optionnels pour les films */
+document.querySelectorAll('[data-poster]').forEach((el) => {
+  if (!el.dataset.poster) return;
+  const target = el.querySelector('.film-poster') || el;
+  target.style.backgroundImage = `url("${el.dataset.poster}")`;
+});
 
 window.addEventListener('resize', () => scene.resize());
