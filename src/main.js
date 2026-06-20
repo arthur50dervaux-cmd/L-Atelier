@@ -64,9 +64,71 @@ function renderProperties() {
         <p class="property-price">${b.price}</p>
       </div>
     </article>`).join('');
-  bindCards(propertyGrid.querySelectorAll('.property-card'), true);
+  const cards = propertyGrid.querySelectorAll('.property-card');
+  cards.forEach((c, i) => {
+    c.addEventListener('click', () => openDetail(properties[i]));
+    c.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+    c.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+  });
   initReveal(propertyGrid.querySelectorAll('.reveal'));
 }
+
+/* ---- Page détail d'un bien (façon Kretz) ---- */
+const detail = document.getElementById('property-detail');
+const dq = (s) => detail.querySelector(s);
+const visualBg = (v) => v.startsWith('art-') ? '' : `url("${v}")`;
+const visualClass = (v) => v.startsWith('art-') ? v : '';
+
+function openDetail(b) {
+  dq('[data-detail-status]').textContent = `${b.status} · ${b.type}`;
+  dq('[data-detail-title]').textContent = b.title;
+  dq('[data-detail-place]').textContent = `${b.place} — ${b.region}`;
+  dq('[data-detail-price]').textContent = b.price;
+  dq('[data-detail-desc]').textContent = b.desc;
+  dq('[data-detail-region]').textContent = `${b.place}, ${b.region}`;
+  dq('[data-detail-ref]').textContent = `Réf. ${b.ref}`;
+  dq('[data-detail-dpe]').textContent = b.dpe;
+  dq('[data-detail-specs]').innerHTML = `
+    <span class="spec"><strong>${b.surface} m²</strong>Surface</span>
+    <span class="spec"><strong>${b.rooms}</strong>Pièces</span>
+    <span class="spec"><strong>${b.beds}</strong>Chambres</span>
+    <span class="spec"><strong>${b.baths}</strong>Salles de bain</span>`;
+  dq('[data-detail-features]').innerHTML = b.features.map((f) => `<li>${f}</li>`).join('');
+
+  // Galerie principale + miniatures
+  const setMain = (v) => {
+    const main = dq('[data-detail-main]');
+    main.className = `detail-main ${visualClass(v)}`;
+    main.style.backgroundImage = visualBg(v);
+  };
+  setMain(b.gallery[0]);
+  dq('[data-detail-thumbs]').innerHTML = b.gallery.map((v, i) =>
+    `<button class="detail-thumb ${visualClass(v)}${i === 0 ? ' active' : ''}" data-i="${i}" data-hover style="background-image:${visualBg(v)}"></button>`
+  ).join('');
+  dq('[data-detail-thumbs]').querySelectorAll('.detail-thumb').forEach((t) => {
+    t.addEventListener('click', () => {
+      dq('[data-detail-thumbs]').querySelectorAll('.detail-thumb').forEach((x) => x.classList.remove('active'));
+      t.classList.add('active');
+      setMain(b.gallery[parseInt(t.dataset.i, 10)]);
+    });
+  });
+
+  // Bouton film
+  const videoBtn = dq('[data-detail-video]');
+  if (b.video) { videoBtn.hidden = false; videoBtn.onclick = () => openFilm(b.video, ''); }
+  else videoBtn.hidden = true;
+
+  // Liens carte + contact
+  dq('[data-detail-map]').href = `https://www.google.com/maps/search/${encodeURIComponent(b.map)}`;
+  const mailBody = encodeURIComponent(`Bonjour,\n\nJe souhaite organiser une visite du bien « ${b.title} » (Réf. ${b.ref}).\n\nMerci.`);
+  dq('[data-detail-mail]').href = `mailto:arthur50dervaux@gmail.com?subject=${encodeURIComponent('Visite — ' + b.title + ' (' + b.ref + ')')}&body=${mailBody}`;
+
+  detail.classList.add('open');
+  document.body.classList.add('detail-open');
+  detail.querySelector('.detail-scroll').scrollTop = 0;
+}
+function closeDetail() { detail.classList.remove('open'); document.body.classList.remove('detail-open'); }
+detail.querySelectorAll('[data-detail-close]').forEach((el) => el.addEventListener('click', closeDetail));
 
 const propertyFilters = document.querySelectorAll('#property-filters .filter-btn');
 propertyFilters.forEach((btn) => btn.addEventListener('click', () => {
@@ -288,5 +350,5 @@ document.querySelectorAll('[data-poster]').forEach((el) => {
 });
 
 /* ============ Global keys ============ */
-window.addEventListener('keydown', (e) => { if (e.key === 'Escape') { modal.classList.remove('open'); closeFilm(); } });
+window.addEventListener('keydown', (e) => { if (e.key === 'Escape') { modal.classList.remove('open'); closeFilm(); closeDetail(); } });
 window.addEventListener('resize', () => scene.resize());
