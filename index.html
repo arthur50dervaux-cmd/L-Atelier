@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Arthur Dervaux — Architecte</title>
+  <meta name="description" content="Arthur Dervaux, architecte — portfolio de conceptions résidentielles, villas littorales et demeures de caractère." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Custom cursor -->
+  <div id="cursor" aria-hidden="true">
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
+  </div>
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="loader-mark">AD</div>
+    <div class="loader-bar"><span id="loader-progress"></span></div>
+    <div class="loader-label">Composition de l'expérience</div>
+  </div>
+
+  <!-- 3D cinematic background -->
+  <canvas id="scene-canvas"></canvas>
+
+  <!-- Nav -->
+  <header id="nav">
+    <a href="#top" class="brand" data-hover>Arthur Dervaux</a>
+    <nav class="nav-links">
+      <a href="#about" data-hover>Portrait</a>
+      <a href="#portfolio" data-hover>Conceptions</a>
+      <a href="#philosophy" data-hover>Approche</a>
+      <a href="#contact" data-hover>Contact</a>
+    </nav>
+    <button id="burger" aria-label="Ouvrir le menu" data-hover>
+      <span></span><span></span>
+    </button>
+  </header>
+
+  <!-- Mobile nav -->
+  <div id="mobile-nav">
+    <a href="#about" data-hover>Portrait</a>
+    <a href="#portfolio" data-hover>Conceptions</a>
+    <a href="#philosophy" data-hover>Approche</a>
+    <a href="#contact" data-hover>Contact</a>
+  </div>
+
+  <main id="top">
+
+    <!-- CINEMATIC HERO (pinned, scroll-driven camera flythrough) -->
+    <section id="cinematic">
+      <div class="cinematic-sticky">
+        <div class="act act-0">
+          <p class="eyebrow">Architecture &amp; art de vivre</p>
+          <h1>Construire<br/>des rêves<br/>habitables</h1>
+        </div>
+        <div class="act act-1">
+          <p class="eyebrow">Mer · Falaises · Vignes</p>
+          <h2>Le paysage<br/>comme matière première</h2>
+        </div>
+        <div class="act act-2">
+          <p class="eyebrow">Lumière dorée</p>
+          <h2>Chaque demeure<br/>raconte un site</h2>
+        </div>
+        <div class="act act-3">
+          <p class="eyebrow">Portfolio</p>
+          <h1 class="signature">Arthur Dervaux</h1>
+          <p class="role">Architecte</p>
+        </div>
+        <div class="scroll-cue">
+          <span>Faites défiler</span>
+          <div class="scroll-cue-line"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MANIFESTO -->
+    <section id="intro" class="solid-section">
+      <p class="manifesto reveal">
+        Chaque projet commence par une question&nbsp;: que mérite ce lieu&nbsp;?
+        Entre la roche, la mer et la vigne, je dessine des architectures qui
+        s'effacent devant leur paysage — et qui, pourtant, le révèlent.
+      </p>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="solid-section">
+      <div class="about-grid">
+        <div class="about-portrait reveal">
+          <div class="portrait-frame" data-tilt>
+            <div class="portrait-placeholder">A.D.</div>
+          </div>
+          <div class="portrait-caption">Atelier — Côte d'Azur</div>
+        </div>
+        <div class="about-content">
+          <p class="eyebrow reveal">Me connaître</p>
+          <h2 class="reveal">Une écriture architecturale<br/>tournée vers le paysage</h2>
+          <p class="reveal">
+            Je suis architecte, passionné par les sites qui imposent leur caractère
+            avant même qu'on y construise&nbsp;: une falaise face à la mer, un coteau
+            de vignes, une pinède littorale. Mon travail consiste à écouter ce que
+            le terrain a déjà à dire, puis à y répondre avec le moins de gestes
+            possible — des volumes francs, des matières brutes, une lumière qui
+            structure l'espace plus qu'elle ne le décore.
+          </p>
+          <p class="reveal">
+            Formé à l'architecture résidentielle haut de gamme, j'ai développé une
+            pratique exigeante autour de trois convictions&nbsp;: le site prime sur
+            le geste, la matière doit vieillir avec grâce, et une maison réussie se
+            mesure à la qualité de ses silences — une vue cadrée, une ombre portée,
+            un seuil qui ralentit le pas.
+          </p>
+          <ul class="timeline reveal">
+            <li><span class="timeline-year">Formation</span><span>Diplôme d'architecture, spécialisation résidentiel &amp; littoral</span></li>
+            <li><span class="timeline-year">Pratique</span><span>Villas contemporaines, demeures viticoles, réhabilitations de caractère</span></li>
+            <li><span class="timeline-year">Aujourd'hui</span><span>Atelier indépendant — projets sur la Côte d'Azur et au-delà</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO -->
+    <section id="portfolio" class="solid-section">
+      <p class="eyebrow reveal center">Conceptions</p>
+      <h2 class="reveal center">Une sélection de projets</h2>
+
+      <div class="filters reveal">
+        <button class="filter-btn active" data-filter="all" data-hover>Tous</button>
+        <button class="filter-btn" data-filter="villa" data-hover>Villas</button>
+        <button class="filter-btn" data-filter="littoral" data-hover>Littoral</button>
+        <button class="filter-btn" data-filter="vignoble" data-hover>Vignobles</button>
+        <button class="filter-btn" data-filter="interieur" data-hover>Intérieurs</button>
+      </div>
+
+      <div class="project-grid">
+
+        <article class="project-card reveal" data-category="villa littoral" data-hover
+          data-title="Villa Belvédère" data-place="Cap d'Antibes" data-year="2023"
+          data-desc="Une villa monolithique posée sur la roche, ouverte à 180° sur la Méditerranée. Le plan libre suit la course du soleil ; une piscine à débordement prolonge l'horizon jusqu'à la ligne de mer.">
+          <div class="project-visual art-sea">
+            <span class="project-tag">Villa · Littoral</span>
+          </div>
+          <div class="project-meta">
+            <h3>Villa Belvédère</h3>
+            <p>Cap d'Antibes — 2023</p>
+          </div>
+        </article>
+
+        <article class="project-card reveal" data-category="vignoble" data-hover
+          data-title="Maison des Vignes" data-place="Coteaux du Lubéron" data-year="2022"
+          data-desc="Une demeure en pierre sèche et bois brut, enchâssée dans les rangs de vigne. La toiture en pente douce dialogue avec les courbes du coteau, tandis qu'un patio central capte la lumière rasante du soir.">
+          <div class="project-visual art-vine">
+            <span class="project-tag">Vignoble</span>
+          </div>
+          <div class="project-meta">
+            <h3>Maison des Vignes</h3>
+            <p>Coteaux du Lubéron — 2022</p>
+          </div>
+        </article>
+
+        <article class="project-card reveal" data-category="villa" data-hover
+          data-title="Villa Horizon" data-place="Saint-Tropez" data-year="2023"
+          data-desc="Composition de volumes purs en béton clair et verre, organisée autour d'un patio à ciel ouvert. Chaque pièce cadre une vue différente sur la baie, comme une suite de tableaux habités.">
+          <div class="project-visual art-villa">
+            <span class="project-tag">Villa</span>
+          </div>
+          <div class="project-meta">
+            <h3>Villa Horizon</h3>
+            <p>Saint-Tropez — 2023</p>
+          </div>
+        </article>
+
+        <article class="project-card reveal" data-category="littoral" data-hover
+          data-title="Résidence des Calanques" data-place="Cassis" data-year="2021"
+          data-desc="Ancrée dans la roche calcaire, cette résidence se déploie en terrasses successives jusqu'à l'eau. La palette minérale et les toits végétalisés font disparaître le bâti dans son écrin naturel.">
+          <div class="project-visual art-cliff">
+            <span class="project-tag">Littoral</span>
+          </div>
+          <div class="project-meta">
+            <h3>Résidence des Calanques</h3>
+            <p>Cassis — 2021</p>
+          </div>
+        </article>
+
+        <article class="project-card reveal" data-category="interieur villa" data-hover
+          data-title="Suite Méridienne" data-place="Mougins" data-year="2024"
+          data-desc="Réhabilitation intérieure d'une bastide provençale&nbsp;: matières naturelles, lumière filtrée, mobilier sur-mesure. Un projet tout en retenue, pensé comme un refuge sensoriel.">
+          <div class="project-visual art-interior">
+            <span class="project-tag">Intérieur</span>
+          </div>
+          <div class="project-meta">
+            <h3>Suite Méridienne</h3>
+            <p>Mougins — 2024</p>
+          </div>
+        </article>
+
+        <article class="project-card reveal" data-category="vignoble villa" data-hover
+          data-title="Domaine de la Restanque" data-place="Bandol" data-year="2020"
+          data-desc="Un domaine viticole repensé&nbsp;: chai contemporain en pierre et acier corten, maison de maître restaurée, jardins en restanques. Le projet relie passé agricole et art de vivre actuel.">
+          <div class="project-visual art-domaine">
+            <span class="project-tag">Vignoble · Villa</span>
+          </div>
+          <div class="project-meta">
+            <h3>Domaine de la Restanque</h3>
+            <p>Bandol — 2020</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- PHILOSOPHY -->
+    <section id="philosophy" class="solid-section dark">
+      <p class="eyebrow reveal center">Approche</p>
+      <h2 class="reveal center">Trois convictions</h2>
+      <div class="pillars">
+        <div class="pillar reveal" data-tilt>
+          <span class="pillar-index">01</span>
+          <h3>Paysage</h3>
+          <p>Le site précède le projet. Topographie, vues, vent et lumière dictent l'implantation avant tout dessin.</p>
+        </div>
+        <div class="pillar reveal" data-tilt>
+          <span class="pillar-index">02</span>
+          <h3>Matière</h3>
+          <p>Pierre, bois, béton brut, métal patiné&nbsp;: des matériaux choisis pour la grâce avec laquelle ils vieillissent.</p>
+        </div>
+        <div class="pillar reveal" data-tilt>
+          <span class="pillar-index">03</span>
+          <h3>Lumière</h3>
+          <p>La lumière naturelle est traitée comme un matériau de construction à part entière, structurant chaque espace.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section id="stats" class="solid-section">
+      <div class="stats-grid">
+        <div class="stat reveal">
+          <span class="stat-number" data-count="40">0</span><span class="stat-suffix">+</span>
+          <p>Projets conçus</p>
+        </div>
+        <div class="stat reveal">
+          <span class="stat-number" data-count="12">0</span>
+          <p>Années de pratique</p>
+        </div>
+        <div class="stat reveal">
+          <span class="stat-number" data-count="6">0</span>
+          <p>Régions littorales &amp; viticoles</p>
+        </div>
+        <div class="stat reveal">
+          <span class="stat-number" data-count="100">0</span><span class="stat-suffix">%</span>
+          <p>Projets sur-mesure</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="solid-section dark">
+      <div class="contact-grid">
+        <div class="contact-intro reveal">
+          <p class="eyebrow">Contact</p>
+          <h2>Un projet,<br/>un site,<br/>un rêve à dessiner.</h2>
+          <ul class="contact-info">
+            <li><span>Email</span><a href="mailto:arthur50dervaux@gmail.com" data-hover>arthur50dervaux@gmail.com</a></li>
+            <li><span>Atelier</span><a data-hover>Côte d'Azur, France</a></li>
+            <li><span>Disponibilité</span><a data-hover>Nouveaux projets 2026</a></li>
+          </ul>
+        </div>
+        <form id="contact-form" class="contact-form reveal" autocomplete="off">
+          <div class="form-row">
+            <label>Nom
+              <input type="text" name="name" required />
+            </label>
+            <label>Email
+              <input type="email" name="email" required />
+            </label>
+          </div>
+          <label>Nature du projet
+            <input type="text" name="subject" placeholder="Villa, vignoble, réhabilitation…" />
+          </label>
+          <label>Message
+            <textarea name="message" rows="4" required></textarea>
+          </label>
+          <button type="submit" class="btn-primary" data-hover>Envoyer le message</button>
+          <p class="form-note">Ouvre votre messagerie pour m'écrire directement.</p>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="footer">
+    <span class="footer-mark">A.D.</span>
+    <p>© <span id="year"></span> Arthur Dervaux — Architecte. Tous droits réservés.</p>
+    <button id="to-top" data-hover>Haut de page ↑</button>
+  </footer>
+
+  <!-- Project modal -->
+  <div id="modal" class="modal">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-panel">
+      <button class="modal-close" data-close data-hover>Fermer ✕</button>
+      <div class="modal-visual"></div>
+      <p class="eyebrow modal-place"></p>
+      <h3 class="modal-title"></h3>
+      <p class="modal-desc"></p>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
