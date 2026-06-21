@@ -139,7 +139,7 @@ export const furniture = [
 
 /* ---------- ÉQUIPE ---------- */
 export const team = [
-  { name: 'Arthur Dervaux', role: 'Architecte fondateur', initials: 'AD',
+  { name: 'Le Fondateur', role: 'Architecte fondateur', initials: 'LA',
     bio: "Fondateur de l'atelier. Conçoit chaque projet à partir de son site, entre mer, falaises et vignes." },
   { name: 'Studio Conception', role: 'Architecture & BIM', initials: 'SC',
     bio: "L'équipe de conception : esquisses, modélisation Revit et maquettes numériques explorables." },

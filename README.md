@@ -1,8 +1,8 @@
 # L'Atelier — Site de l'agence d'architecture
 
-Site vitrine de l'agence **L'Atelier** (architecture & immobilier méditerranéen,
-fondée par Arthur Dervaux) : hero cinématique 3D (paysage méditerranéen généré
-en temps réel), expertise, projets filtrables, immobilier de prestige,
+Site vitrine de l'agence **L'Atelier** (architecture & immobilier méditerranéen) :
+hero cinématique 3D (paysage méditerranéen généré en temps réel), expertise,
+projets filtrables, immobilier de prestige,
 **visualiseur de maquette 3D** (Revit / scan), une rubrique **Cinématographique**
 (films & photographies qualité cinéma) et une rubrique **Mobilier & design**
 (pièces créées en atelier). Construit avec **Vite + Three.js + GSAP + Lenis**.
