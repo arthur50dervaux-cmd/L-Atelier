@@ -155,7 +155,7 @@ function openDetail(b) {
   // Liens carte + contact
   dq('[data-detail-map]').href = `https://www.google.com/maps/search/${encodeURIComponent(b.map)}`;
   const mailBody = encodeURIComponent(`Bonjour,\n\nJe souhaite organiser une visite du bien « ${b.title} » (Réf. ${b.ref}).\n\nMerci.`);
-  dq('[data-detail-mail]').href = `mailto:contact@atelier-architecture.com?subject=${encodeURIComponent('Visite — ' + b.title + ' (' + b.ref + ')')}&body=${mailBody}`;
+  dq('[data-detail-mail]').href = `mailto:arthur50dervaux@gmail.com?subject=${encodeURIComponent('Visite — ' + b.title + ' (' + b.ref + ')')}&body=${mailBody}`;
 
   detail.classList.add('open');
   document.body.classList.add('detail-open');
@@ -424,7 +424,7 @@ document.getElementById('contact-form').addEventListener('submit', (e) => {
   const d = new FormData(e.target);
   const subject = encodeURIComponent(`Projet — ${d.get('subject') || 'Demande de contact'}`);
   const body = encodeURIComponent(`Nom: ${d.get('name')}\nEmail: ${d.get('email')}\n\n${d.get('message')}`);
-  window.location.href = `mailto:contact@atelier-architecture.com?subject=${subject}&body=${body}`;
+  window.location.href = `mailto:arthur50dervaux@gmail.com?subject=${subject}&body=${body}`;
 });
 
 /* ============ Intro ============ */
