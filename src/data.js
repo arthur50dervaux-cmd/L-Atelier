@@ -84,9 +84,62 @@ export const properties = [
     features: ['Plage privée', 'Parc paysager', 'Court de tennis', 'Maison d’amis', 'Héliport à proximité', 'Sécurité 24/7'] },
 ];
 
+/* ---------- CINÉMATOGRAPHIQUE : films & photographies qualité cinéma ----------
+ * type : 'Film' (ouvre le lecteur vidéo, nécessite `video`) ou 'Photo' (ouvre la visionneuse image).
+ * cover : image de couverture (URL ou chemin local, ex. 'gallery/mon-rendu.jpg').
+ */
+export const cinema = [
+  { title: 'Lueur d’Été', type: 'Film', category: 'Court-métrage', place: 'Cap d’Antibes',
+    cover: 'art-sea', video: 'films/villa-horizon.mp4',
+    desc: "Court-métrage tourné au lever du jour sur une villa face à la mer : la lumière comme unique personnage." },
+  { title: 'Sel & Pierre', type: 'Photo', category: 'Série photographique', place: 'Calanques de Cassis',
+    cover: 'art-cliff',
+    desc: "Série en très haute définition sur la rencontre de la roche calcaire et de l'eau turquoise." },
+  { title: 'Vendanges', type: 'Film', category: 'Time-lapse', place: 'Bandol',
+    cover: 'art-vine', video: 'films/maison-vignes.mp4',
+    desc: "Time-lapse d'une saison de vendanges, du bourgeon au pressoir, qualité cinéma 4K." },
+  { title: 'Heures Bleues', type: 'Photo', category: 'Série photographique', place: 'Saint-Tropez',
+    cover: 'art-villa',
+    desc: "Portraits d'architecture à l'heure bleue : façades, ombres et reflets en très haute résolution." },
+  { title: 'Promenade', type: 'Film', category: 'Survol aérien', place: 'Côte d’Azur',
+    cover: 'art-domaine', video: 'films/calanques.mp4',
+    desc: "Survol drone du littoral, étalonnage cinéma, pour faire ressentir l'échelle du paysage." },
+  { title: 'Matières', type: 'Photo', category: 'Série photographique', place: 'Atelier',
+    cover: 'art-interior',
+    desc: "Gros plans sur la matière — pierre, bois brut, métal patiné — éclairés comme au cinéma." },
+];
+
+/* ---------- MOBILIER & DESIGN : pièces créées par l'atelier ---------- */
+export const furniture = [
+  { name: 'Console Calanque', category: 'Table', material: 'Chêne massif & laiton brossé',
+    dimensions: '160 × 45 × 78 cm', edition: 'Pièce unique', price: 'Sur demande', art: 'art-design',
+    desc: "Console aux lignes tendues, plateau en chêne massif veiné et piétement en laiton brossé patiné à la main." },
+  { name: 'Fauteuil Restanque', category: 'Fauteuil', material: 'Lin écru & structure noyer',
+    dimensions: '74 × 80 × 86 cm', edition: 'Série limitée — 12 ex.', price: 'Sur demande', art: 'art-interior',
+    desc: "Fauteuil enveloppant inspiré des terrasses en pierre sèche, assise en lin écru et structure en noyer massif." },
+  { name: 'Suspension Mistral', category: 'Luminaire', material: 'Albâtre & laiton',
+    dimensions: 'Ø 38 × 42 cm', edition: 'Série limitée — 20 ex.', price: 'Sur demande', art: 'art-design',
+    desc: "Suspension en albâtre translucide diffusant une lumière dorée, monture en laiton vieilli." },
+  { name: 'Table Domaine', category: 'Table', material: 'Pierre calcaire & chêne',
+    dimensions: '280 × 100 × 75 cm', edition: 'Pièce unique', price: 'Sur demande', art: 'art-domaine',
+    desc: "Grande table de réception, plateau en pierre calcaire massif et piétement sculpté en chêne." },
+  { name: 'Banquette Riviera', category: 'Fauteuil', material: 'Velours terracotta & bois flotté',
+    dimensions: '190 × 70 × 78 cm', edition: 'Série limitée — 8 ex.', price: 'Sur demande', art: 'art-cliff',
+    desc: "Banquette basse habillée de velours terracotta, structure en bois flotté brut." },
+  { name: 'Guéridon Oliveraie', category: 'Table', material: 'Olivier massif',
+    dimensions: 'Ø 55 × 48 cm', edition: 'Pièce unique', price: 'Sur demande', art: 'art-vine',
+    desc: "Guéridon sculpté dans une loupe d'olivier centenaire, finition huilée à la main." },
+  { name: 'Applique Calanque', category: 'Luminaire', material: 'Verre soufflé & bronze',
+    dimensions: '24 × 18 × 30 cm', edition: 'Série limitée — 25 ex.', price: 'Sur demande', art: 'art-sea',
+    desc: "Applique murale en verre soufflé teinté turquoise, monture en bronze patiné." },
+  { name: 'Vase Sirocco', category: 'Objet', material: 'Grès émaillé',
+    dimensions: 'Ø 24 × 46 cm', edition: 'Série limitée — 30 ex.', price: 'Sur demande', art: 'art-villa',
+    desc: "Vase tourné en grès, émail sablé évoquant les vents chauds de Méditerranée." },
+];
+
 /* ---------- ÉQUIPE ---------- */
 export const team = [
-  { name: 'Arthur Dervaux', role: 'Architecte fondateur', initials: 'AD',
+  { name: 'Le Fondateur', role: 'Architecte fondateur', initials: 'LA',
     bio: "Fondateur de l'atelier. Conçoit chaque projet à partir de son site, entre mer, falaises et vignes." },
   { name: 'Studio Conception', role: 'Architecture & BIM', initials: 'SC',
     bio: "L'équipe de conception : esquisses, modélisation Revit et maquettes numériques explorables." },

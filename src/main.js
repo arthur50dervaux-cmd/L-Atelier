@@ -4,13 +4,44 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { createScene } from './scene.js';
 import { createViewer } from './viewer.js';
-import { projects, properties, team } from './data.js';
+import { projects, properties, team, cinema, furniture } from './data.js';
 
 gsap.registerPlugin(ScrollTrigger);
 document.getElementById('year').textContent = new Date().getFullYear();
 
 /* ============ RENDER DYNAMIC CONTENT (avant les observers) ============ */
 const esc = (s) => String(s).replace(/"/g, '&quot;');
+
+/* ---- Photos réelles (Unsplash) posées en repli sur les dégradés "art-*" ----
+ * Si une image ne charge pas, le dégradé d'origine reste visible en dessous :
+ * aucune rupture visuelle. Remplacez simplement l'URL ci-dessous pour changer
+ * une photo, ou déposez vos propres fichiers dans public/gallery/ (voir son README).
+ */
+const ART_GRADIENTS = {
+  'art-sea': 'linear-gradient(160deg, #1a6f8a 0%, #2aa5c4 40%, #e0a04b 78%, #f4d28a 100%)',
+  'art-vine': 'linear-gradient(160deg, #38491f 0%, #7a8a3c 45%, #c7a83f 80%, #e6d27a 100%)',
+  'art-villa': 'linear-gradient(160deg, #1c2733 0%, #3a5266 40%, #7da0b4 75%, #d8e4ea 100%)',
+  'art-cliff': 'linear-gradient(160deg, #3a2b20 0%, #a06a45 45%, #d99a65 72%, #1a8fb3 100%)',
+  'art-interior': 'linear-gradient(160deg, #2a1f1a 0%, #7a4f2c 45%, #c08a52 80%, #e6cba3 100%)',
+  'art-domaine': 'linear-gradient(160deg, #25321d 0%, #6b6b2c 40%, #c79a40 75%, #e0703f 100%)',
+  'art-design': 'linear-gradient(160deg, #3a2418 0%, #8a5a35 45%, #d9a35c 78%, #efc878 100%)',
+};
+const ART_PHOTOS = {
+  'art-sea': 'https://images.unsplash.com/photo-1505843513577-22bb7d21e455?auto=format&fit=crop&w=1600&q=80',
+  'art-vine': 'https://images.unsplash.com/photo-1474919575373-9731559a8c5d?auto=format&fit=crop&w=1600&q=80',
+  'art-villa': 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=80',
+  'art-cliff': 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1600&q=80',
+  'art-interior': 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80',
+  'art-domaine': 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80',
+  'art-design': 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1600&q=80',
+};
+function paintAllArt(root = document) {
+  Object.keys(ART_PHOTOS).forEach((cls) => {
+    root.querySelectorAll(`.${cls}`).forEach((el) => {
+      el.style.backgroundImage = `url("${ART_PHOTOS[cls]}"), ${ART_GRADIENTS[cls]}`;
+    });
+  });
+}
 
 /* --- Conception : projets par état --- */
 const projectGrid = document.getElementById('project-grid');
@@ -32,6 +63,7 @@ function renderProjects(state) {
       </article>`;
   }).join('');
   bindCards(projectGrid.querySelectorAll('.project-card'));
+  paintAllArt(projectGrid);
   initReveal(projectGrid.querySelectorAll('.reveal'));
 }
 
@@ -70,6 +102,7 @@ function renderProperties() {
     c.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
     c.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
   });
+  paintAllArt(propertyGrid);
   initReveal(propertyGrid.querySelectorAll('.reveal'));
 }
 
@@ -112,6 +145,7 @@ function openDetail(b) {
       setMain(b.gallery[parseInt(t.dataset.i, 10)]);
     });
   });
+  paintAllArt(detail);
 
   // Bouton film
   const videoBtn = dq('[data-detail-video]');
@@ -121,7 +155,7 @@ function openDetail(b) {
   // Liens carte + contact
   dq('[data-detail-map]').href = `https://www.google.com/maps/search/${encodeURIComponent(b.map)}`;
   const mailBody = encodeURIComponent(`Bonjour,\n\nJe souhaite organiser une visite du bien « ${b.title} » (Réf. ${b.ref}).\n\nMerci.`);
-  dq('[data-detail-mail]').href = `mailto:arthur50dervaux@gmail.com?subject=${encodeURIComponent('Visite — ' + b.title + ' (' + b.ref + ')')}&body=${mailBody}`;
+  dq('[data-detail-mail]').href = `mailto:contact@atelier-architecture.com?subject=${encodeURIComponent('Visite — ' + b.title + ' (' + b.ref + ')')}&body=${mailBody}`;
 
   detail.classList.add('open');
   document.body.classList.add('detail-open');
@@ -177,6 +211,22 @@ function openModal(el, isProperty) {
   } else {
     modalSpecs.style.display = 'none';
   }
+  paintAllArt(modal);
+  modal.classList.add('open');
+}
+
+/* ---- Mobilier : modale détaillée ---- */
+function openFurnitureModal(item) {
+  modalTitle.textContent = item.name;
+  modalPlace.textContent = `${item.category} — ${item.edition}`;
+  modalDesc.textContent = item.desc;
+  modalVisual.className = `modal-visual ${item.art}`;
+  modalSpecs.innerHTML = `
+    <span class="spec"><strong>${item.material}</strong>Matière</span>
+    <span class="spec"><strong>${item.dimensions}</strong>Dimensions</span>
+    <span class="spec"><strong>${item.price}</strong>Prix</span>`;
+  modalSpecs.style.display = '';
+  paintAllArt(modal);
   modal.classList.add('open');
 }
 function bindCards(cards, isProperty = false) {
@@ -188,9 +238,75 @@ function bindCards(cards, isProperty = false) {
 }
 modal.querySelectorAll('[data-close]').forEach((el) => el.addEventListener('click', () => modal.classList.remove('open')));
 
+/* ============ Cinématographique ============ */
+const cinemaGrid = document.getElementById('cinema-grid');
+function renderCinema() {
+  cinemaGrid.innerHTML = cinema.map((c, i) => `
+    <article class="cinema-card reveal ${c.cover}" data-hover data-i="${i}" data-type="${c.type}">
+      <span class="cinema-card-play">${c.type === 'Film' ? '▶' : '◎'}</span>
+      <span class="cinema-card-type">${c.category}</span>
+      <h3>${c.title}</h3>
+      <span class="cinema-card-meta">${c.place}</span>
+    </article>`).join('');
+  cinemaGrid.querySelectorAll('.cinema-card').forEach((card) => {
+    card.addEventListener('click', () => {
+      const item = cinema[parseInt(card.dataset.i, 10)];
+      if (item.type === 'Film') openFilm(item.video, '');
+      else openPhoto(item.cover, `${item.title} — ${item.category}`);
+    });
+    card.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+    card.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+  });
+  paintAllArt(cinemaGrid);
+  initReveal(cinemaGrid.querySelectorAll('.reveal'));
+}
+const cinemaFilters = document.querySelectorAll('#cinema-filters .filter-btn');
+cinemaFilters.forEach((btn) => btn.addEventListener('click', () => {
+  cinemaFilters.forEach((b) => b.classList.remove('active'));
+  btn.classList.add('active');
+  const f = btn.dataset.filter;
+  cinemaGrid.querySelectorAll('.cinema-card').forEach((card) => {
+    card.style.display = (f === 'all' || card.dataset.type === f) ? '' : 'none';
+  });
+}));
+
+/* ============ Mobilier & design ============ */
+const furnitureGrid = document.getElementById('furniture-grid');
+function renderFurniture() {
+  furnitureGrid.innerHTML = furniture.map((f, i) => `
+    <article class="furniture-card reveal" data-hover data-category="${f.category}" data-i="${i}">
+      <div class="furniture-visual ${f.art}"><span class="furniture-edition">${f.edition}</span></div>
+      <div class="furniture-meta">
+        <p class="furniture-category">${f.category}</p>
+        <h3>${f.name}</h3>
+        <p class="furniture-material">${f.material}</p>
+      </div>
+    </article>`).join('');
+  furnitureGrid.querySelectorAll('.furniture-card').forEach((card) => {
+    card.addEventListener('click', () => openFurnitureModal(furniture[parseInt(card.dataset.i, 10)]));
+    card.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+    card.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+  });
+  paintAllArt(furnitureGrid);
+  initReveal(furnitureGrid.querySelectorAll('.reveal'));
+}
+const furnitureFilters = document.querySelectorAll('#furniture-filters .filter-btn');
+furnitureFilters.forEach((btn) => btn.addEventListener('click', () => {
+  furnitureFilters.forEach((b) => b.classList.remove('active'));
+  btn.classList.add('active');
+  const f = btn.dataset.filter;
+  furnitureGrid.querySelectorAll('.furniture-card').forEach((card) => {
+    const match = f === 'all' || card.dataset.category === f;
+    if (match) { card.classList.remove('hide'); gsap.fromTo(card, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5 }); }
+    else card.classList.add('hide');
+  });
+}));
+
 /* ============ Initial renders ============ */
 renderProjects('avenir');
 renderProperties();
+renderCinema();
+renderFurniture();
 
 /* ============ Smooth scroll ============ */
 const lenis = new Lenis({ smoothWheel: true, duration: 1.1 });
@@ -308,7 +424,7 @@ document.getElementById('contact-form').addEventListener('submit', (e) => {
   const d = new FormData(e.target);
   const subject = encodeURIComponent(`Projet — ${d.get('subject') || 'Demande de contact'}`);
   const body = encodeURIComponent(`Nom: ${d.get('name')}\nEmail: ${d.get('email')}\n\n${d.get('message')}`);
-  window.location.href = `mailto:arthur50dervaux@gmail.com?subject=${subject}&body=${body}`;
+  window.location.href = `mailto:contact@atelier-architecture.com?subject=${subject}&body=${body}`;
 });
 
 /* ============ Intro ============ */
@@ -349,6 +465,22 @@ document.querySelectorAll('[data-poster]').forEach((el) => {
   (el.querySelector('.film-poster') || el).style.backgroundImage = `url("${el.dataset.poster}")`;
 });
 
+/* ============ Visionneuse photo (Cinématographique) ============ */
+const photoModal = document.getElementById('photo-modal');
+function openPhoto(source, caption) {
+  const photo = source.startsWith('art-') ? ART_PHOTOS[source] : source;
+  const img = photoModal.querySelector('.photo-modal-img');
+  if (photo) { img.src = photo; img.alt = caption; }
+  else img.removeAttribute('src');
+  photoModal.querySelector('.photo-modal-caption').textContent = caption;
+  photoModal.classList.add('open');
+}
+function closePhoto() { photoModal.classList.remove('open'); }
+photoModal.querySelectorAll('[data-photo-close]').forEach((el) => el.addEventListener('click', closePhoto));
+
+/* ============ Habillage photo des éléments statiques (hero films, agence) ============ */
+paintAllArt();
+
 /* ============ Global keys ============ */
-window.addEventListener('keydown', (e) => { if (e.key === 'Escape') { modal.classList.remove('open'); closeFilm(); closeDetail(); } });
+window.addEventListener('keydown', (e) => { if (e.key === 'Escape') { modal.classList.remove('open'); closeFilm(); closePhoto(); closeDetail(); } });
 window.addEventListener('resize', () => scene.resize());

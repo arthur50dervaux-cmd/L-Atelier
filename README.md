@@ -1,9 +1,18 @@
-# Atelier Dervaux — Site de l'agence d'architecture
+# L'Atelier — Site de l'agence d'architecture
 
-Site vitrine d'agence d'architecture : hero cinématique 3D (paysage
-méditerranéen généré en temps réel), expertise, projets filtrables,
-**visualiseur de maquette 3D** (Revit / scan), **films de rendus**, et
-contact. Construit avec **Vite + Three.js + GSAP + Lenis**.
+Site vitrine de l'agence **L'Atelier** (architecture & immobilier méditerranéen) :
+hero cinématique 3D (paysage méditerranéen généré en temps réel), expertise,
+projets filtrables, immobilier de prestige,
+**visualiseur de maquette 3D** (Revit / scan), une rubrique **Cinématographique**
+(films & photographies qualité cinéma) et une rubrique **Mobilier & design**
+(pièces créées en atelier). Construit avec **Vite + Three.js + GSAP + Lenis**.
+
+Les visuels des dégradés de démonstration (`art-sea`, `art-villa`…) sont
+habillés par défaut de photographies Unsplash haute définition (voir
+`ART_PHOTOS` dans `src/main.js`) ; si une image ne charge pas, le dégradé
+d'origine reste visible en dessous — aucune rupture visuelle. Remplacez
+simplement les URLs par vos propres visuels, ou déposez vos fichiers dans
+`public/gallery/` (voir son README).
 
 ## Démarrer en local
 ```bash
@@ -19,7 +28,8 @@ npm run preview  # prévisualise le build
 | Maquette 3D (Revit / scan) | `public/models/maquette.glb` | voir `public/models/README.md` |
 | Films / rendus vidéo | `public/films/*.mp4` | voir `public/films/README.md` |
 | Photos / rendus HD | `public/gallery/*` + `data-image` | voir `public/gallery/README.md` |
-| Textes, projets | `index.html` | tout est éditable directement |
+| Projets, biens, équipe, films, mobilier | `src/data.js` | éditez les tableaux `projects`, `properties`, `team`, `cinema`, `furniture` |
+| Textes, sections | `index.html` | tout est éditable directement |
 
 ## Mise en ligne (gratuit, sécurisé, mondial)
 
