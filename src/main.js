@@ -2,10 +2,11 @@ import './style.css';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
+import { createScene } from './scene.js';
 import { createViewer } from './viewer.js';
 import {
   loadContent, isPreview, applyTheme,
-  visualBackground, visualUrl,
+  visualBackground, visualClass, visualUrl,
 } from './content.js';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -14,9 +15,10 @@ const esc = (s) => String(s ?? '')
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const brize = (s) => esc(s).replace(/\n/g, '<br/>');
 
-/* ============ Chargeur ============ */
+/* ============ Loader (démarre immédiatement, attend le contenu) ============ */
 const loader = document.getElementById('loader');
 const loaderProgress = document.getElementById('loader-progress');
+let loaderDone = false;
 let contentReady = false;
 let progress = 0;
 const loaderInterval = setInterval(() => {
@@ -24,14 +26,18 @@ const loaderInterval = setInterval(() => {
   loaderProgress.style.width = `${progress}%`;
   if (progress >= 100) {
     clearInterval(loaderInterval);
-    setTimeout(() => loader.classList.add('hidden'), 400);
+    setTimeout(() => {
+      loader.classList.add('hidden');
+      loaderDone = true;
+      gsap.fromTo('.act-0', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 1.4, ease: 'power2.out' });
+    }, 350);
   }
 }, 140);
 
 init().catch((err) => {
   console.error(err);
-  loader.querySelector('.loader-mark').textContent =
-    'Impossible de charger le contenu du site.';
+  document.querySelector('.loader-label').textContent =
+    'Impossible de charger le contenu du site (content/site.json).';
 });
 
 async function init() {
@@ -41,86 +47,53 @@ async function init() {
   const C = content;
   const email = C.contact?.email || '';
   const bg = (v) => visualBackground(C, v);
-  const visual = (v, cls = 'visual-bg') => `<div class="${cls}" style="background-image:${bg(v)}"></div>`;
 
   /* ---------- Meta, thème, marque ---------- */
   applyTheme(C.theme);
   if (C.meta?.title) document.title = C.meta.title;
   if (C.meta?.description) document.querySelector('meta[name="description"]')?.setAttribute('content', C.meta.description);
-  if (C.theme?.bg) document.querySelector('meta[name="theme-color"]')?.setAttribute('content', C.theme.bg);
-  document.querySelectorAll('[data-bind="brand"], [data-bind="detail-brand"], [data-bind="overlay-brand"], [data-bind="footer-mark"], [data-bind="loader-mark"]')
-    .forEach((el) => { el.textContent = C.brand?.name || "L'Atelier"; });
+  if (C.theme?.azurDeep) document.querySelector('meta[name="theme-color"]')?.setAttribute('content', C.theme.azurDeep);
+  document.querySelectorAll('[data-bind="brand"], [data-bind="detail-brand"]').forEach((el) => { el.textContent = C.brand?.name || "L'Atelier"; });
+  document.querySelectorAll('[data-bind="loader-mark"], [data-bind="footer-mark"]').forEach((el) => { el.textContent = C.brand?.mark || "L'A."; });
+  const loaderLabel = document.querySelector('[data-bind="loader-label"]');
+  if (loaderLabel) loaderLabel.textContent = C.brand?.loaderLabel || '';
   document.getElementById('year').textContent = new Date().getFullYear();
   document.getElementById('footer-text').textContent = C.footer?.text || '';
   if (isPreview()) document.getElementById('preview-banner').hidden = false;
 
-  /* ---------- Sections : visibilité + têtes numérotées + navigation ---------- */
+  /* ---------- Sections : visibilité + têtes + navigation ---------- */
   const sections = C.sections || {};
   const navLinks = document.getElementById('nav-links');
-  const overlayLinks = document.getElementById('overlay-links');
-  let sectionIndex = 0;
-  let navIndex = 0;
+  const mobileNav = document.getElementById('mobile-nav');
   Object.entries(sections).forEach(([id, cfg]) => {
     const el = document.getElementById(id);
     if (!el) return;
     if (cfg.visible === false) { el.style.display = 'none'; return; }
     const head = el.querySelector(`[data-head="${id}"]`);
     if (head) {
-      sectionIndex += 1;
       head.innerHTML = `
-        <span class="section-index">${String(sectionIndex).padStart(2, '0')}</span>
-        <div class="section-head-main">
-          ${cfg.eyebrow ? `<p class="eyebrow">${esc(cfg.eyebrow)}</p>` : ''}
-          ${cfg.title ? `<h2>${brize(cfg.title)}</h2>` : ''}
-          ${cfg.sub ? `<p class="section-sub">${esc(cfg.sub)}</p>` : ''}
-        </div>`;
+        ${cfg.eyebrow ? `<p class="eyebrow">${esc(cfg.eyebrow)}</p>` : ''}
+        ${cfg.title ? `<h2>${brize(cfg.title)}</h2>` : ''}
+        ${cfg.sub ? `<p class="section-sub">${esc(cfg.sub)}</p>` : ''}`;
     }
     if (cfg.navLabel) {
-      navIndex += 1;
-      navLinks.insertAdjacentHTML('beforeend', `<a href="#${id}">${esc(cfg.navLabel)}</a>`);
-      overlayLinks.insertAdjacentHTML('beforeend',
-        `<a href="#${id}"><span class="idx">${String(navIndex).padStart(2, '0')}</span>${esc(cfg.navLabel)}</a>`);
+      navLinks.insertAdjacentHTML('beforeend', `<a href="#${id}" data-hover>${esc(cfg.navLabel)}</a>`);
+      mobileNav.insertAdjacentHTML('beforeend', `<a href="#${id}" data-hover>${esc(cfg.navLabel)}</a>`);
     }
   });
-  document.getElementById('overlay-contact').textContent = email;
 
-  /* ---------- Hero : diaporama ---------- */
-  const acts = C.hero?.acts || [];
-  const heroSlides = document.getElementById('hero-slides');
-  const heroIndicators = document.getElementById('hero-indicators');
-  const heroFallback = C.hero?.image || 'art-sea';
-  heroSlides.innerHTML = acts.map((a, i) => `
-    <div class="hero-slide ${i === 0 ? 'active' : ''}">
-      <div class="hero-image" style="background-image:${bg(a.image || heroFallback)}"></div>
-      <div class="hero-text">
-        ${a.eyebrow ? `<p class="eyebrow">${esc(a.eyebrow)}</p>` : ''}
-        ${a.size === 'big' ? `<h1>${brize(a.title)}</h1>` : `<h2>${brize(a.title)}</h2>`}
-        ${a.role ? `<p class="role">${esc(a.role)}</p>` : ''}
-      </div>
+  /* ---------- Hero cinématique ---------- */
+  const actsWrap = document.getElementById('hero-acts');
+  actsWrap.outerHTML = (C.hero?.acts || []).map((a, i) => `
+    <div class="act act-${i}">
+      ${a.eyebrow ? `<p class="eyebrow">${esc(a.eyebrow)}</p>` : ''}
+      ${a.size === 'big'
+        ? `<h1 class="${a.signature ? 'signature' : ''}">${brize(a.title)}</h1>`
+        : `<h2 class="${a.signature ? 'signature' : ''}">${brize(a.title)}</h2>`}
+      ${a.role ? `<p class="role">${esc(a.role)}</p>` : ''}
     </div>`).join('');
   const cueLabel = document.querySelector('[data-bind="scroll-cue"]');
   if (cueLabel) cueLabel.textContent = C.hero?.scrollCue || '';
-
-  let heroCurrent = 0;
-  let heroTimer = null;
-  const slides = [...heroSlides.querySelectorAll('.hero-slide')];
-  if (slides.length > 1) {
-    heroIndicators.innerHTML = slides.map((_, i) =>
-      `<button class="${i === 0 ? 'active' : ''}" data-i="${i}" aria-label="Diapositive ${i + 1}"></button>`).join('');
-  }
-  function goSlide(i) {
-    heroCurrent = (i + slides.length) % slides.length;
-    slides.forEach((s, j) => s.classList.toggle('active', j === heroCurrent));
-    heroIndicators.querySelectorAll('button').forEach((b, j) => b.classList.toggle('active', j === heroCurrent));
-  }
-  function armHero() {
-    clearInterval(heroTimer);
-    const seconds = Math.max(Number(C.hero?.interval) || 6, 3);
-    if (slides.length > 1) heroTimer = setInterval(() => goSlide(heroCurrent + 1), seconds * 1000);
-  }
-  heroIndicators.querySelectorAll('button').forEach((b) =>
-    b.addEventListener('click', () => { goSlide(parseInt(b.dataset.i, 10)); armHero(); }));
-  armHero();
 
   /* ---------- Manifeste ---------- */
   const manifesto = document.querySelector('[data-bind="manifesto"]');
@@ -137,13 +110,13 @@ async function init() {
     (A.timeline || []).map((t) => `<li><span class="timeline-year">${esc(t.label)}</span><span>${esc(t.text)}</span></li>`).join('');
   const portrait = document.getElementById('agence-portrait');
   const portraitBg = bg(A.portraitImage);
-  if (portraitBg) portrait.style.backgroundImage = portraitBg;
-  document.getElementById('agence-initials').textContent = portraitBg ? '' : (A.portraitInitials || '');
+  if (portraitBg) { portrait.style.backgroundImage = portraitBg; portrait.style.backgroundSize = 'cover'; portrait.style.backgroundPosition = 'center'; }
+  document.getElementById('agence-initials').textContent = A.portraitInitials || '';
   document.getElementById('agence-caption').textContent = A.portraitCaption || '';
 
   /* ---------- Expertise ---------- */
   document.getElementById('services-grid').innerHTML = (C.expertise || []).map((s) => `
-    <article class="service reveal">
+    <article class="service reveal" data-tilt data-accent="${esc(s.accent)}">
       <span class="service-num">${esc(s.num)}</span><h3>${esc(s.title)}</h3><p>${esc(s.text)}</p>
     </article>`).join('');
 
@@ -152,25 +125,22 @@ async function init() {
   const projectTabs = document.getElementById('project-tabs');
   const tabDefs = C.projects?.tabs || [];
   projectTabs.innerHTML = tabDefs.map((t, i) =>
-    `<button class="text-tab ${i === 0 ? 'active' : ''}" data-tab="${esc(t.id)}">${esc(t.label)}</button>`).join('');
+    `<button class="tab ${i === 0 ? 'active' : ''}" data-tab="${esc(t.id)}" data-hover>${esc(t.label)}</button>`).join('');
 
   function renderProjects(state) {
     const list = C.projects?.[state] || [];
     projectGrid.innerHTML = list.map((p, i) => {
       let badge = '';
-      if (state === 'concours' && p.status) badge = `<span class="card-badge strong">${esc(p.status)}</span>`;
-      else if (state === 'avenir' && p.year) badge = `<span class="card-badge">${esc(p.year)}</span>`;
-      else if (state === 'termines' && p.year) badge = `<span class="card-badge">Livré ${esc(p.year)}</span>`;
+      if (state === 'concours' && p.status) badge = `<span class="card-badge">${esc(p.status)}</span>`;
+      else if (state === 'avenir' && p.year) badge = `<span class="card-badge soft">${esc(p.year)}</span>`;
+      else if (state === 'termines' && p.year) badge = `<span class="card-badge soft">Livré ${esc(p.year)}</span>`;
       const progressBar = state === 'encours' && p.progress != null
         ? `<div class="progress"><div class="progress-bar" style="width:${Number(p.progress) || 0}%"></div></div>
            <p class="progress-label">${esc(p.phase || '')} · ${Number(p.progress) || 0}%</p>` : '';
-      return `<article class="project-card reveal" data-i="${i}">
-          <div class="project-visual">${visual(p.image)}${badge}</div>
-          <div class="project-meta">
-            <p class="place">${esc(p.place)}${p.year ? ` — ${esc(p.year)}` : ''}</p>
-            <h3>${esc(p.title)}</h3>
-            ${progressBar}
-          </div>
+      const meta = p.year ? `${p.place} — ${p.year}` : p.place;
+      return `<article class="project-card reveal" data-hover data-i="${i}">
+          <div class="project-visual ${visualClass(p.image)}" style="background-image:${bg(p.image)}">${badge}</div>
+          <div class="project-meta"><h3>${esc(p.title)}</h3><p>${esc(meta)}</p>${progressBar}</div>
         </article>`;
     }).join('');
     projectGrid.querySelectorAll('.project-card').forEach((card) => {
@@ -178,11 +148,12 @@ async function init() {
       card.addEventListener('click', () => openItemModal({
         title: p.title, place: p.year ? `${p.place} — ${p.year}` : p.place, desc: p.desc, image: p.image,
       }));
+      bindHover([card]);
     });
     initReveal(projectGrid.querySelectorAll('.reveal'));
   }
-  projectTabs.querySelectorAll('.text-tab').forEach((t) => t.addEventListener('click', () => {
-    projectTabs.querySelectorAll('.text-tab').forEach((b) => b.classList.remove('active'));
+  projectTabs.querySelectorAll('.tab').forEach((t) => t.addEventListener('click', () => {
+    projectTabs.querySelectorAll('.tab').forEach((b) => b.classList.remove('active'));
     t.classList.add('active');
     renderProjects(t.dataset.tab);
   }));
@@ -192,32 +163,31 @@ async function init() {
   const propertyGrid = document.getElementById('property-grid');
   const propertyFiltersEl = document.getElementById('property-filters');
   const types = [...new Set(properties.map((b) => b.type).filter(Boolean))];
-  propertyFiltersEl.innerHTML = [`<button class="text-tab active" data-filter="all">Tous</button>`]
-    .concat(types.map((t) => `<button class="text-tab" data-filter="${esc(t)}">${esc(t)}s</button>`)).join('');
+  propertyFiltersEl.innerHTML = [`<button class="filter-btn active" data-filter="all" data-hover>Tous</button>`]
+    .concat(types.map((t) => `<button class="filter-btn" data-filter="${esc(t)}" data-hover>${esc(t)}s</button>`)).join('');
 
   const statusClass = (s) => s === 'Vendu' ? 'sold' : s === 'Sous compromis' ? 'pending' : 'sale';
   propertyGrid.innerHTML = properties.map((b, i) => `
-    <article class="property-card reveal" data-type="${esc(b.type)}" data-i="${i}">
-      <div class="property-visual">
-        ${visual(b.image)}
+    <article class="property-card reveal" data-hover data-type="${esc(b.type)}" data-i="${i}">
+      <div class="property-visual ${visualClass(b.image)}" style="background-image:${bg(b.image)}">
         <span class="status-badge ${statusClass(b.status)}">${esc(b.status)}</span>
+        <span class="property-type">${esc(b.type)}</span>
       </div>
       <div class="property-meta">
-        <p class="place">${esc(b.place)} — ${esc(b.type)}</p>
         <h3>${esc(b.title)}</h3>
-        <div class="property-line">
-          <div class="property-specs">
-            <span>${esc(b.surface)} m²</span><span>${esc(b.rooms)} pièces</span><span>${esc(b.beds)} ch.</span>
-          </div>
-          <p class="property-price">${esc(b.price)}</p>
+        <p class="property-place">${esc(b.place)}</p>
+        <div class="property-specs">
+          <span>${esc(b.surface)} m²</span><span>${esc(b.rooms)} pièces</span><span>${esc(b.beds)} ch.</span>
         </div>
+        <p class="property-price">${esc(b.price)}</p>
       </div>
     </article>`).join('');
   propertyGrid.querySelectorAll('.property-card').forEach((c) => {
     c.addEventListener('click', () => openDetail(properties[parseInt(c.dataset.i, 10)]));
+    bindHover([c]);
   });
-  propertyFiltersEl.querySelectorAll('.text-tab').forEach((btn) => btn.addEventListener('click', () => {
-    propertyFiltersEl.querySelectorAll('.text-tab').forEach((b) => b.classList.remove('active'));
+  propertyFiltersEl.querySelectorAll('.filter-btn').forEach((btn) => btn.addEventListener('click', () => {
+    propertyFiltersEl.querySelectorAll('.filter-btn').forEach((b) => b.classList.remove('active'));
     btn.classList.add('active');
     const f = btn.dataset.filter;
     propertyGrid.querySelectorAll('.property-card').forEach((card) => {
@@ -247,10 +217,14 @@ async function init() {
     dq('[data-detail-features]').innerHTML = (b.features || []).map((f) => `<li>${esc(f)}</li>`).join('');
 
     const gallery = b.gallery?.length ? b.gallery : [b.image];
-    const setMain = (v) => { dq('[data-detail-main]').style.backgroundImage = bg(v); };
+    const setMain = (v) => {
+      const main = dq('[data-detail-main]');
+      main.className = `detail-main ${visualClass(v)}`;
+      main.style.backgroundImage = bg(v);
+    };
     setMain(gallery[0]);
     dq('[data-detail-thumbs]').innerHTML = gallery.map((v, i) =>
-      `<button class="detail-thumb${i === 0 ? ' active' : ''}" data-i="${i}" style="background-image:${bg(v)}"></button>`
+      `<button class="detail-thumb ${visualClass(v)}${i === 0 ? ' active' : ''}" data-i="${i}" data-hover style="background-image:${bg(v)}"></button>`
     ).join('');
     dq('[data-detail-thumbs]').querySelectorAll('.detail-thumb').forEach((t) => {
       t.addEventListener('click', () => {
@@ -282,7 +256,9 @@ async function init() {
     modal.querySelector('.modal-title').textContent = title || '';
     modal.querySelector('.modal-place').textContent = place || '';
     modal.querySelector('.modal-desc').textContent = desc || '';
-    modal.querySelector('.modal-visual').style.backgroundImage = bg(image);
+    const visual = modal.querySelector('.modal-visual');
+    visual.className = `modal-visual ${visualClass(image)}`;
+    visual.style.backgroundImage = bg(image);
     if (specs?.length) {
       modalSpecs.innerHTML = specs.map((s) => `<span class="spec"><strong>${esc(s.value)}</strong>${esc(s.label)}</span>`).join('');
       modalSpecs.style.display = '';
@@ -295,13 +271,14 @@ async function init() {
   const showreel = C.films?.showreel;
   const showreelEl = document.getElementById('film-showreel');
   if (showreel) {
-    showreelEl.querySelector('.film-poster').style.backgroundImage = bg(showreel.image);
+    const poster = showreelEl.querySelector('.film-poster');
+    poster.className = `film-poster ${visualClass(showreel.image)}`;
+    poster.style.backgroundImage = bg(showreel.image);
     document.getElementById('showreel-label').textContent = showreel.label || '';
     showreelEl.addEventListener('click', () => openFilm(showreel.file));
   } else showreelEl.closest('.film-feature').style.display = 'none';
   document.getElementById('film-grid').innerHTML = (C.films?.items || []).map((f, i) => `
-    <button class="film-thumb reveal" data-i="${i}">
-      <span class="thumb-visual">${visual(f.image)}</span>
+    <button class="film-thumb reveal ${visualClass(f.image)}" data-i="${i}" data-hover style="background-image:${bg(f.image)}">
       <span class="film-thumb-label">${esc(f.label)}</span>
     </button>`).join('');
   document.getElementById('film-grid').querySelectorAll('.film-thumb').forEach((el) => {
@@ -312,15 +289,11 @@ async function init() {
   const cinema = C.cinema || [];
   const cinemaGrid = document.getElementById('cinema-grid');
   cinemaGrid.innerHTML = cinema.map((c, i) => `
-    <article class="cinema-card reveal" data-i="${i}" data-type="${esc(c.type)}">
-      <div class="cinema-visual">
-        ${visual(c.image)}
-        <span class="cinema-card-play">${c.type === 'Film' ? '▶' : '◎'}</span>
-      </div>
-      <div class="cinema-meta">
-        <p class="place">${esc(c.category)} — ${esc(c.place)}</p>
-        <h3>${esc(c.title)}</h3>
-      </div>
+    <article class="cinema-card reveal ${visualClass(c.image)}" data-hover data-i="${i}" data-type="${esc(c.type)}" style="background-image:${bg(c.image)}">
+      <span class="cinema-card-play">${c.type === 'Film' ? '▶' : '◎'}</span>
+      <span class="cinema-card-type">${esc(c.category)}</span>
+      <h3>${esc(c.title)}</h3>
+      <span class="cinema-card-meta">${esc(c.place)}</span>
     </article>`).join('');
   cinemaGrid.querySelectorAll('.cinema-card').forEach((card) => {
     card.addEventListener('click', () => {
@@ -328,8 +301,9 @@ async function init() {
       if (item.type === 'Film') openFilm(item.video);
       else openPhoto(item.image, `${item.title} — ${item.category}`);
     });
+    bindHover([card]);
   });
-  const cinemaFilters = document.querySelectorAll('#cinema-filters .text-tab');
+  const cinemaFilters = document.querySelectorAll('#cinema-filters .filter-btn');
   cinemaFilters.forEach((btn) => btn.addEventListener('click', () => {
     cinemaFilters.forEach((b) => b.classList.remove('active'));
     btn.classList.add('active');
@@ -344,11 +318,11 @@ async function init() {
   const furnitureGrid = document.getElementById('furniture-grid');
   const furnitureFiltersEl = document.getElementById('furniture-filters');
   const categories = [...new Set(furniture.map((f) => f.category).filter(Boolean))];
-  furnitureFiltersEl.innerHTML = [`<button class="text-tab active" data-filter="all">Tout</button>`]
-    .concat(categories.map((c) => `<button class="text-tab" data-filter="${esc(c)}">${esc(c)}s</button>`)).join('');
+  furnitureFiltersEl.innerHTML = [`<button class="filter-btn active" data-filter="all" data-hover>Tout</button>`]
+    .concat(categories.map((c) => `<button class="filter-btn" data-filter="${esc(c)}" data-hover>${esc(c)}s</button>`)).join('');
   furnitureGrid.innerHTML = furniture.map((f, i) => `
-    <article class="furniture-card reveal" data-category="${esc(f.category)}" data-i="${i}">
-      <div class="furniture-visual">${visual(f.image)}<span class="furniture-edition">${esc(f.edition)}</span></div>
+    <article class="furniture-card reveal" data-hover data-category="${esc(f.category)}" data-i="${i}">
+      <div class="furniture-visual ${visualClass(f.image)}" style="background-image:${bg(f.image)}"><span class="furniture-edition">${esc(f.edition)}</span></div>
       <div class="furniture-meta">
         <p class="furniture-category">${esc(f.category)}</p>
         <h3>${esc(f.name)}</h3>
@@ -367,9 +341,10 @@ async function init() {
         ],
       });
     });
+    bindHover([card]);
   });
-  furnitureFiltersEl.querySelectorAll('.text-tab').forEach((btn) => btn.addEventListener('click', () => {
-    furnitureFiltersEl.querySelectorAll('.text-tab').forEach((b) => b.classList.remove('active'));
+  furnitureFiltersEl.querySelectorAll('.filter-btn').forEach((btn) => btn.addEventListener('click', () => {
+    furnitureFiltersEl.querySelectorAll('.filter-btn').forEach((b) => b.classList.remove('active'));
     btn.classList.add('active');
     const f = btn.dataset.filter;
     furnitureGrid.querySelectorAll('.furniture-card').forEach((card) => {
@@ -381,8 +356,8 @@ async function init() {
 
   /* ---------- Équipe ---------- */
   document.getElementById('team-grid').innerHTML = (C.team || []).map((m) => `
-    <article class="team-card reveal">
-      <div class="team-avatar" ${m.photo ? `style="background-image:${bg(m.photo)}"` : ''}>${m.photo ? '' : esc(m.initials)}</div>
+    <article class="team-card reveal" data-tilt>
+      <div class="team-avatar" ${m.photo ? `style="background-image:${bg(m.photo)};background-size:cover;background-position:center"` : ''}>${m.photo ? '' : esc(m.initials)}</div>
       <h3>${esc(m.name)}</h3>
       <p class="team-role">${esc(m.role)}</p>
       <p class="team-bio">${esc(m.bio)}</p>
@@ -390,11 +365,11 @@ async function init() {
 
   /* ---------- Approche / piliers ---------- */
   document.getElementById('pillars-grid').innerHTML = (C.philosophy || []).map((p) => `
-    <div class="pillar reveal">
+    <div class="pillar reveal" data-tilt data-accent="${esc(p.accent)}">
       <span class="pillar-index">${esc(p.index)}</span><h3>${esc(p.title)}</h3><p>${esc(p.text)}</p>
     </div>`).join('');
 
-  /* ---------- Chiffres ---------- */
+  /* ---------- Stats ---------- */
   document.getElementById('stats-grid').innerHTML = (C.stats || []).map((s) => `
     <div class="stat reveal">
       <span class="stat-number" data-count="${Number(s.value) || 0}">0</span>
@@ -407,7 +382,7 @@ async function init() {
   document.getElementById('contact-eyebrow').textContent = sections.contact?.eyebrow || 'Contact';
   document.getElementById('contact-title').innerHTML = brize(CT.title || '');
   document.getElementById('contact-info').innerHTML = (CT.lines || []).map((l) => `
-    <li><span>${esc(l.label)}</span>${l.link ? `<a href="${esc(l.link)}">${esc(l.value)}</a>` : `<a>${esc(l.value)}</a>`}</li>`).join('');
+    <li><span>${esc(l.label)}</span>${l.link ? `<a href="${esc(l.link)}" data-hover>${esc(l.value)}</a>` : `<a data-hover>${esc(l.value)}</a>`}</li>`).join('');
   document.getElementById('contact-note').textContent = CT.formNote || '';
   document.getElementById('contact-submit').textContent = CT.submitLabel || 'Envoyer';
   document.getElementById('contact-form').addEventListener('submit', (e) => {
@@ -424,12 +399,35 @@ async function init() {
   gsap.ticker.add((time) => lenis.raf(time * 1000));
   gsap.ticker.lagSmoothing(0);
 
+  /* ============ Scène 3D d'arrière-plan ============ */
+  const canvas = document.getElementById('scene-canvas');
+  const scene = createScene(canvas);
+
+  /* ============ Curseur personnalisé ============ */
+  const cursorDot = document.getElementById('cursor-dot');
+  const cursorRing = document.getElementById('cursor-ring');
+  let mx = window.innerWidth / 2, my = window.innerHeight / 2, rx = mx, ry = my;
+  window.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
+  (function cursorLoop() {
+    rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
+    cursorDot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+    cursorRing.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+    requestAnimationFrame(cursorLoop);
+  })();
+  function bindHover(els) {
+    els.forEach((el) => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+    });
+  }
+  bindHover(document.querySelectorAll('[data-hover]'));
+
   /* ============ Navigation ============ */
   const nav = document.getElementById('nav');
-  ScrollTrigger.create({ start: 120, onUpdate: (self) => nav.classList.toggle('scrolled', self.scroll() > 120) });
+  ScrollTrigger.create({ start: 80, onUpdate: (self) => nav.classList.toggle('scrolled', self.scroll() > 80) });
   const burger = document.getElementById('burger');
-  burger.addEventListener('click', () => document.body.classList.toggle('menu-open'));
-  overlayLinks.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => document.body.classList.remove('menu-open')));
+  burger.addEventListener('click', () => mobileNav.classList.toggle('open'));
+  mobileNav.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => mobileNav.classList.remove('open')));
   document.querySelectorAll('a[href^="#"]').forEach((a) => {
     a.addEventListener('click', (e) => {
       const target = document.querySelector(a.getAttribute('href'));
@@ -438,11 +436,39 @@ async function init() {
   });
   document.getElementById('to-top').addEventListener('click', () => lenis.scrollTo(0, { duration: 1.4 }));
 
+  /* ============ Caméra du hero pilotée au scroll ============ */
+  const acts = gsap.utils.toArray('.act');
+  ScrollTrigger.create({
+    trigger: '#cinematic', start: 'top top', end: 'bottom top', scrub: true,
+    onUpdate: (self) => {
+      scene.setProgress(self.progress);
+      const seg = 1 / Math.max(acts.length, 1);
+      acts.forEach((act, i) => {
+        const center = i * seg + seg / 2;
+        const visibility = gsap.utils.clamp(0, 1, 1 - Math.abs(self.progress - center) / (seg * 0.6));
+        gsap.to(act, { opacity: visibility, y: 24 * (1 - visibility), duration: 0.2, overwrite: 'auto' });
+      });
+      const cue = document.querySelector('.scroll-cue');
+      if (cue) cue.style.opacity = self.progress < 0.04 ? 1 : 0;
+    },
+  });
+
   /* ============ Apparition au scroll ============ */
   function initReveal(els) {
     els.forEach((el) => ScrollTrigger.create({ trigger: el, start: 'top 88%', onEnter: () => el.classList.add('in') }));
   }
   initReveal(document.querySelectorAll('.reveal'));
+
+  /* ============ Cartes inclinables ============ */
+  document.querySelectorAll('[data-tilt]').forEach((card) => {
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      gsap.to(card, { rotateY: px * 12, rotateX: -py * 12, duration: 0.4, ease: 'power2.out' });
+    });
+    card.addEventListener('mouseleave', () => gsap.to(card, { rotateY: 0, rotateX: 0, duration: 0.6, ease: 'power3.out' }));
+  });
 
   /* ============ Compteurs ============ */
   document.querySelectorAll('.stat-number').forEach((el) => {
@@ -477,7 +503,7 @@ async function init() {
     const modelTabs = document.getElementById('model-tabs');
     if (models.length > 1) {
       modelTabs.innerHTML = models.map((m, i) =>
-        `<button class="model-tab ${i === 0 ? 'active' : ''}" data-i="${i}">${esc(m.name || `Maquette ${i + 1}`)}</button>`).join('');
+        `<button class="model-tab ${i === 0 ? 'active' : ''}" data-i="${i}" data-hover>${esc(m.name || `Maquette ${i + 1}`)}</button>`).join('');
       modelTabs.querySelectorAll('.model-tab').forEach((b) => {
         b.addEventListener('click', () => {
           modelTabs.querySelectorAll('.model-tab').forEach((x) => x.classList.remove('active'));
@@ -485,6 +511,7 @@ async function init() {
           stopCinematic();
           viewer.load(modelUrl(models[parseInt(b.dataset.i, 10)]));
         });
+        bindHover([b]);
       });
     }
 
@@ -548,9 +575,7 @@ async function init() {
 
   /* ============ Touches globales ============ */
   window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      modal.classList.remove('open'); closeFilm(); closePhoto(); closeDetail();
-      document.body.classList.remove('menu-open');
-    }
+    if (e.key === 'Escape') { modal.classList.remove('open'); closeFilm(); closePhoto(); closeDetail(); }
   });
+  window.addEventListener('resize', () => scene.resize());
 }
