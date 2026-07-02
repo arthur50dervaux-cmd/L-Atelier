@@ -9,24 +9,24 @@
     "loaderLabel": "L'Atelier — composition de l'expérience"
   },
   "theme": {
-    "bg": "#f6f2ea",
-    "bgLight": "#fdfbf6",
-    "cream": "#f6f2ea",
-    "creamDim": "#d8d1c2",
-    "ink": "#1b1a17",
-    "inkSoft": "#6f6a5f",
-    "gold": "#b9862f",
-    "goldSoft": "#d3ab63",
-    "azur": "#2a7e9b",
+    "bg": "#0b0c0e",
+    "bgLight": "#f4eee3",
+    "cream": "#f4efe6",
+    "creamDim": "#e7ded0",
+    "ink": "#15161a",
+    "inkSoft": "#2a2c33",
+    "gold": "#e0a93f",
+    "goldSoft": "#efc878",
+    "azur": "#1a8fb3",
     "azurDeep": "#0d3b4f",
-    "turquoise": "#3ea3b5",
-    "coral": "#c96f4a",
-    "coralSoft": "#dd9a7c",
-    "terracotta": "#b4512e",
-    "olive": "#7d8a4c",
-    "sand": "#ece5d4",
-    "sea": "#14505f",
-    "rose": "#c98a94"
+    "turquoise": "#29b0c4",
+    "coral": "#e0673f",
+    "coralSoft": "#ef8a5c",
+    "terracotta": "#c75b3e",
+    "olive": "#8a9a44",
+    "sand": "#e9dcc3",
+    "sea": "#0d4f63",
+    "rose": "#d96a7a"
   },
   "visuals": {
     "art-sea": "https://images.unsplash.com/photo-1505843513577-22bb7d21e455?auto=format&fit=crop&w=1600&q=80",
@@ -39,12 +39,11 @@
   },
   "hero": {
     "scrollCue": "Faites défiler",
-    "interval": 6,
     "acts": [
-      { "eyebrow": "Architecture & immobilier d'exception", "title": "Construire\ndes rêves habitables", "size": "big", "role": "Côte d'Azur — Méditerranée", "image": "art-sea" },
-      { "eyebrow": "Mer · Falaises · Vignes", "title": "Le paysage\ncomme matière première", "size": "big", "image": "art-cliff" },
-      { "eyebrow": "Lumière dorée", "title": "Chaque demeure\nraconte un site", "size": "big", "image": "art-villa" },
-      { "eyebrow": "L'Atelier", "title": "L'architecture\ndu sublime", "size": "big", "role": "Conception · Immobilier · Design", "image": "art-vine" }
+      { "eyebrow": "Architecture & immobilier d'exception", "title": "Construire\ndes rêves\nhabitables", "size": "big" },
+      { "eyebrow": "Mer · Falaises · Vignes", "title": "Le paysage\ncomme matière première", "size": "medium" },
+      { "eyebrow": "Lumière dorée", "title": "Chaque demeure\nraconte un site", "size": "medium" },
+      { "eyebrow": "L'Atelier", "title": "L'architecture\ndu sublime", "size": "big", "signature": true, "role": "Côte d'Azur — Méditerranée" }
     ]
   },
   "manifesto": "Chaque projet commence par une question : que mérite ce lieu ? Entre la roche, la mer et la vigne, nous dessinons des architectures qui s'effacent devant leur paysage — et qui, pourtant, le révèlent.",
