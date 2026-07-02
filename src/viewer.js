@@ -8,9 +8,11 @@ import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment
  * Visualiseur de maquette d'architecte — haute qualité.
  * Outils : rotation auto, recentrage, vues (perspective / plan / façade),
  * matériaux (réaliste / maquette blanche / filaire), étude d'ensoleillement,
- * plein écran. Charge un .glb (Revit/scan) ou affiche une maquette de démo.
+ * plein écran, et mode cinématique (caméra en travelling sur une courbe
+ * fermée autour du modèle, lumière dorée animée — façon film d'architecture).
+ * Charge un .glb (export Revit / scan) ou affiche une maquette de démo.
  */
-export function createViewer(container) {
+export function createViewer(container, { modelUrl } = {}) {
   const canvas = container.querySelector('canvas');
   const statusEl = container.querySelector('[data-viewer-status]');
 
@@ -38,7 +40,7 @@ export function createViewer(container) {
   controls.maxDistance = 200;
   controls.maxPolarAngle = Math.PI / 2.02;
 
-  // ----- Lighting (sun study) -----
+  // ----- Lumières (étude d'ensoleillement) -----
   const hemi = new THREE.HemisphereLight(0xbfe0ff, 0x6b5a45, 0.5);
   scene.add(hemi);
   const sun = new THREE.DirectionalLight(0xffffff, 2.6);
@@ -52,7 +54,7 @@ export function createViewer(container) {
   scene.add(sun);
   scene.add(sun.target);
 
-  // ----- Ground (receives contact shadow) -----
+  // ----- Sol (reçoit l'ombre) -----
   const ground = new THREE.Mesh(
     new THREE.PlaneGeometry(400, 400),
     new THREE.ShadowMaterial({ opacity: 0.28 })
@@ -68,6 +70,7 @@ export function createViewer(container) {
 
   let model = null;
   let radius = 5;
+  let modelHeight = 2;
   const whiteMat = new THREE.MeshStandardMaterial({ color: 0xeae4d8, roughness: 0.85, metalness: 0 });
   const wireMat = new THREE.MeshBasicMaterial({ color: 0x1a8fb3, wireframe: true });
   let materialMode = 'real';
@@ -95,6 +98,7 @@ export function createViewer(container) {
       return frameObject(obj, 'persp');
     }
     radius = Math.max(size.x, size.y, size.z) || 5;
+    modelHeight = size.y || 2;
     const target = new THREE.Vector3(0, size.y * 0.45, 0);
     const d = radius * 1.9;
     let pos;
@@ -146,7 +150,7 @@ export function createViewer(container) {
     const gl = mk(new THREE.BoxGeometry(4.3, 1.5, 0.08), glass, -0.8, 1.2, 1.74); gl.castShadow = false; // baie vitrée
     mk(new THREE.BoxGeometry(3.4, 0.08, 1.7), water, -0.5, 0.32, 3.1);   // piscine
     for (let i = 0; i < 2; i++) mk(new THREE.CylinderGeometry(0.12, 0.14, 2, 8), wall, -2.9 + i * 4.2, 1, 1.7); // poteaux
-    for (let i = 0; i < 5; i++) { const t = mk(new THREE.ConeGeometry(0.32, 1.7, 8), greenM, -3.2 + i * 1.4, 1, -2.7); mk(new THREE.CylinderGeometry(0.08,0.1,0.6,6), stone, -3.2+i*1.4,0.4,-2.7); }
+    for (let i = 0; i < 5; i++) { const t = mk(new THREE.ConeGeometry(0.32, 1.7, 8), greenM, -3.2 + i * 1.4, 1, -2.7); mk(new THREE.CylinderGeometry(0.08, 0.1, 0.6, 6), stone, -3.2 + i * 1.4, 0.4, -2.7); }
     return g;
   }
 
@@ -156,12 +160,13 @@ export function createViewer(container) {
     model.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
     scene.add(model);
     frameObject(model, 'reset-pos');
-    applyMaterialMode('real');
+    applyMaterialMode(materialMode);
     setSun(0.32);
+    if (cine.active) buildCinePath();
   }
 
   function loadModel(url) {
-    if (statusEl) statusEl.textContent = 'Chargement de la maquette…';
+    if (statusEl) { statusEl.style.display = ''; statusEl.textContent = 'Chargement de la maquette…'; }
     const loader = new GLTFLoader();
     const draco = new DRACOLoader();
     draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
@@ -172,9 +177,69 @@ export function createViewer(container) {
       undefined,
       () => {
         setModel(buildPlaceholder());
-        if (statusEl) statusEl.textContent = 'Maquette de démonstration — déposez votre export Revit (.glb) dans public/models/';
+        if (statusEl) { statusEl.style.display = ''; statusEl.textContent = 'Maquette de démonstration — déposez votre export Revit (.glb) dans public/models/ ou téléversez-le depuis l\'admin.'; }
       }
     );
+  }
+
+  /* ===== Mode cinématique =====
+   * La caméra parcourt en boucle une courbe de Catmull-Rom fermée autour du
+   * modèle (passages proches, prises de hauteur), le regard glisse le long
+   * de la façade et le soleil balaie une journée en lumière dorée.
+   */
+  const cine = { active: false, start: 0, duration: 30000, curve: null, wasAutoRotate: false };
+  const cineTarget = new THREE.Vector3();
+
+  function buildCinePath() {
+    const r = radius;
+    const pts = [
+      new THREE.Vector3(r * 1.9, modelHeight * 0.4, 0),
+      new THREE.Vector3(r * 1.2, modelHeight * 1.15, r * 1.3),
+      new THREE.Vector3(-r * 0.9, modelHeight * 0.55, r * 1.7),
+      new THREE.Vector3(-r * 1.9, modelHeight * 0.3, r * 0.2),
+      new THREE.Vector3(-r * 1.1, modelHeight * 1.5, -r * 1.4),
+      new THREE.Vector3(r * 0.8, modelHeight * 0.7, -r * 1.8),
+      new THREE.Vector3(r * 1.6, modelHeight * 0.25, -r * 0.8),
+    ];
+    cine.curve = new THREE.CatmullRomCurve3(pts, true, 'centripetal', 0.6);
+  }
+
+  function startCinematic({ duration = 30 } = {}) {
+    if (!model) return;
+    cine.duration = Math.max(duration, 8) * 1000;
+    cine.wasAutoRotate = controls.autoRotate;
+    controls.autoRotate = false;
+    controls.enabled = false;
+    buildCinePath();
+    cine.start = performance.now();
+    cine.active = true;
+  }
+
+  function stopCinematic() {
+    if (!cine.active) return;
+    cine.active = false;
+    controls.enabled = true;
+    controls.autoRotate = cine.wasAutoRotate;
+    frameObject(model, 'persp');
+    setSun(0.32);
+  }
+
+  function updateCinematic(now) {
+    const t = ((now - cine.start) % cine.duration) / cine.duration; // boucle
+    const pos = cine.curve.getPointAt(t);
+    // léger flottement vertical pour un travelling organique
+    pos.y += Math.sin(t * Math.PI * 4) * modelHeight * 0.05;
+    camera.position.copy(pos);
+    // le regard respire autour du cœur du modèle
+    cineTarget.set(
+      Math.sin(t * Math.PI * 2) * radius * 0.12,
+      modelHeight * (0.35 + 0.15 * Math.sin(t * Math.PI * 2 + 1.2)),
+      Math.cos(t * Math.PI * 2) * radius * 0.12
+    );
+    camera.lookAt(cineTarget);
+    // balayage aller-retour de la lumière (heure dorée aux extrémités)
+    const tri = 1 - Math.abs(1 - 2 * t);
+    setSun(0.18 + tri * 0.64);
   }
 
   function resize() {
@@ -186,11 +251,12 @@ export function createViewer(container) {
   new ResizeObserver(resize).observe(container);
   resize();
 
-  let active = true, started = false;
+  let active = true;
   function render() {
     if (!active) return;
     requestAnimationFrame(render);
-    controls.update();
+    if (cine.active) updateCinematic(performance.now());
+    else controls.update();
     renderer.render(scene, camera);
   }
   new IntersectionObserver((entries) => {
@@ -198,14 +264,18 @@ export function createViewer(container) {
   }, { threshold: 0.05 }).observe(container);
 
   setSun(0.32);
-  loadModel(container.dataset.model || 'models/maquette.glb');
+  loadModel(modelUrl || container.dataset.model || 'models/maquette.glb');
 
   return {
+    load: loadModel,
     toggleRotate: () => (controls.autoRotate = !controls.autoRotate),
     reset: () => model && frameObject(model, 'persp'),
     setView: (v) => model && frameObject(model, v),
     setMaterial: applyMaterialMode,
     setSun,
+    startCinematic,
+    stopCinematic,
+    isCinematic: () => cine.active,
     fullscreen: () => {
       if (document.fullscreenElement) document.exitFullscreen();
       else container.requestFullscreen?.();

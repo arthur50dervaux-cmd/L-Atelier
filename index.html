@@ -19,153 +19,87 @@
   <div id="cursor" aria-hidden="true"><div id="cursor-dot"></div><div id="cursor-ring"></div></div>
 
   <div id="loader">
-    <div class="loader-mark">L'A.</div>
+    <div class="loader-mark" data-bind="loader-mark">L'A.</div>
     <div class="loader-bar"><span id="loader-progress"></span></div>
-    <div class="loader-label">L'Atelier — composition de l'expérience</div>
+    <div class="loader-label" data-bind="loader-label">Composition de l'expérience</div>
   </div>
+
+  <div id="preview-banner" hidden>Préversion du brouillon — les visiteurs voient la version publiée. <a href="admin.html" data-hover>Retour à l'admin</a></div>
 
   <canvas id="scene-canvas"></canvas>
 
   <header id="nav">
-    <a href="#top" class="brand" data-hover>L'Atelier</a>
-    <nav class="nav-links">
-      <a href="#agence" data-hover>Agence</a>
-      <a href="#conception" data-hover>Conception</a>
-      <a href="#immobilier" data-hover>Immobilier</a>
-      <a href="#maquette" data-hover>Maquette 3D</a>
-      <a href="#films" data-hover>Films</a>
-      <a href="#cinema" data-hover>Cinéma</a>
-      <a href="#mobilier" data-hover>Mobilier</a>
-      <a href="#equipe" data-hover>Équipe</a>
-      <a href="#contact" data-hover>Contact</a>
-    </nav>
+    <a href="#top" class="brand" data-hover data-bind="brand">L'Atelier</a>
+    <nav class="nav-links" id="nav-links"></nav>
     <button id="burger" aria-label="Ouvrir le menu" data-hover><span></span><span></span></button>
   </header>
 
-  <div id="mobile-nav">
-    <a href="#agence" data-hover>Agence</a>
-    <a href="#conception" data-hover>Conception</a>
-    <a href="#immobilier" data-hover>Immobilier</a>
-    <a href="#maquette" data-hover>Maquette 3D</a>
-    <a href="#films" data-hover>Films</a>
-    <a href="#cinema" data-hover>Cinéma</a>
-    <a href="#mobilier" data-hover>Mobilier</a>
-    <a href="#equipe" data-hover>Équipe</a>
-    <a href="#contact" data-hover>Contact</a>
-  </div>
+  <div id="mobile-nav"></div>
 
   <main id="top">
 
-    <!-- CINEMATIC HERO -->
+    <!-- HERO CINÉMATIQUE -->
     <section id="cinematic">
       <div class="cinematic-sticky">
-        <div class="act act-0"><p class="eyebrow">Architecture & immobilier d'exception</p><h1>Construire<br/>des rêves<br/>habitables</h1></div>
-        <div class="act act-1"><p class="eyebrow">Mer · Falaises · Vignes</p><h2>Le paysage<br/>comme matière première</h2></div>
-        <div class="act act-2"><p class="eyebrow">Lumière dorée</p><h2>Chaque demeure<br/>raconte un site</h2></div>
-        <div class="act act-3"><p class="eyebrow">L'Atelier</p><h1 class="signature">L'architecture<br/>du sublime</h1><p class="role">Côte d'Azur — Méditerranée</p></div>
-        <div class="scroll-cue"><span>Faites défiler</span><div class="scroll-cue-line"></div></div>
+        <div id="hero-acts"></div>
+        <div class="scroll-cue"><span data-bind="scroll-cue">Faites défiler</span><div class="scroll-cue-line"></div></div>
       </div>
     </section>
 
-    <!-- MANIFESTO -->
+    <!-- MANIFESTE -->
     <section id="intro" class="solid-section">
-      <p class="manifesto reveal">
-        Chaque projet commence par une question&nbsp;: que mérite ce lieu&nbsp;?
-        Entre la roche, la mer et la vigne, nous dessinons des architectures qui
-        s'effacent devant leur paysage — et qui, pourtant, le révèlent.
-      </p>
+      <p class="manifesto reveal" data-bind="manifesto"></p>
     </section>
 
     <!-- AGENCE -->
     <section id="agence" class="solid-section light">
       <div class="about-grid">
         <div class="about-portrait reveal">
-          <div class="portrait-frame" data-tilt style="background-image:url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80'), linear-gradient(145deg, #1d2733, #0d0e10); background-size: cover; background-position: center;"><div class="portrait-placeholder">A.D.</div></div>
-          <div class="portrait-caption">L'Atelier — Côte d'Azur</div>
+          <div class="portrait-frame" data-tilt id="agence-portrait"><div class="portrait-placeholder" id="agence-initials"></div></div>
+          <div class="portrait-caption" id="agence-caption"></div>
         </div>
         <div class="about-content">
-          <p class="eyebrow reveal">L'agence</p>
-          <h2 class="reveal">Une maison d'architecture<br/>tournée vers la Méditerranée</h2>
-          <p class="reveal">
-            L'Atelier est une agence indépendante dédiée à l'architecture résidentielle
-            d'exception, à l'immobilier de prestige et au design d'intérieur. De
-            l'esquisse à la livraison — et jusqu'à la transmission
-            du bien — nous accompagnons une poignée de projets choisis, là où le site
-            impose son caractère&nbsp;: une falaise face à la mer, un coteau de vignes,
-            une pinède littorale.
-          </p>
-          <p class="reveal">
-            Notre conviction&nbsp;: le site prime sur le geste, la matière doit vieillir
-            avec grâce, et une demeure réussie se mesure à la qualité de ses silences.
-            Nous mettons la technologie et l'image au service de l'émotion — maquettes
-            Revit, films et photographies qualité cinéma, mobilier dessiné en atelier —
-            pour faire voir et rêver le projet avant la première pierre.
-          </p>
-          <ul class="timeline reveal">
-            <li><span class="timeline-year">Conception</span><span>Villas, demeures viticoles, réhabilitations de caractère</span></li>
-            <li><span class="timeline-year">Immobilier</span><span>Biens de prestige sur le littoral méditerranéen</span></li>
-            <li><span class="timeline-year">Cinéma</span><span>Films & photographies qualité cinéma, maquettes 3D</span></li>
-            <li><span class="timeline-year">Design</span><span>Mobilier et objets dessinés et fabriqués en atelier</span></li>
-          </ul>
+          <p class="eyebrow reveal" id="agence-eyebrow"></p>
+          <h2 class="reveal" id="agence-title"></h2>
+          <div id="agence-paragraphs"></div>
+          <ul class="timeline reveal" id="agence-timeline"></ul>
         </div>
       </div>
     </section>
 
     <!-- EXPERTISE -->
     <section id="expertise" class="solid-section">
-      <div class="section-head reveal"><p class="eyebrow">Expertise</p><h2>Une agence, cinq savoir-faire</h2></div>
-      <div class="services">
-        <article class="service reveal" data-tilt data-accent="azur"><span class="service-num">01</span><h3>Conception</h3><p>De l'esquisse au permis&nbsp;: villas, demeures de caractère, réhabilitations. Une écriture ancrée dans son site.</p></article>
-        <article class="service reveal" data-tilt data-accent="turquoise"><span class="service-num">02</span><h3>Maquette &amp; BIM</h3><p>Modélisation Revit, maquettes numériques et scans 3D explorables en ligne.</p></article>
-        <article class="service reveal" data-tilt data-accent="gold"><span class="service-num">03</span><h3>Cinématographique</h3><p>Films et photographies qualité cinéma, en très haute définition, pour faire rêver.</p></article>
-        <article class="service reveal" data-tilt data-accent="coral"><span class="service-num">04</span><h3>Immobilier</h3><p>Conseil et transmission de biens de prestige, du sur-mesure jusqu'à la vente.</p></article>
-        <article class="service reveal" data-tilt data-accent="olive"><span class="service-num">05</span><h3>Mobilier &amp; design</h3><p>Pièces de mobilier et objets dessinés et fabriqués en atelier, pièces uniques ou séries limitées.</p></article>
-      </div>
+      <div class="section-head reveal" data-head="expertise"></div>
+      <div class="services" id="services-grid"></div>
     </section>
 
     <!-- CONCEPTION : projets par état -->
     <section id="conception" class="solid-section light">
-      <div class="section-head reveal">
-        <p class="eyebrow">Conception</p>
-        <h2>Nos projets, à chaque étape</h2>
-        <p class="section-sub">Des concours aux livraisons, suivez l'avancée de l'atelier.</p>
-      </div>
-      <div class="tabs reveal" id="project-tabs">
-        <button class="tab active" data-tab="avenir" data-hover>À venir</button>
-        <button class="tab" data-tab="concours" data-hover>Concours</button>
-        <button class="tab" data-tab="encours" data-hover>En cours</button>
-        <button class="tab" data-tab="termines" data-hover>Terminés</button>
-      </div>
-      <div class="project-grid" id="project-grid"><!-- généré par JS --></div>
+      <div class="section-head reveal" data-head="conception"></div>
+      <div class="tabs reveal" id="project-tabs"></div>
+      <div class="project-grid" id="project-grid"></div>
     </section>
 
     <!-- IMMOBILIER : biens à la vente -->
     <section id="immobilier" class="solid-section dark">
-      <div class="section-head reveal">
-        <p class="eyebrow">Immobilier</p>
-        <h2>Biens d'exception à la vente</h2>
-        <p class="section-sub">Une sélection confidentielle de propriétés de prestige sur la Méditerranée.</p>
-      </div>
-      <div class="filters reveal" id="property-filters">
-        <button class="filter-btn active" data-filter="all" data-hover>Tous</button>
-        <button class="filter-btn" data-filter="Villa" data-hover>Villas</button>
-        <button class="filter-btn" data-filter="Appartement" data-hover>Appartements</button>
-        <button class="filter-btn" data-filter="Domaine" data-hover>Domaines</button>
-      </div>
-      <div class="property-grid" id="property-grid"><!-- généré par JS --></div>
+      <div class="section-head reveal" data-head="immobilier"></div>
+      <div class="filters reveal" id="property-filters"></div>
+      <div class="property-grid" id="property-grid"></div>
     </section>
 
     <!-- MAQUETTE 3D -->
     <section id="maquette" class="solid-section">
-      <div class="section-head reveal">
-        <p class="eyebrow">Maquette interactive</p>
-        <h2>Explorez le projet en 3D</h2>
-        <p class="section-sub">Maquette issue de Revit ou scan de modèle réduit — vues, matériaux et étude d'ensoleillement comme en agence.</p>
-      </div>
+      <div class="section-head reveal" data-head="maquette"></div>
       <div class="viewer-wrap reveal">
-        <div id="model-viewer" class="model-viewer" data-model="models/maquette.glb">
+        <div class="model-tabs" id="model-tabs"></div>
+        <div id="model-viewer" class="model-viewer">
           <canvas></canvas>
           <div class="viewer-status" data-viewer-status>Initialisation du visualiseur…</div>
+
+          <div class="letterbox letterbox-top" aria-hidden="true"></div>
+          <div class="letterbox letterbox-bottom" aria-hidden="true"></div>
+          <div class="cinematic-caption" data-cine-caption></div>
+          <button class="cinematic-stop" data-cine-stop data-hover hidden>✕ Quitter la cinématique</button>
 
           <div class="viewer-toolbar">
             <div class="viewer-group">
@@ -183,6 +117,7 @@
           </div>
 
           <div class="viewer-controls">
+            <button data-viewer-cinematic class="cine-btn" data-hover>✦ Cinématique</button>
             <button data-viewer-rotate data-hover>Rotation</button>
             <button data-viewer-reset data-hover>Recentrer</button>
             <button data-viewer-full data-hover>Plein écran</button>
@@ -198,97 +133,66 @@
 
     <!-- FILMS -->
     <section id="films" class="solid-section light">
-      <div class="section-head reveal"><p class="eyebrow">Films</p><h2>Rendus cinématographiques</h2><p class="section-sub">Films de synthèse photoréalistes en très haute définition.</p></div>
+      <div class="section-head reveal" data-head="films"></div>
       <div class="film-feature reveal">
-        <div class="film-player" data-film="films/showreel.mp4" data-poster="">
-          <div class="film-poster art-sea">
-            <button class="film-play" data-hover aria-label="Lire le film"><span class="play-icon">▶</span><span class="play-label">Voir le showreel</span></button>
+        <div class="film-player" id="film-showreel">
+          <div class="film-poster">
+            <button class="film-play" data-hover aria-label="Lire le film"><span class="play-icon">▶</span><span class="play-label" id="showreel-label"></span></button>
           </div>
         </div>
       </div>
-      <div class="film-grid">
-        <button class="film-thumb reveal art-villa" data-film="films/villa-horizon.mp4" data-hover><span class="film-thumb-label">Villa Horizon — survol</span></button>
-        <button class="film-thumb reveal art-vine" data-film="films/maison-vignes.mp4" data-hover><span class="film-thumb-label">Maison des Vignes — lumière du soir</span></button>
-        <button class="film-thumb reveal art-cliff" data-film="films/calanques.mp4" data-hover><span class="film-thumb-label">Calanques — promenade</span></button>
-      </div>
+      <div class="film-grid" id="film-grid"></div>
     </section>
 
     <!-- CINÉMATOGRAPHIQUE -->
     <section id="cinema" class="solid-section dark">
-      <div class="section-head reveal">
-        <p class="eyebrow">Cinématographique</p>
-        <h2>Films & photographies qualité cinéma</h2>
-        <p class="section-sub">Au-delà de l'architecture, un regard cinéma sur la lumière, la matière et le paysage méditerranéen — courts-métrages, time-lapses et séries photographiques.</p>
-      </div>
+      <div class="section-head reveal" data-head="cinema"></div>
       <div class="filters reveal" id="cinema-filters">
         <button class="filter-btn active" data-filter="all" data-hover>Tout</button>
         <button class="filter-btn" data-filter="Film" data-hover>Films</button>
         <button class="filter-btn" data-filter="Photo" data-hover>Photographies</button>
       </div>
-      <div class="cinema-grid" id="cinema-grid"><!-- généré par JS --></div>
+      <div class="cinema-grid" id="cinema-grid"></div>
     </section>
 
     <!-- MOBILIER & DESIGN -->
     <section id="mobilier" class="solid-section light">
-      <div class="section-head reveal">
-        <p class="eyebrow">Mobilier & design</p>
-        <h2>Pièces dessinées par l'atelier</h2>
-        <p class="section-sub">Mobilier d'intérieur et objets conçus et fabriqués en atelier — pièces uniques et séries limitées, pensés comme une architecture miniature.</p>
-      </div>
-      <div class="filters reveal" id="furniture-filters">
-        <button class="filter-btn active" data-filter="all" data-hover>Tout</button>
-        <button class="filter-btn" data-filter="Table" data-hover>Tables</button>
-        <button class="filter-btn" data-filter="Fauteuil" data-hover>Assises</button>
-        <button class="filter-btn" data-filter="Luminaire" data-hover>Luminaires</button>
-        <button class="filter-btn" data-filter="Objet" data-hover>Objets</button>
-      </div>
-      <div class="furniture-grid" id="furniture-grid"><!-- généré par JS --></div>
+      <div class="section-head reveal" data-head="mobilier"></div>
+      <div class="filters reveal" id="furniture-filters"></div>
+      <div class="furniture-grid" id="furniture-grid"></div>
     </section>
 
     <!-- ÉQUIPE -->
     <section id="equipe" class="solid-section">
-      <div class="section-head reveal"><p class="eyebrow">Équipe</p><h2>Les visages de l'atelier</h2><p class="section-sub">Une équipe pluridisciplinaire, du dessin au chantier.</p></div>
-      <div class="team-grid" id="team-grid"><!-- généré par JS --></div>
+      <div class="section-head reveal" data-head="equipe"></div>
+      <div class="team-grid" id="team-grid"></div>
     </section>
 
     <!-- APPROCHE -->
     <section id="philosophy" class="solid-section light">
-      <div class="section-head reveal"><p class="eyebrow">Approche</p><h2>Trois convictions</h2></div>
-      <div class="pillars">
-        <div class="pillar reveal" data-tilt data-accent="azur"><span class="pillar-index">01</span><h3>Paysage</h3><p>Le site précède le projet. Topographie, vues, vent et lumière dictent l'implantation avant tout dessin.</p></div>
-        <div class="pillar reveal" data-tilt data-accent="coral"><span class="pillar-index">02</span><h3>Matière</h3><p>Pierre, bois, béton brut, métal patiné&nbsp;: des matériaux choisis pour la grâce avec laquelle ils vieillissent.</p></div>
-        <div class="pillar reveal" data-tilt data-accent="gold"><span class="pillar-index">03</span><h3>Lumière</h3><p>La lumière naturelle est traitée comme un matériau de construction à part entière.</p></div>
-      </div>
+      <div class="section-head reveal" data-head="philosophy"></div>
+      <div class="pillars" id="pillars-grid"></div>
     </section>
 
     <!-- STATS -->
     <section id="stats" class="solid-section">
-      <div class="stats-grid">
-        <div class="stat reveal"><span class="stat-number" data-count="40">0</span><span class="stat-suffix">+</span><p>Projets conçus</p></div>
-        <div class="stat reveal"><span class="stat-number" data-count="12">0</span><p>Années de pratique</p></div>
-        <div class="stat reveal"><span class="stat-number" data-count="6">0</span><p>Régions méditerranéennes</p></div>
-        <div class="stat reveal"><span class="stat-number" data-count="100">0</span><span class="stat-suffix">%</span><p>Projets sur-mesure</p></div>
-      </div>
+      <div class="stats-grid" id="stats-grid"></div>
     </section>
 
     <!-- CONTACT -->
     <section id="contact" class="solid-section dark">
       <div class="contact-grid">
         <div class="contact-intro reveal">
-          <p class="eyebrow">Contact</p>
-          <h2>Un projet,<br/>un site,<br/>un rêve à dessiner.</h2>
-          <ul class="contact-info">
-            <li><span>Email</span><a href="mailto:arthur50dervaux@gmail.com" data-hover>arthur50dervaux@gmail.com</a></li>
-            <li><span>Agence</span><a data-hover>Côte d'Azur, France</a></li>
-            <li><span>Disponibilité</span><a data-hover>Nouveaux projets 2026</a></li>
-          </ul>
+          <p class="eyebrow" id="contact-eyebrow">Contact</p>
+          <h2 id="contact-title"></h2>
+          <ul class="contact-info" id="contact-info"></ul>
         </div>
         <form id="contact-form" class="contact-form reveal" autocomplete="off">
           <div class="form-row"><label>Nom<input type="text" name="name" required /></label><label>Email<input type="email" name="email" required /></label></div>
           <label>Nature du projet<input type="text" name="subject" placeholder="Villa, vignoble, achat, réhabilitation…" /></label>
           <label>Message<textarea name="message" rows="4" required></textarea></label>
-          <button type="submit" class="btn-primary" data-hover>Envoyer le message</button>
-          <p class="form-note">Ouvre votre messagerie pour nous écrire directement.</p>
+          <button type="submit" class="btn-primary" data-hover id="contact-submit">Envoyer le message</button>
+          <p class="form-note" id="contact-note"></p>
         </form>
       </div>
     </section>
@@ -296,12 +200,15 @@
   </main>
 
   <footer id="footer">
-    <span class="footer-mark">L'A.</span>
-    <p>© <span id="year"></span> L'Atelier — Architecture, immobilier & design méditerranéen. Tous droits réservés.</p>
-    <button id="to-top" data-hover>Haut de page ↑</button>
+    <span class="footer-mark" data-bind="footer-mark">L'A.</span>
+    <p>© <span id="year"></span> <span id="footer-text"></span></p>
+    <div class="footer-actions">
+      <a href="admin.html" class="footer-admin" data-hover title="Administration du site">Admin</a>
+      <button id="to-top" data-hover>Haut de page ↑</button>
+    </div>
   </footer>
 
-  <!-- Project / property modal -->
+  <!-- Modale projet / mobilier -->
   <div id="modal" class="modal">
     <div class="modal-backdrop" data-close></div>
     <div class="modal-panel">
@@ -314,11 +221,11 @@
     </div>
   </div>
 
-  <!-- Property detail (page bien, façon Kretz) -->
+  <!-- Page détail d'un bien (façon Kretz) -->
   <div id="property-detail" class="detail">
     <div class="detail-topbar">
       <button class="detail-back" data-detail-close data-hover>← Retour aux biens</button>
-      <span class="detail-brand">L'Atelier</span>
+      <span class="detail-brand" data-bind="detail-brand">L'Atelier</span>
       <a class="detail-contact-link" href="#contact" data-detail-close data-hover>Nous contacter</a>
     </div>
     <div class="detail-scroll">
@@ -354,17 +261,17 @@
     </div>
   </div>
 
-  <!-- Film lightbox -->
+  <!-- Lecteur de films -->
   <div id="film-modal" class="modal film-modal">
     <div class="modal-backdrop" data-film-close></div>
     <div class="film-modal-panel">
       <button class="modal-close" data-film-close data-hover>Fermer ✕</button>
       <video class="film-video" controls playsinline preload="none"></video>
-      <p class="film-fallback">Déposez votre fichier vidéo dans <code>public/films/</code> pour l'afficher ici.</p>
+      <p class="film-fallback">Déposez votre fichier vidéo dans <code>public/films/</code> (ou téléversez-le depuis l'admin) pour l'afficher ici.</p>
     </div>
   </div>
 
-  <!-- Photo lightbox (Cinématographique) -->
+  <!-- Visionneuse photo -->
   <div id="photo-modal" class="modal photo-modal">
     <div class="modal-backdrop" data-photo-close></div>
     <div class="photo-modal-panel">
