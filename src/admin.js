@@ -283,8 +283,8 @@ const THEME_COLORS = [
   ['gold', 'Or'], ['goldSoft', 'Or doux'], ['azur', 'Azur'], ['azurDeep', 'Azur profond'],
   ['turquoise', 'Turquoise'], ['sea', 'Mer'], ['coral', 'Corail'], ['coralSoft', 'Corail doux'],
   ['terracotta', 'Terracotta'], ['olive', 'Olive'], ['sand', 'Sable'], ['rose', 'Rose'],
-  ['bg', 'Fond sombre'], ['bgLight', 'Fond clair'], ['cream', 'Crème'], ['creamDim', 'Crème doux'],
-  ['ink', 'Encre'], ['inkSoft', 'Encre douce'],
+  ['bg', 'Fond de page'], ['bgLight', 'Fond secondaire'], ['cream', 'Clair (bandes sombres)'], ['creamDim', 'Clair doux'],
+  ['ink', 'Encre (textes)'], ['inkSoft', 'Encre douce'],
 ];
 
 const ACCENTS = ['azur', 'turquoise', 'gold', 'coral', 'olive'].map((v) => ({ value: v, label: v }));
@@ -351,23 +351,24 @@ function renderSections(pane) {
 
 function renderHero(pane) {
   pane.append(
-    ...paneHeader('Accueil (hero)', 'La séquence cinématique d\'ouverture : les « actes » apparaissent au fil du défilement, sur le paysage 3D.'),
+    ...paneHeader('Accueil (hero)', 'Le diaporama plein écran d\'ouverture : chaque diapositive combine une photo et un titre, façon grande agence.'),
     card('Général', fieldGrid(
       fText('Invitation à défiler', 'hero.scrollCue'),
+      fText('Durée par diapositive (secondes)', 'hero.interval', { type: 'number' }),
       fText('Manifeste (texte sous le hero)', 'manifesto', { textarea: true, rows: 3, full: true }),
     )),
-    card('Actes du hero', listEditor({
+    card('Diapositives', listEditor({
       path: 'hero.acts',
-      newItem: () => ({ eyebrow: '', title: 'Nouveau titre', size: 'medium' }),
+      newItem: () => ({ eyebrow: '', title: 'Nouveau titre', size: 'big', image: 'art-sea' }),
       itemTitle: (a) => (a.title || '').split('\n')[0],
       buildFields: (p) => [fieldGrid(
         fText('Sur-titre', `${p}.eyebrow`),
         fSelect('Taille', `${p}.size`, [{ value: 'big', label: 'Grand titre' }, { value: 'medium', label: 'Titre moyen' }]),
         fText('Titre', `${p}.title`, { textarea: true, rows: 2, full: true, help: 'Un retour à la ligne ici = un retour à la ligne à l\'écran.' }),
         fText('Ligne sous le titre', `${p}.role`),
-        fToggle('Style doré (signature)', `${p}.signature`),
+        fMedia('Photo plein écran', `${p}.image`),
       )],
-      addLabel: '+ Ajouter un acte',
+      addLabel: '+ Ajouter une diapositive',
     })),
   );
 }

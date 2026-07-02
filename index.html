@@ -8,203 +8,232 @@
   <meta property="og:title" content="L'Atelier — Architecture, immobilier & design méditerranéen" />
   <meta property="og:description" content="Architecture résidentielle, immobilier de prestige, films qualité cinéma et mobilier dessiné en atelier, sur la Méditerranée." />
   <meta property="og:type" content="website" />
-  <meta name="theme-color" content="#0d3b4f" />
+  <meta name="theme-color" content="#f6f2ea" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <div id="cursor" aria-hidden="true"><div id="cursor-dot"></div><div id="cursor-ring"></div></div>
-
   <div id="loader">
-    <div class="loader-mark" data-bind="loader-mark">L'A.</div>
+    <div class="loader-mark" data-bind="loader-mark">L'Atelier</div>
     <div class="loader-bar"><span id="loader-progress"></span></div>
-    <div class="loader-label" data-bind="loader-label">Composition de l'expérience</div>
   </div>
 
-  <div id="preview-banner" hidden>Préversion du brouillon — les visiteurs voient la version publiée. <a href="admin.html" data-hover>Retour à l'admin</a></div>
-
-  <canvas id="scene-canvas"></canvas>
+  <div id="preview-banner" hidden>Préversion du brouillon — les visiteurs voient la version publiée. <a href="admin.html">Retour à l'admin</a></div>
 
   <header id="nav">
-    <a href="#top" class="brand" data-hover data-bind="brand">L'Atelier</a>
+    <a href="#top" class="brand" data-bind="brand">L'Atelier</a>
     <nav class="nav-links" id="nav-links"></nav>
-    <button id="burger" aria-label="Ouvrir le menu" data-hover><span></span><span></span></button>
+    <button id="burger" aria-label="Ouvrir le menu"><span class="burger-label">Menu</span><span class="burger-lines"><span></span><span></span></span></button>
   </header>
 
-  <div id="mobile-nav"></div>
+  <!-- Menu plein écran -->
+  <div id="menu-overlay">
+    <nav id="overlay-links"></nav>
+    <div class="overlay-foot">
+      <span data-bind="overlay-brand"></span>
+      <span id="overlay-contact"></span>
+    </div>
+  </div>
 
   <main id="top">
 
-    <!-- HERO CINÉMATIQUE -->
-    <section id="cinematic">
-      <div class="cinematic-sticky">
-        <div id="hero-acts"></div>
+    <!-- HERO : diaporama plein écran -->
+    <section id="hero">
+      <div id="hero-slides"></div>
+      <div class="hero-bottom">
+        <div class="hero-indicators" id="hero-indicators"></div>
         <div class="scroll-cue"><span data-bind="scroll-cue">Faites défiler</span><div class="scroll-cue-line"></div></div>
       </div>
     </section>
 
     <!-- MANIFESTE -->
-    <section id="intro" class="solid-section">
+    <section id="intro" class="section">
       <p class="manifesto reveal" data-bind="manifesto"></p>
     </section>
 
     <!-- AGENCE -->
-    <section id="agence" class="solid-section light">
-      <div class="about-grid">
-        <div class="about-portrait reveal">
-          <div class="portrait-frame" data-tilt id="agence-portrait"><div class="portrait-placeholder" id="agence-initials"></div></div>
-          <div class="portrait-caption" id="agence-caption"></div>
-        </div>
-        <div class="about-content">
-          <p class="eyebrow reveal" id="agence-eyebrow"></p>
-          <h2 class="reveal" id="agence-title"></h2>
-          <div id="agence-paragraphs"></div>
-          <ul class="timeline reveal" id="agence-timeline"></ul>
+    <section id="agence" class="section alt">
+      <div class="section-inner">
+        <div class="about-grid">
+          <div class="about-content">
+            <p class="eyebrow reveal" id="agence-eyebrow"></p>
+            <h2 class="section-title reveal" id="agence-title"></h2>
+            <div id="agence-paragraphs"></div>
+            <ul class="timeline reveal" id="agence-timeline"></ul>
+          </div>
+          <div class="about-portrait reveal">
+            <div class="portrait-frame" id="agence-portrait"><div class="portrait-placeholder" id="agence-initials"></div></div>
+            <div class="caption" id="agence-caption"></div>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- EXPERTISE -->
-    <section id="expertise" class="solid-section">
-      <div class="section-head reveal" data-head="expertise"></div>
-      <div class="services" id="services-grid"></div>
+    <section id="expertise" class="section">
+      <div class="section-inner">
+        <div class="section-head reveal" data-head="expertise"></div>
+        <div class="services" id="services-grid"></div>
+      </div>
     </section>
 
     <!-- CONCEPTION : projets par état -->
-    <section id="conception" class="solid-section light">
-      <div class="section-head reveal" data-head="conception"></div>
-      <div class="tabs reveal" id="project-tabs"></div>
-      <div class="project-grid" id="project-grid"></div>
+    <section id="conception" class="section alt">
+      <div class="section-inner">
+        <div class="section-head reveal" data-head="conception"></div>
+        <div class="text-tabs reveal" id="project-tabs"></div>
+        <div class="project-grid" id="project-grid"></div>
+      </div>
     </section>
 
-    <!-- IMMOBILIER : biens à la vente -->
-    <section id="immobilier" class="solid-section dark">
-      <div class="section-head reveal" data-head="immobilier"></div>
-      <div class="filters reveal" id="property-filters"></div>
-      <div class="property-grid" id="property-grid"></div>
+    <!-- IMMOBILIER -->
+    <section id="immobilier" class="section">
+      <div class="section-inner">
+        <div class="section-head reveal" data-head="immobilier"></div>
+        <div class="text-tabs reveal" id="property-filters"></div>
+        <div class="property-grid" id="property-grid"></div>
+      </div>
     </section>
 
-    <!-- MAQUETTE 3D -->
-    <section id="maquette" class="solid-section">
-      <div class="section-head reveal" data-head="maquette"></div>
-      <div class="viewer-wrap reveal">
-        <div class="model-tabs" id="model-tabs"></div>
-        <div id="model-viewer" class="model-viewer">
-          <canvas></canvas>
-          <div class="viewer-status" data-viewer-status>Initialisation du visualiseur…</div>
+    <!-- MAQUETTE 3D (bande sombre) -->
+    <section id="maquette" class="section dark">
+      <div class="section-inner">
+        <div class="section-head reveal" data-head="maquette"></div>
+        <div class="viewer-wrap reveal">
+          <div class="model-tabs" id="model-tabs"></div>
+          <div id="model-viewer" class="model-viewer">
+            <canvas></canvas>
+            <div class="viewer-status" data-viewer-status>Initialisation du visualiseur…</div>
 
-          <div class="letterbox letterbox-top" aria-hidden="true"></div>
-          <div class="letterbox letterbox-bottom" aria-hidden="true"></div>
-          <div class="cinematic-caption" data-cine-caption></div>
-          <button class="cinematic-stop" data-cine-stop data-hover hidden>✕ Quitter la cinématique</button>
+            <div class="letterbox letterbox-top" aria-hidden="true"></div>
+            <div class="letterbox letterbox-bottom" aria-hidden="true"></div>
+            <div class="cinematic-caption" data-cine-caption></div>
+            <button class="cinematic-stop" data-cine-stop hidden>✕ Quitter la cinématique</button>
 
-          <div class="viewer-toolbar">
-            <div class="viewer-group">
-              <span class="viewer-group-label">Vue</span>
-              <button data-view="persp" class="active" data-hover>Perspective</button>
-              <button data-view="plan" data-hover>Plan</button>
-              <button data-view="facade" data-hover>Façade</button>
+            <div class="viewer-toolbar">
+              <div class="viewer-group">
+                <span class="viewer-group-label">Vue</span>
+                <button data-view="persp" class="active">Perspective</button>
+                <button data-view="plan">Plan</button>
+                <button data-view="facade">Façade</button>
+              </div>
+              <div class="viewer-group">
+                <span class="viewer-group-label">Matière</span>
+                <button data-mat="real" class="active">Réaliste</button>
+                <button data-mat="white">Maquette</button>
+                <button data-mat="wire">Filaire</button>
+              </div>
             </div>
-            <div class="viewer-group">
-              <span class="viewer-group-label">Matière</span>
-              <button data-mat="real" class="active" data-hover>Réaliste</button>
-              <button data-mat="white" data-hover>Maquette</button>
-              <button data-mat="wire" data-hover>Filaire</button>
-            </div>
-          </div>
 
-          <div class="viewer-controls">
-            <button data-viewer-cinematic class="cine-btn" data-hover>✦ Cinématique</button>
-            <button data-viewer-rotate data-hover>Rotation</button>
-            <button data-viewer-reset data-hover>Recentrer</button>
-            <button data-viewer-full data-hover>Plein écran</button>
-            <label class="sun-control" data-hover>
-              <span>Soleil</span>
-              <input type="range" min="0" max="1" step="0.01" value="0.32" data-viewer-sun />
-            </label>
+            <div class="viewer-controls">
+              <button data-viewer-cinematic class="cine-btn">✦ Cinématique</button>
+              <button data-viewer-rotate>Rotation</button>
+              <button data-viewer-reset>Recentrer</button>
+              <button data-viewer-full>Plein écran</button>
+              <label class="sun-control">
+                <span>Soleil</span>
+                <input type="range" min="0" max="1" step="0.01" value="0.32" data-viewer-sun />
+              </label>
+            </div>
+            <div class="viewer-hint">Glissez pour pivoter · molette pour zoomer</div>
           </div>
-          <div class="viewer-hint">Glissez pour pivoter · molette pour zoomer</div>
         </div>
       </div>
     </section>
 
     <!-- FILMS -->
-    <section id="films" class="solid-section light">
-      <div class="section-head reveal" data-head="films"></div>
-      <div class="film-feature reveal">
-        <div class="film-player" id="film-showreel">
-          <div class="film-poster">
-            <button class="film-play" data-hover aria-label="Lire le film"><span class="play-icon">▶</span><span class="play-label" id="showreel-label"></span></button>
+    <section id="films" class="section alt">
+      <div class="section-inner">
+        <div class="section-head reveal" data-head="films"></div>
+        <div class="film-feature reveal">
+          <div class="film-player" id="film-showreel">
+            <div class="film-poster">
+              <button class="film-play" aria-label="Lire le film"><span class="play-icon">▶</span><span class="play-label" id="showreel-label"></span></button>
+            </div>
           </div>
         </div>
+        <div class="film-grid" id="film-grid"></div>
       </div>
-      <div class="film-grid" id="film-grid"></div>
     </section>
 
     <!-- CINÉMATOGRAPHIQUE -->
-    <section id="cinema" class="solid-section dark">
-      <div class="section-head reveal" data-head="cinema"></div>
-      <div class="filters reveal" id="cinema-filters">
-        <button class="filter-btn active" data-filter="all" data-hover>Tout</button>
-        <button class="filter-btn" data-filter="Film" data-hover>Films</button>
-        <button class="filter-btn" data-filter="Photo" data-hover>Photographies</button>
+    <section id="cinema" class="section">
+      <div class="section-inner">
+        <div class="section-head reveal" data-head="cinema"></div>
+        <div class="text-tabs reveal" id="cinema-filters">
+          <button class="text-tab active" data-filter="all">Tout</button>
+          <button class="text-tab" data-filter="Film">Films</button>
+          <button class="text-tab" data-filter="Photo">Photographies</button>
+        </div>
+        <div class="cinema-grid" id="cinema-grid"></div>
       </div>
-      <div class="cinema-grid" id="cinema-grid"></div>
     </section>
 
     <!-- MOBILIER & DESIGN -->
-    <section id="mobilier" class="solid-section light">
-      <div class="section-head reveal" data-head="mobilier"></div>
-      <div class="filters reveal" id="furniture-filters"></div>
-      <div class="furniture-grid" id="furniture-grid"></div>
+    <section id="mobilier" class="section alt">
+      <div class="section-inner">
+        <div class="section-head reveal" data-head="mobilier"></div>
+        <div class="text-tabs reveal" id="furniture-filters"></div>
+        <div class="furniture-grid" id="furniture-grid"></div>
+      </div>
     </section>
 
     <!-- ÉQUIPE -->
-    <section id="equipe" class="solid-section">
-      <div class="section-head reveal" data-head="equipe"></div>
-      <div class="team-grid" id="team-grid"></div>
+    <section id="equipe" class="section">
+      <div class="section-inner">
+        <div class="section-head reveal" data-head="equipe"></div>
+        <div class="team-grid" id="team-grid"></div>
+      </div>
     </section>
 
     <!-- APPROCHE -->
-    <section id="philosophy" class="solid-section light">
-      <div class="section-head reveal" data-head="philosophy"></div>
-      <div class="pillars" id="pillars-grid"></div>
+    <section id="philosophy" class="section alt">
+      <div class="section-inner">
+        <div class="section-head reveal" data-head="philosophy"></div>
+        <div class="pillars" id="pillars-grid"></div>
+      </div>
     </section>
 
-    <!-- STATS -->
-    <section id="stats" class="solid-section">
-      <div class="stats-grid" id="stats-grid"></div>
+    <!-- CHIFFRES -->
+    <section id="stats" class="section">
+      <div class="section-inner">
+        <div class="stats-grid" id="stats-grid"></div>
+      </div>
     </section>
 
     <!-- CONTACT -->
-    <section id="contact" class="solid-section dark">
-      <div class="contact-grid">
-        <div class="contact-intro reveal">
-          <p class="eyebrow" id="contact-eyebrow">Contact</p>
-          <h2 id="contact-title"></h2>
-          <ul class="contact-info" id="contact-info"></ul>
+    <section id="contact" class="section alt">
+      <div class="section-inner">
+        <div class="contact-grid">
+          <div class="contact-intro reveal">
+            <p class="eyebrow" id="contact-eyebrow">Contact</p>
+            <h2 class="section-title" id="contact-title"></h2>
+            <ul class="contact-info" id="contact-info"></ul>
+          </div>
+          <form id="contact-form" class="contact-form reveal" autocomplete="off">
+            <div class="form-row"><label>Nom<input type="text" name="name" required /></label><label>Email<input type="email" name="email" required /></label></div>
+            <label>Nature du projet<input type="text" name="subject" placeholder="Villa, vignoble, achat, réhabilitation…" /></label>
+            <label>Message<textarea name="message" rows="4" required></textarea></label>
+            <button type="submit" class="btn" id="contact-submit">Envoyer le message</button>
+            <p class="form-note" id="contact-note"></p>
+          </form>
         </div>
-        <form id="contact-form" class="contact-form reveal" autocomplete="off">
-          <div class="form-row"><label>Nom<input type="text" name="name" required /></label><label>Email<input type="email" name="email" required /></label></div>
-          <label>Nature du projet<input type="text" name="subject" placeholder="Villa, vignoble, achat, réhabilitation…" /></label>
-          <label>Message<textarea name="message" rows="4" required></textarea></label>
-          <button type="submit" class="btn-primary" data-hover id="contact-submit">Envoyer le message</button>
-          <p class="form-note" id="contact-note"></p>
-        </form>
       </div>
     </section>
 
   </main>
 
   <footer id="footer">
-    <span class="footer-mark" data-bind="footer-mark">L'A.</span>
-    <p>© <span id="year"></span> <span id="footer-text"></span></p>
-    <div class="footer-actions">
-      <a href="admin.html" class="footer-admin" data-hover title="Administration du site">Admin</a>
-      <button id="to-top" data-hover>Haut de page ↑</button>
+    <div class="footer-inner">
+      <span class="footer-brand" data-bind="footer-mark">L'Atelier</span>
+      <p class="footer-text">© <span id="year"></span> <span id="footer-text"></span></p>
+      <div class="footer-actions">
+        <a href="admin.html" class="footer-admin" title="Administration du site">Admin</a>
+        <button id="to-top">Haut de page ↑</button>
+      </div>
     </div>
   </footer>
 
@@ -212,7 +241,7 @@
   <div id="modal" class="modal">
     <div class="modal-backdrop" data-close></div>
     <div class="modal-panel">
-      <button class="modal-close" data-close data-hover>Fermer ✕</button>
+      <button class="modal-close" data-close>Fermer ✕</button>
       <div class="modal-visual"></div>
       <p class="eyebrow modal-place"></p>
       <h3 class="modal-title"></h3>
@@ -224,15 +253,15 @@
   <!-- Page détail d'un bien (façon Kretz) -->
   <div id="property-detail" class="detail">
     <div class="detail-topbar">
-      <button class="detail-back" data-detail-close data-hover>← Retour aux biens</button>
+      <button class="detail-back" data-detail-close>← Retour aux biens</button>
       <span class="detail-brand" data-bind="detail-brand">L'Atelier</span>
-      <a class="detail-contact-link" href="#contact" data-detail-close data-hover>Nous contacter</a>
+      <a class="detail-contact-link" href="#contact" data-detail-close>Nous contacter</a>
     </div>
     <div class="detail-scroll">
       <div class="detail-gallery">
         <div class="detail-main" data-detail-main></div>
         <div class="detail-thumbs" data-detail-thumbs></div>
-        <button class="detail-video-btn" data-detail-video hidden data-hover>▶ Voir le film</button>
+        <button class="detail-video-btn" data-detail-video hidden>▶ Voir le film</button>
       </div>
       <div class="detail-body">
         <div class="detail-info">
@@ -246,14 +275,14 @@
           <ul class="detail-features" data-detail-features></ul>
           <h3 class="detail-sub">Localisation</h3>
           <p class="detail-place" data-detail-region></p>
-          <a class="btn-primary" data-detail-map target="_blank" rel="noopener" data-hover>Voir sur la carte ↗</a>
+          <a class="btn" data-detail-map target="_blank" rel="noopener">Voir sur la carte ↗</a>
         </div>
         <aside class="detail-aside">
           <div class="detail-card">
             <p class="detail-ref" data-detail-ref></p>
             <h3>Intéressé par ce bien&nbsp;?</h3>
             <p class="detail-aside-sub">Visite privée et dossier complet sur demande.</p>
-            <a class="btn-primary" data-detail-mail data-hover>Demander une visite</a>
+            <a class="btn light" data-detail-mail>Demander une visite</a>
             <p class="detail-dpe">DPE&nbsp;: <span data-detail-dpe></span></p>
           </div>
         </aside>
@@ -265,7 +294,7 @@
   <div id="film-modal" class="modal film-modal">
     <div class="modal-backdrop" data-film-close></div>
     <div class="film-modal-panel">
-      <button class="modal-close" data-film-close data-hover>Fermer ✕</button>
+      <button class="modal-close" data-film-close>Fermer ✕</button>
       <video class="film-video" controls playsinline preload="none"></video>
       <p class="film-fallback">Déposez votre fichier vidéo dans <code>public/films/</code> (ou téléversez-le depuis l'admin) pour l'afficher ici.</p>
     </div>
@@ -275,7 +304,7 @@
   <div id="photo-modal" class="modal photo-modal">
     <div class="modal-backdrop" data-photo-close></div>
     <div class="photo-modal-panel">
-      <button class="modal-close" data-photo-close data-hover>Fermer ✕</button>
+      <button class="modal-close" data-photo-close>Fermer ✕</button>
       <img class="photo-modal-img" alt="" />
       <p class="photo-modal-caption"></p>
     </div>

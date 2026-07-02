@@ -1,10 +1,13 @@
 # L'Atelier — Site de l'agence d'architecture
 
-Site vitrine de l'agence **L'Atelier** (architecture & immobilier méditerranéen) :
-hero cinématique 3D, projets par état (à venir / concours / en cours / terminés),
-immobilier de prestige façon Kretz, **visualiseur de maquettes 3D Revit** avec
-**mode cinématique** (travelling automatique, lumière dorée, letterbox cinéma),
-films & photographies qualité cinéma, mobilier & design — et une
+Site vitrine de l'agence **L'Atelier** (architecture & immobilier méditerranéen),
+dans une **interface éditoriale claire** inspirée des grandes agences
+d'architecture et de Kretz : papier crème, grands titres serif, sections
+numérotées, photos plein cadre, menu plein écran. Au programme : diaporama
+d'ouverture, projets par état (à venir / concours / en cours / terminés),
+immobilier de prestige avec pages de détail, **visualiseur de maquettes 3D
+Revit** avec **mode cinématique** (travelling automatique, lumière dorée,
+letterbox cinéma), films & photographies, mobilier & design — et une
 **administration complète** pour tout modifier sans toucher au code.
 Construit avec **Vite + Three.js + GSAP + Lenis**.
 
