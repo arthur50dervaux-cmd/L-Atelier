@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>L'Atelier — Administration</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+
+  <!-- Écran de connexion -->
+  <div id="login-screen">
+    <form id="login-form" class="login-card">
+      <div class="login-mark">L'A.</div>
+      <h1>Administration du site</h1>
+      <p class="login-sub">Espace réservé — modifiez l'intégralité du site puis publiez en un clic.</p>
+      <label>Mot de passe
+        <input type="password" name="password" autocomplete="current-password" required autofocus />
+      </label>
+      <p class="login-error" id="login-error" hidden>Mot de passe incorrect.</p>
+      <button type="submit" class="btn-gold">Entrer dans l'atelier</button>
+      <a class="login-back" href="./">← Retour au site</a>
+    </form>
+  </div>
+
+  <!-- Application d'administration -->
+  <div id="admin-app" hidden>
+    <header class="admin-topbar">
+      <div class="admin-brand"><span class="admin-mark">L'A.</span> Administration <span class="admin-dirty" id="dirty-badge" hidden>● modifications non publiées</span></div>
+      <div class="admin-actions">
+        <button id="btn-preview" class="btn-ghost" title="Ouvre le site avec votre brouillon">👁 Prévisualiser</button>
+        <button id="btn-publish" class="btn-gold" title="Met le site à jour pour tous les visiteurs">Publier</button>
+        <button id="btn-logout" class="btn-ghost" title="Se déconnecter">Quitter</button>
+      </div>
+    </header>
+
+    <div class="admin-layout">
+      <nav class="admin-sidebar" id="admin-sidebar"></nav>
+      <main class="admin-pane" id="admin-pane"></main>
+    </div>
+  </div>
+
+  <div id="admin-toast" hidden></div>
+
+  <!-- Fenêtre de publication -->
+  <div id="publish-modal" class="admin-modal" hidden>
+    <div class="admin-modal-backdrop" data-publish-close></div>
+    <div class="admin-modal-panel">
+      <button class="admin-modal-close" data-publish-close>✕</button>
+      <h2>Publier le site</h2>
+      <p class="modal-help">
+        La publication enregistre vos modifications dans le dépôt GitHub du site&nbsp;;
+        le site se redéploie automatiquement en une à deux minutes.
+      </p>
+      <div class="publish-grid">
+        <label>Propriétaire GitHub<input id="pub-owner" placeholder="mon-compte" /></label>
+        <label>Dépôt<input id="pub-repo" placeholder="mon-site" /></label>
+        <label>Branche<input id="pub-branch" placeholder="main" /></label>
+        <label>Jeton d'accès (token)
+          <input id="pub-token" type="password" placeholder="github_pat_…" />
+        </label>
+      </div>
+      <label class="pub-remember"><input type="checkbox" id="pub-remember" /> Mémoriser le jeton sur cet appareil</label>
+      <p class="modal-help small">
+        Créez un jeton «&nbsp;fine-grained&nbsp;» sur GitHub (Settings → Developer settings →
+        Personal access tokens) limité à ce dépôt, avec la permission <strong>Contents :
+        Read and write</strong>. Ne partagez jamais ce jeton.
+      </p>
+      <div id="publish-files" class="publish-files"></div>
+      <div id="publish-log" class="publish-log" hidden></div>
+      <button id="btn-do-publish" class="btn-gold wide">Publier maintenant</button>
+    </div>
+  </div>
+
+  <script type="module" src="/src/admin.js"></script>
+</body>
+</html>

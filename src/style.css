@@ -389,3 +389,38 @@ body.detail-open { overflow: hidden; }
 .detail-info .btn-primary { border-color: var(--sea); color: var(--sea); }
 .detail-info .btn-primary:hover { background: var(--sea); color: var(--cream); }
 @media (max-width: 900px) { .detail-body { grid-template-columns: 1fr; } .detail-features { grid-template-columns: 1fr; } }
+
+/* ====== Bannière de préversion (brouillon admin) ====== */
+#preview-banner { position: fixed; bottom: 0; left: 0; right: 0; z-index: 950; background: var(--coral); color: #fff; text-align: center; font-size: 0.78rem; letter-spacing: 0.06em; padding: 0.6rem 1rem; }
+#preview-banner a { text-decoration: underline; font-weight: 600; margin-left: 0.4rem; }
+
+/* ====== Pied de page : lien admin ====== */
+.footer-actions { display: flex; align-items: center; gap: 1.4rem; }
+.footer-admin { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(244,239,230,0.35); transition: color 0.3s ease; }
+.footer-admin:hover { color: var(--gold); }
+
+/* ====== Sélecteur de maquettes ====== */
+.model-tabs { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.2rem; }
+.model-tabs:empty { display: none; }
+.model-tab { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.7rem 1.4rem; border-radius: 40px; border: 1px solid rgba(244,239,230,0.25); color: rgba(244,239,230,0.75); transition: all 0.3s ease; }
+.model-tab.active, .model-tab:hover { background: var(--turquoise); border-color: var(--turquoise); color: #06222b; }
+
+/* ====== Mode cinématique du visualiseur ====== */
+.letterbox { position: absolute; left: 0; right: 0; height: 0; background: #000; z-index: 3; transition: height 0.8s cubic-bezier(0.6, 0, 0.2, 1); pointer-events: none; }
+.letterbox-top { top: 0; }
+.letterbox-bottom { bottom: 0; }
+.model-viewer.cine .letterbox { height: 11%; }
+.cinematic-caption { position: absolute; bottom: 13%; left: 50%; transform: translateX(-50%) translateY(8px); z-index: 4; font-family: var(--serif); font-size: 1.05rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-soft); opacity: 0; transition: opacity 1.2s ease 0.5s, transform 1.2s ease 0.5s; pointer-events: none; text-shadow: 0 2px 14px rgba(0,0,0,0.6); }
+.model-viewer.cine .cinematic-caption { opacity: 1; transform: translateX(-50%) translateY(0); }
+.cinematic-stop { position: absolute; top: calc(11% + 1rem); right: 1.2rem; z-index: 5; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.6rem 1.1rem; border: 1px solid rgba(244,239,230,0.4); border-radius: 40px; background: rgba(11,12,14,0.5); backdrop-filter: blur(6px); color: var(--cream); transition: all 0.3s ease; }
+.cinematic-stop:hover { border-color: var(--gold); color: var(--gold); }
+.model-viewer.cine .viewer-toolbar,
+.model-viewer.cine .viewer-controls,
+.model-viewer.cine .viewer-hint,
+.model-viewer.cine .viewer-status { opacity: 0; visibility: hidden; transition: opacity 0.5s ease, visibility 0.5s ease; }
+.viewer-toolbar, .viewer-controls, .viewer-hint { transition: opacity 0.5s ease, visibility 0.5s ease; }
+.cine-btn { border-color: var(--gold) !important; color: var(--gold-soft) !important; }
+.cine-btn:hover { background: rgba(224,169,63,0.15) !important; }
+
+/* Avatar équipe avec photo */
+.team-avatar { background-size: cover; background-position: center; overflow: hidden; }
