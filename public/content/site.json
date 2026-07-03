@@ -55,6 +55,7 @@
     "cinema": { "visible": true, "navLabel": "Cinéma", "eyebrow": "Cinématographique", "title": "Films & photographies qualité cinéma", "sub": "Au-delà de l'architecture, un regard cinéma sur la lumière, la matière et le paysage méditerranéen — courts-métrages, time-lapses et séries photographiques." },
     "mobilier": { "visible": true, "navLabel": "Mobilier", "eyebrow": "Mobilier & design", "title": "Pièces dessinées par l'atelier", "sub": "Mobilier d'intérieur et objets conçus et fabriqués en atelier — pièces uniques et séries limitées, pensés comme une architecture miniature." },
     "equipe": { "visible": true, "navLabel": "Équipe", "eyebrow": "Équipe", "title": "Les visages de l'atelier", "sub": "Une équipe pluridisciplinaire, du dessin au chantier." },
+    "ensap": { "visible": true, "navLabel": "ENSAP Bordeaux", "eyebrow": "ENSAP Bordeaux", "title": "Mes études d'architecture", "sub": "Une sélection de travaux réalisés à l'École nationale supérieure d'architecture et de paysage de Bordeaux — ateliers de projet, analyses et workshops." },
     "philosophy": { "visible": true, "navLabel": "", "eyebrow": "Approche", "title": "Trois convictions" },
     "stats": { "visible": true, "navLabel": "" },
     "contact": { "visible": true, "navLabel": "Contact", "eyebrow": "Contact" }
@@ -199,6 +200,29 @@
     { "name": "Pôle Rendu", "role": "Images & films", "initials": "PR", "bio": "Production des rendus photoréalistes et des films de synthèse en très haute définition." },
     { "name": "Suivi de chantier", "role": "Direction de travaux", "initials": "DT", "bio": "Coordination des artisans d'art et des entreprises, de l'ouverture du chantier à la livraison." }
   ],
+  "ensap": {
+    "paragraphs": [
+      "Formé à l'École nationale supérieure d'architecture et de paysage de Bordeaux, j'y apprends le projet par le faire : ateliers, maquettes, relevés, arpentages et voyages d'étude.",
+      "Cette page rassemble une sélection de travaux d'école — esquisses, analyses et projets d'atelier. Des explorations parfois brutes, qui construisent un regard et nourrissent la pratique de L'Atelier."
+    ],
+    "cursus": [
+      { "label": "Ateliers de projet", "text": "Un semestre, un site, un programme — du relevé à la maquette finale" },
+      { "label": "Enseignements", "text": "Histoire de l'architecture, construction, représentation, villes & territoires" },
+      { "label": "Workshops", "text": "Semaines intensives : construction à l'échelle 1, arpentage, voyages d'étude" }
+    ],
+    "school": {
+      "name": "ENSAP Bordeaux",
+      "fullName": "École nationale supérieure d'architecture et de paysage de Bordeaux",
+      "place": "Talence — Bordeaux Métropole",
+      "url": "https://www.bordeaux.archi.fr",
+      "linkLabel": "Site de l'école ↗"
+    },
+    "works": [
+      { "title": "Habiter la lisière", "category": "Atelier de projet", "year": "Licence", "image": "art-villa", "desc": "Logements intermédiaires en lisière de forêt : implantation en peigne, seuils habités, façades bois. Plans, coupes et maquette au 1/200." },
+      { "title": "La ville et le fleuve", "category": "Analyse urbaine", "year": "Licence", "image": "art-cliff", "desc": "Lecture d'un fragment de ville le long de la Garonne : tracés, parcellaire, rapports à l'eau. Carnet d'arpentage et relevés sensibles." },
+      { "title": "Construire à l'échelle 1", "category": "Workshop", "year": "Intensif", "image": "art-design", "desc": "Construction collective d'une structure bois en une semaine : de l'épure au montage, apprendre en fabriquant." }
+    ]
+  },
   "philosophy": [
     { "index": "01", "title": "Paysage", "text": "Le site précède le projet. Topographie, vues, vent et lumière dictent l'implantation avant tout dessin.", "accent": "azur" },
     { "index": "02", "title": "Matière", "text": "Pierre, bois, béton brut, métal patiné : des matériaux choisis pour la grâce avec laquelle ils vieillissent.", "accent": "coral" },

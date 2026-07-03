@@ -299,6 +299,7 @@ const SECTION_DEFS = [
   { id: 'cinema', name: 'Cinématographique', head: true },
   { id: 'mobilier', name: 'Mobilier & design', head: true },
   { id: 'equipe', name: 'Équipe', head: true },
+  { id: 'ensap', name: 'Études (ENSAP Bordeaux)', head: true },
   { id: 'philosophy', name: 'Approche', head: true },
   { id: 'stats', name: 'Chiffres clés', head: false },
   { id: 'contact', name: 'Contact', head: false },
@@ -603,6 +604,46 @@ function renderEquipe(pane) {
   );
 }
 
+function renderEnsap(pane) {
+  pane.append(
+    ...paneHeader('Études — ENSAP Bordeaux', 'Votre parcours à l\'école d\'architecture et une sélection de travaux d\'école. Les titres de la section se règlent dans « Sections & menu ».'),
+    card('L\'école', fieldGrid(
+      fText('Nom court', 'ensap.school.name'),
+      fText('Lieu', 'ensap.school.place'),
+      fText('Nom complet', 'ensap.school.fullName', { full: true }),
+      fText('Site web', 'ensap.school.url', { help: 'ex. https://www.bordeaux.archi.fr — laissez vide pour masquer le bouton.' }),
+      fText('Libellé du lien', 'ensap.school.linkLabel'),
+    )),
+    card('Présentation', listEditor({
+      path: 'ensap.paragraphs',
+      newItem: () => 'Nouveau paragraphe…',
+      itemTitle: (p) => String(p).slice(0, 60),
+      buildFields: (p) => [fText('Texte', p, { textarea: true, rows: 4, full: true })],
+      addLabel: '+ Ajouter un paragraphe',
+    })),
+    card('Parcours (liste sous le texte)', listEditor({
+      path: 'ensap.cursus',
+      newItem: () => ({ label: 'Étape', text: '' }),
+      itemTitle: (t) => t.label,
+      buildFields: (p) => [fieldGrid(fText('Intitulé', `${p}.label`), fText('Texte', `${p}.text`, { full: true }))],
+      addLabel: '+ Ajouter une étape',
+    })),
+    card('Travaux d\'école', listEditor({
+      path: 'ensap.works',
+      newItem: () => ({ title: 'Nouveau travail', category: 'Atelier de projet', year: '', image: 'art-villa', desc: '' }),
+      itemTitle: (w) => w.title,
+      buildFields: (p) => [fieldGrid(
+        fText('Titre', `${p}.title`),
+        fText('Catégorie', `${p}.category`, { help: 'ex. Atelier de projet, Analyse, Workshop, Mémoire' }),
+        fText('Année / niveau', `${p}.year`, { help: 'ex. Licence 2 — 2025 (affiché sur la carte)' }),
+        fMedia('Visuel', `${p}.image`),
+        fText('Description', `${p}.desc`, { textarea: true, full: true }),
+      )],
+      addLabel: '+ Ajouter un travail',
+    })),
+  );
+}
+
 function renderApproche(pane) {
   pane.append(
     ...paneHeader('Approche & chiffres', 'Les convictions de l\'agence et les chiffres clés animés.'),
@@ -742,6 +783,7 @@ const PANELS = [
   { id: 'cinema', icon: '◉', label: 'Cinématographique', render: renderCinema },
   { id: 'mobilier', icon: '❖', label: 'Mobilier & design', render: renderMobilier },
   { id: 'equipe', icon: '☺', label: 'Équipe', render: renderEquipe },
+  { id: 'ensap', icon: '✎', label: 'Études — ENSAP', render: renderEnsap },
   { id: 'approche', icon: '☀', label: 'Approche & chiffres', render: renderApproche },
   { id: 'contact', icon: '✉', label: 'Contact & pied de page', render: renderContactPane },
   { id: 'reglages', icon: '⚙', label: 'Réglages & sécurité', render: renderReglages },
@@ -897,6 +939,25 @@ async function boot() {
       image: a.image || 'art-sea',
     };
   }
+
+  // Migration : la section Études (ENSAP Bordeaux) pour les anciens brouillons,
+  // insérée avant « Approche » pour garder la numérotation dans l'ordre de la page.
+  let migrated = false;
+  if (draft.sections && !draft.sections.ensap) {
+    const entries = Object.entries(draft.sections);
+    const at = entries.findIndex(([k]) => k === 'philosophy');
+    const entry = ['ensap', structuredClone(published.sections?.ensap) || {
+      visible: true, navLabel: 'ENSAP Bordeaux', eyebrow: 'ENSAP Bordeaux', title: 'Mes études d\'architecture', sub: '',
+    }];
+    entries.splice(at === -1 ? entries.length : at, 0, entry);
+    draft.sections = Object.fromEntries(entries);
+    migrated = true;
+  }
+  if (!draft.ensap) {
+    draft.ensap = structuredClone(published.ensap) || { paragraphs: [], cursus: [], school: {}, works: [] };
+    migrated = true;
+  }
+  if (migrated) saveDraft();
 
   if (sessionStorage.getItem(SESSION_KEY) === 'ok') showApp();
 

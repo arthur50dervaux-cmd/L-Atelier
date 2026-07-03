@@ -16,7 +16,7 @@ Construit avec **Vite + Three.js + GSAP + Lenis**.
 Tout le contenu vit dans `public/content/site.json` et s'édite depuis
 l'interface d'administration : textes, couleurs de la palette méditerranéenne,
 sections visibles et menu, projets, biens immobiliers, maquettes 3D, films,
-mobilier, équipe, contact…
+mobilier, équipe, études (ENSAP Bordeaux), contact…
 
 1. Ouvrez `https://votre-site/admin.html` (lien discret « Admin » en pied de page).
 2. Mot de passe par défaut : **`atelier2026`** — changez-le dès la première
