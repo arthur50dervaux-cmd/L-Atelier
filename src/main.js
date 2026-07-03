@@ -355,6 +355,43 @@ async function init() {
       <p class="team-bio">${esc(m.bio)}</p>
     </article>`).join('');
 
+  /* ---------- Études — ENSAP Bordeaux ---------- */
+  const E = C.ensap || {};
+  // Contenu publié antérieur à la section : on la masque plutôt que de l'afficher vide.
+  if (!sections.ensap && !C.ensap) document.getElementById('ensap').style.display = 'none';
+  document.getElementById('ensap-paragraphs').innerHTML =
+    (E.paragraphs || []).map((p) => `<p class="reveal">${esc(p)}</p>`).join('');
+  document.getElementById('ensap-cursus').innerHTML =
+    (E.cursus || []).map((t) => `<li><span class="timeline-year">${esc(t.label)}</span><span>${esc(t.text)}</span></li>`).join('');
+  const school = E.school || {};
+  const schoolEl = document.getElementById('ensap-school');
+  if (school.name || school.fullName) {
+    schoolEl.innerHTML = `
+      <p class="eyebrow">École</p>
+      <h3>${esc(school.name || '')}</h3>
+      ${school.fullName ? `<p>${esc(school.fullName)}</p>` : ''}
+      ${school.place ? `<p>${esc(school.place)}</p>` : ''}
+      ${school.url ? `<a class="btn" href="${esc(school.url)}" target="_blank" rel="noopener">${esc(school.linkLabel || 'Site de l\'école ↗')}</a>` : ''}`;
+  } else schoolEl.style.display = 'none';
+  const worksGrid = document.getElementById('ensap-grid');
+  const works = E.works || [];
+  worksGrid.innerHTML = works.map((w, i) => `
+    <article class="project-card reveal" data-i="${i}">
+      <div class="project-visual">${visual(w.image)}${w.year ? `<span class="card-badge">${esc(w.year)}</span>` : ''}</div>
+      <div class="project-meta">
+        <p class="place">${esc([w.category, w.year].filter(Boolean).join(' — '))}</p>
+        <h3>${esc(w.title)}</h3>
+      </div>
+    </article>`).join('');
+  worksGrid.querySelectorAll('.project-card').forEach((cardEl) => {
+    cardEl.addEventListener('click', () => {
+      const w = works[parseInt(cardEl.dataset.i, 10)];
+      openItemModal({
+        title: w.title, place: [w.category, w.year].filter(Boolean).join(' — '), desc: w.desc, image: w.image,
+      });
+    });
+  });
+
   /* ---------- Approche / piliers ---------- */
   document.getElementById('pillars-grid').innerHTML = (C.philosophy || []).map((p) => `
     <div class="pillar reveal">

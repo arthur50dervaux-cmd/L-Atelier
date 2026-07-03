@@ -306,6 +306,14 @@ body.menu-open #overlay-links a { opacity: 1; transform: translateY(0); transiti
 @media (max-width: 1024px) { .team-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 520px) { .team-grid { grid-template-columns: 1fr; } }
 
+/* ====== Études — ENSAP Bordeaux ====== */
+.ensap-intro { margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+.ensap-school { position: sticky; top: 90px; border: 1px solid var(--line); padding: clamp(1.6rem, 3vw, 2.4rem); }
+.ensap-school h3 { font-family: var(--serif); font-weight: 400; font-size: clamp(1.7rem, 2.6vw, 2.3rem); margin: 0.5rem 0 0.9rem; }
+.ensap-school p { color: var(--ink-soft); font-size: 0.95rem; line-height: 1.7; }
+.ensap-school .btn { margin-top: 1.6rem; }
+@media (max-width: 900px) { .ensap-school { position: static; } }
+
 /* ====== Approche ====== */
 .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
 .pillar { padding: 2.4rem 2rem 2.8rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
