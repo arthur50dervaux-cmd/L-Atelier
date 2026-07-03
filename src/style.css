@@ -78,12 +78,9 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 400; line-height: 1.06; let
 .text-tab.active { color: var(--ink); }
 .text-tab.active::after { transform: scaleX(1); }
 
-/* ====== Chargeur ====== */
-#loader { position: fixed; inset: 0; z-index: 9000; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.6rem; transition: opacity 0.9s ease, visibility 0.9s ease; }
+/* ====== Voile de chargement (simple fond, aucune animation d'intro) ====== */
+#loader { position: fixed; inset: 0; z-index: 9000; background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: var(--ink-soft); transition: opacity 0.4s ease, visibility 0.4s ease; }
 #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-.loader-mark { font-family: var(--serif); font-size: clamp(1.9rem, 4vw, 2.8rem); letter-spacing: 0.34em; text-transform: uppercase; color: var(--ink); padding-left: 0.34em; }
-.loader-bar { width: 180px; height: 1px; background: var(--line); position: relative; }
-.loader-bar span { position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: var(--terracotta); transition: width 0.2s ease; }
 
 /* ====== Bannière de préversion ====== */
 #preview-banner { position: fixed; bottom: 0; left: 0; right: 0; z-index: 950; background: var(--terracotta); color: #fff; text-align: center; font-size: 0.76rem; letter-spacing: 0.08em; padding: 0.6rem 1rem; }
@@ -118,27 +115,16 @@ body.menu-open #overlay-links a { opacity: 1; transform: translateY(0); transiti
 #overlay-links a .idx { font-family: var(--sans); font-size: 0.62rem; letter-spacing: 0.3em; color: var(--ink-soft); }
 .overlay-foot { position: absolute; bottom: 2rem; left: var(--pad-x); right: var(--pad-x); display: flex; justify-content: space-between; gap: 1rem; font-size: 0.66rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-soft); }
 
-/* ====== Hero : diaporama plein écran ====== */
+/* ====== Hero : une image fixe, un titre (façon Kretz) ====== */
 #hero { position: relative; height: 100vh; min-height: 560px; overflow: hidden; background: var(--azur-deep); }
-#hero-slides, .hero-slide { position: absolute; inset: 0; }
-.hero-slide { opacity: 0; visibility: hidden; transition: opacity 1.6s ease, visibility 1.6s ease; }
-.hero-slide.active { opacity: 1; visibility: visible; }
-.hero-image { position: absolute; inset: 0; background-size: cover; background-position: center; transform: scale(1.06); }
-.hero-slide.active .hero-image { animation: hero-zoom 9s ease-out forwards; }
-@keyframes hero-zoom { from { transform: scale(1.06); } to { transform: scale(1); } }
-.hero-slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(12, 22, 28, 0.55) 0%, rgba(12, 22, 28, 0.12) 45%, rgba(12, 22, 28, 0.22) 100%); }
+#hero .hero-image { position: absolute; inset: 0; background-size: cover; background-position: center; }
+#hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(12, 22, 28, 0.55) 0%, rgba(12, 22, 28, 0.12) 45%, rgba(12, 22, 28, 0.22) 100%); }
 .hero-text { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: #fff; padding: 0 var(--pad-x); }
 .hero-text .eyebrow { color: #fff; opacity: 0.85; }
-.hero-text h1, .hero-text h2 { font-size: clamp(2.6rem, 7vw, 5.6rem); font-weight: 300; color: #fff; text-shadow: 0 2px 30px rgba(0,0,0,0.25); }
+.hero-text h1 { font-size: clamp(2.6rem, 7vw, 5.6rem); font-weight: 300; color: #fff; text-shadow: 0 2px 30px rgba(0,0,0,0.25); }
 .hero-text .role { margin-top: 1.2rem; font-size: 0.68rem; letter-spacing: 0.34em; text-transform: uppercase; opacity: 0.8; }
-.hero-slide .hero-text > * { opacity: 0; transform: translateY(26px); }
-.hero-slide.active .hero-text > * { opacity: 1; transform: translateY(0); transition: opacity 1.1s ease 0.5s, transform 1.1s ease 0.5s; }
 
-.hero-bottom { position: absolute; left: var(--pad-x); right: var(--pad-x); bottom: 2rem; z-index: 3; display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; }
-.hero-indicators { display: flex; gap: 0.7rem; }
-.hero-indicators button { width: 44px; height: 14px; position: relative; }
-.hero-indicators button::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: rgba(255,255,255,0.4); transition: background 0.3s ease; }
-.hero-indicators button.active::after { background: #fff; height: 2px; margin-top: -1px; }
+.hero-bottom { position: absolute; left: var(--pad-x); right: var(--pad-x); bottom: 2rem; z-index: 3; display: flex; align-items: flex-end; justify-content: center; gap: 2rem; }
 .scroll-cue { display: flex; flex-direction: column; align-items: center; gap: 0.7rem; font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.8); }
 .scroll-cue-line { width: 1px; height: 42px; background: linear-gradient(to bottom, #fff, transparent); }
 

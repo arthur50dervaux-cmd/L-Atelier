@@ -14,29 +14,17 @@ const esc = (s) => String(s ?? '')
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const brize = (s) => esc(s).replace(/\n/g, '<br/>');
 
-/* ============ Chargeur ============ */
+/* ============ Voile de chargement (aucune animation d'intro) ============ */
 const loader = document.getElementById('loader');
-const loaderProgress = document.getElementById('loader-progress');
-let contentReady = false;
-let progress = 0;
-const loaderInterval = setInterval(() => {
-  progress = Math.min(progress + Math.random() * 16, contentReady ? 100 : 88);
-  loaderProgress.style.width = `${progress}%`;
-  if (progress >= 100) {
-    clearInterval(loaderInterval);
-    setTimeout(() => loader.classList.add('hidden'), 400);
-  }
-}, 140);
 
 init().catch((err) => {
   console.error(err);
-  loader.querySelector('.loader-mark').textContent =
-    'Impossible de charger le contenu du site.';
+  loader.textContent = 'Impossible de charger le contenu du site.';
 });
 
 async function init() {
   const content = await loadContent();
-  contentReady = true;
+  loader.classList.add('hidden');
 
   const C = content;
   const email = C.contact?.email || '';
@@ -48,7 +36,7 @@ async function init() {
   if (C.meta?.title) document.title = C.meta.title;
   if (C.meta?.description) document.querySelector('meta[name="description"]')?.setAttribute('content', C.meta.description);
   if (C.theme?.bg) document.querySelector('meta[name="theme-color"]')?.setAttribute('content', C.theme.bg);
-  document.querySelectorAll('[data-bind="brand"], [data-bind="detail-brand"], [data-bind="overlay-brand"], [data-bind="footer-mark"], [data-bind="loader-mark"]')
+  document.querySelectorAll('[data-bind="brand"], [data-bind="detail-brand"], [data-bind="overlay-brand"], [data-bind="footer-mark"]')
     .forEach((el) => { el.textContent = C.brand?.name || "L'Atelier"; });
   document.getElementById('year').textContent = new Date().getFullYear();
   document.getElementById('footer-text').textContent = C.footer?.text || '';
@@ -84,43 +72,22 @@ async function init() {
   });
   document.getElementById('overlay-contact').textContent = email;
 
-  /* ---------- Hero : diaporama ---------- */
-  const acts = C.hero?.acts || [];
-  const heroSlides = document.getElementById('hero-slides');
-  const heroIndicators = document.getElementById('hero-indicators');
-  const heroFallback = C.hero?.image || 'art-sea';
-  heroSlides.innerHTML = acts.map((a, i) => `
-    <div class="hero-slide ${i === 0 ? 'active' : ''}">
-      <div class="hero-image" style="background-image:${bg(a.image || heroFallback)}"></div>
-      <div class="hero-text">
-        ${a.eyebrow ? `<p class="eyebrow">${esc(a.eyebrow)}</p>` : ''}
-        ${a.size === 'big' ? `<h1>${brize(a.title)}</h1>` : `<h2>${brize(a.title)}</h2>`}
-        ${a.role ? `<p class="role">${esc(a.role)}</p>` : ''}
-      </div>
-    </div>`).join('');
+  /* ---------- Hero : une image fixe, un titre ---------- */
+  // Rétro-compatibilité : si le contenu contient encore des « actes »
+  // (ancien diaporama), le premier sert de hero.
+  const legacyAct = C.hero?.acts?.[0];
+  const hero = {
+    eyebrow: C.hero?.eyebrow ?? legacyAct?.eyebrow ?? '',
+    title: C.hero?.title ?? legacyAct?.title ?? '',
+    role: C.hero?.role ?? legacyAct?.role ?? '',
+    image: C.hero?.image ?? legacyAct?.image ?? 'art-sea',
+  };
+  document.getElementById('hero-image').style.backgroundImage = bg(hero.image);
+  document.getElementById('hero-eyebrow').textContent = hero.eyebrow;
+  document.getElementById('hero-title').innerHTML = brize(hero.title);
+  document.getElementById('hero-role').textContent = hero.role;
   const cueLabel = document.querySelector('[data-bind="scroll-cue"]');
   if (cueLabel) cueLabel.textContent = C.hero?.scrollCue || '';
-
-  let heroCurrent = 0;
-  let heroTimer = null;
-  const slides = [...heroSlides.querySelectorAll('.hero-slide')];
-  if (slides.length > 1) {
-    heroIndicators.innerHTML = slides.map((_, i) =>
-      `<button class="${i === 0 ? 'active' : ''}" data-i="${i}" aria-label="Diapositive ${i + 1}"></button>`).join('');
-  }
-  function goSlide(i) {
-    heroCurrent = (i + slides.length) % slides.length;
-    slides.forEach((s, j) => s.classList.toggle('active', j === heroCurrent));
-    heroIndicators.querySelectorAll('button').forEach((b, j) => b.classList.toggle('active', j === heroCurrent));
-  }
-  function armHero() {
-    clearInterval(heroTimer);
-    const seconds = Math.max(Number(C.hero?.interval) || 6, 3);
-    if (slides.length > 1) heroTimer = setInterval(() => goSlide(heroCurrent + 1), seconds * 1000);
-  }
-  heroIndicators.querySelectorAll('button').forEach((b) =>
-    b.addEventListener('click', () => { goSlide(parseInt(b.dataset.i, 10)); armHero(); }));
-  armHero();
 
   /* ---------- Manifeste ---------- */
   const manifesto = document.querySelector('[data-bind="manifesto"]');

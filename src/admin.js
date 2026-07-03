@@ -351,25 +351,17 @@ function renderSections(pane) {
 
 function renderHero(pane) {
   pane.append(
-    ...paneHeader('Accueil (hero)', 'Le diaporama plein écran d\'ouverture : chaque diapositive combine une photo et un titre, façon grande agence.'),
-    card('Général', fieldGrid(
+    ...paneHeader('Accueil (hero)', 'L\'ouverture du site : une grande photo fixe et un titre, sans animation d\'introduction.'),
+    card('Ouverture', fieldGrid(
+      fMedia('Photo plein écran', 'hero.image'),
+      fText('Sur-titre', 'hero.eyebrow'),
+      fText('Titre', 'hero.title', { textarea: true, rows: 2, full: true, help: 'Un retour à la ligne ici = un retour à la ligne à l\'écran.' }),
+      fText('Ligne sous le titre', 'hero.role'),
       fText('Invitation à défiler', 'hero.scrollCue'),
-      fText('Durée par diapositive (secondes)', 'hero.interval', { type: 'number' }),
-      fText('Manifeste (texte sous le hero)', 'manifesto', { textarea: true, rows: 3, full: true }),
     )),
-    card('Diapositives', listEditor({
-      path: 'hero.acts',
-      newItem: () => ({ eyebrow: '', title: 'Nouveau titre', size: 'big', image: 'art-sea' }),
-      itemTitle: (a) => (a.title || '').split('\n')[0],
-      buildFields: (p) => [fieldGrid(
-        fText('Sur-titre', `${p}.eyebrow`),
-        fSelect('Taille', `${p}.size`, [{ value: 'big', label: 'Grand titre' }, { value: 'medium', label: 'Titre moyen' }]),
-        fText('Titre', `${p}.title`, { textarea: true, rows: 2, full: true, help: 'Un retour à la ligne ici = un retour à la ligne à l\'écran.' }),
-        fText('Ligne sous le titre', `${p}.role`),
-        fMedia('Photo plein écran', `${p}.image`),
-      )],
-      addLabel: '+ Ajouter une diapositive',
-    })),
+    card('Manifeste', fieldGrid(
+      fText('Texte sous le hero', 'manifesto', { textarea: true, rows: 3, full: true }),
+    )),
   );
 }
 
@@ -896,6 +888,15 @@ async function boot() {
   }
   draft = readDraft() || structuredClone(published);
   draft.__uploads = draft.__uploads || {};
+  // Migration : l'ancien hero « diaporama » (acts) devient un hero fixe.
+  if (draft.hero?.acts?.length && !draft.hero.title) {
+    const a = draft.hero.acts[0];
+    draft.hero = {
+      scrollCue: draft.hero.scrollCue || 'Découvrir',
+      eyebrow: a.eyebrow || '', title: a.title || '', role: a.role || '',
+      image: a.image || 'art-sea',
+    };
+  }
 
   if (sessionStorage.getItem(SESSION_KEY) === 'ok') showApp();
 

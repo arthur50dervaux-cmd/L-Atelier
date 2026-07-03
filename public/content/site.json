@@ -38,14 +38,11 @@
     "art-design": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1600&q=80"
   },
   "hero": {
-    "scrollCue": "Faites défiler",
-    "interval": 6,
-    "acts": [
-      { "eyebrow": "Architecture & immobilier d'exception", "title": "Construire\ndes rêves habitables", "size": "big", "role": "Côte d'Azur — Méditerranée", "image": "art-sea" },
-      { "eyebrow": "Mer · Falaises · Vignes", "title": "Le paysage\ncomme matière première", "size": "big", "image": "art-cliff" },
-      { "eyebrow": "Lumière dorée", "title": "Chaque demeure\nraconte un site", "size": "big", "image": "art-villa" },
-      { "eyebrow": "L'Atelier", "title": "L'architecture\ndu sublime", "size": "big", "role": "Conception · Immobilier · Design", "image": "art-vine" }
-    ]
+    "scrollCue": "Découvrir",
+    "eyebrow": "Architecture & immobilier d'exception",
+    "title": "Construire\ndes rêves habitables",
+    "role": "Côte d'Azur — Méditerranée",
+    "image": "art-sea"
   },
   "manifesto": "Chaque projet commence par une question : que mérite ce lieu ? Entre la roche, la mer et la vigne, nous dessinons des architectures qui s'effacent devant leur paysage — et qui, pourtant, le révèlent.",
   "sections": {

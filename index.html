@@ -16,10 +16,7 @@
 </head>
 <body>
 
-  <div id="loader">
-    <div class="loader-mark" data-bind="loader-mark">L'Atelier</div>
-    <div class="loader-bar"><span id="loader-progress"></span></div>
-  </div>
+  <div id="loader" aria-hidden="true"></div>
 
   <div id="preview-banner" hidden>Préversion du brouillon — les visiteurs voient la version publiée. <a href="admin.html">Retour à l'admin</a></div>
 
@@ -40,12 +37,16 @@
 
   <main id="top">
 
-    <!-- HERO : diaporama plein écran -->
+    <!-- HERO : une image, un titre (façon Kretz) -->
     <section id="hero">
-      <div id="hero-slides"></div>
+      <div class="hero-image" id="hero-image"></div>
+      <div class="hero-text">
+        <p class="eyebrow" id="hero-eyebrow"></p>
+        <h1 id="hero-title"></h1>
+        <p class="role" id="hero-role"></p>
+      </div>
       <div class="hero-bottom">
-        <div class="hero-indicators" id="hero-indicators"></div>
-        <div class="scroll-cue"><span data-bind="scroll-cue">Faites défiler</span><div class="scroll-cue-line"></div></div>
+        <div class="scroll-cue"><span data-bind="scroll-cue">Découvrir</span><div class="scroll-cue-line"></div></div>
       </div>
     </section>
 
