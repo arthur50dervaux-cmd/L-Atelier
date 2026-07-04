@@ -36,7 +36,7 @@ async function init() {
   if (C.meta?.title) document.title = C.meta.title;
   if (C.meta?.description) document.querySelector('meta[name="description"]')?.setAttribute('content', C.meta.description);
   if (C.theme?.bg) document.querySelector('meta[name="theme-color"]')?.setAttribute('content', C.theme.bg);
-  document.querySelectorAll('[data-bind="brand"], [data-bind="detail-brand"], [data-bind="overlay-brand"], [data-bind="footer-mark"]')
+  document.querySelectorAll('[data-bind="brand"], [data-bind="detail-brand"], [data-bind="overlay-brand"], [data-bind="footer-mark"], [data-bind="catalog-brand"]')
     .forEach((el) => { el.textContent = C.brand?.name || "L'Atelier"; });
   document.getElementById('year').textContent = new Date().getFullYear();
   document.getElementById('footer-text').textContent = C.footer?.text || '';
@@ -346,6 +346,89 @@ async function init() {
     });
   }));
 
+  /* ---------- Catalogue mobilier (feuilles A4, enregistrables en PDF) ---------- */
+  const catalogEl = document.getElementById('furniture-catalog');
+  const catalogCta = document.getElementById('btn-catalog');
+  const CAT = C.furnitureCatalog || {};
+  let catalogBuilt = false;
+
+  function buildCatalog() {
+    const brand = C.brand?.name || "L'Atelier";
+    const year = new Date().getFullYear();
+    const title = CAT.title || 'Catalogue';
+    const total = furniture.length + 2;
+    const foot = (label, n) => `<div class="cat-pagefoot"><span>${esc(label)}</span><span>${n} / ${total}</span></div>`;
+    const artImg = (v, alt = '') => {
+      const url = visualUrl(C, v);
+      return url ? `<img src="${esc(url)}" alt="${esc(alt)}" loading="lazy" />` : '';
+    };
+    const specRow = (label, value) => value
+      ? `<div class="cat-spec"><span>${esc(label)}</span><strong>${esc(value)}</strong></div>` : '';
+
+    const cover = `
+      <div class="cat-page cat-cover">
+        <div class="cat-cover-art" style="background-image:${bg(CAT.cover || 'art-design')}">${artImg(CAT.cover || 'art-design')}</div>
+        <div class="cat-cover-text">
+          <p class="cat-eyebrow">${esc(brand)} — ${year}</p>
+          <h2>${esc(title)}</h2>
+          ${CAT.subtitle ? `<p class="cat-sub">${esc(CAT.subtitle)}</p>` : ''}
+        </div>
+        ${foot(brand, 1)}
+      </div>`;
+
+    const pieces = furniture.map((f, i) => `
+      <div class="cat-page cat-piece">
+        <div class="cat-visual" style="background-image:${bg(f.image)}">${artImg(f.image, f.name)}</div>
+        <p class="cat-eyebrow">N° ${String(i + 1).padStart(2, '0')}${f.category ? ` — ${esc(f.category)}` : ''}</p>
+        <h3>${esc(f.name)}</h3>
+        ${f.desc ? `<p class="cat-desc">${esc(f.desc)}</p>` : ''}
+        <div class="cat-specs">
+          ${specRow('Matière', f.material)}
+          ${specRow('Dimensions', f.dimensions)}
+          ${specRow('Édition', f.edition)}
+          ${specRow('Prix', f.price)}
+        </div>
+        ${foot(`${brand} — ${title} ${year}`, i + 2)}
+      </div>`).join('');
+
+    const back = `
+      <div class="cat-page cat-back">
+        <div>
+          <p class="cat-eyebrow">${esc(CAT.contactTitle || 'Commander ou demander une pièce')}</p>
+          <h3>${esc(brand)}</h3>
+          ${email ? `<p class="cat-contact">${esc(email)}</p>` : ''}
+          ${CAT.note ? `<p class="cat-note">${esc(CAT.note)}</p>` : ''}
+        </div>
+        ${foot(C.footer?.text || brand, total)}
+      </div>`;
+
+    const pagesEl = document.getElementById('catalog-pages');
+    pagesEl.innerHTML = cover + pieces + back;
+    // Si une photo ne charge pas, le dégradé de repli en fond prend le relais.
+    pagesEl.querySelectorAll('img').forEach((img) => img.addEventListener('error', () => img.remove()));
+  }
+
+  function openCatalog() {
+    if (!catalogBuilt) { buildCatalog(); catalogBuilt = true; }
+    catalogEl.classList.add('open');
+    catalogEl.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('catalog-open');
+    catalogEl.querySelector('.catalog-scroll').scrollTop = 0;
+  }
+  function closeCatalog() {
+    catalogEl.classList.remove('open');
+    catalogEl.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('catalog-open');
+  }
+  if (furniture.length) {
+    catalogCta.textContent = CAT.buttonLabel || 'Ouvrir le catalogue (PDF)';
+    catalogCta.addEventListener('click', openCatalog);
+    catalogEl.querySelectorAll('[data-catalog-close]').forEach((b) => b.addEventListener('click', closeCatalog));
+    catalogEl.querySelector('[data-catalog-print]').addEventListener('click', () => window.print());
+  } else {
+    catalogCta.closest('.catalog-cta').style.display = 'none';
+  }
+
   /* ---------- Équipe ---------- */
   document.getElementById('team-grid').innerHTML = (C.team || []).map((m) => `
     <article class="team-card reveal">
@@ -553,7 +636,7 @@ async function init() {
   /* ============ Touches globales ============ */
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      modal.classList.remove('open'); closeFilm(); closePhoto(); closeDetail();
+      modal.classList.remove('open'); closeFilm(); closePhoto(); closeDetail(); closeCatalog();
       document.body.classList.remove('menu-open');
     }
   });
