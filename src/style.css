@@ -296,6 +296,53 @@ body.menu-open #overlay-links a { opacity: 1; transform: translateY(0); transiti
 @media (max-width: 760px) { .furniture-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 480px) { .furniture-grid { grid-template-columns: 1fr; } }
 
+/* ====== Catalogue mobilier (feuilles A4, imprimable / PDF) ====== */
+.catalog-cta { text-align: center; margin-top: clamp(2.5rem, 5vw, 4rem); }
+.catalog { position: fixed; inset: 0; z-index: 900; background: color-mix(in srgb, var(--ink) 96%, black); opacity: 0; visibility: hidden; transition: opacity 0.45s ease, visibility 0.45s ease; }
+.catalog.open { opacity: 1; visibility: visible; }
+body.catalog-open { overflow: hidden; }
+.catalog-topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.1rem var(--pad-x); background: color-mix(in srgb, var(--ink) 86%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line-light); }
+.catalog-back, .catalog-print { color: var(--cream); font-size: 0.66rem; letter-spacing: 0.22em; text-transform: uppercase; transition: color 0.3s ease; }
+.catalog-back:hover, .catalog-print:hover { color: var(--gold-soft); }
+.catalog-brand { font-family: var(--serif); letter-spacing: 0.2em; text-transform: uppercase; font-size: 0.9rem; color: var(--cream); }
+.catalog-scroll { height: 100%; overflow-y: auto; padding: calc(60px + 2.5rem) 1.5rem 3.5rem; }
+.cat-page { position: relative; width: 210mm; max-width: 100%; min-height: 297mm; margin: 0 auto 2.2rem; background: var(--bg-light); color: var(--ink); box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5); padding: 16mm 16mm 24mm; display: flex; flex-direction: column; overflow: hidden; }
+.cat-eyebrow { font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 0.9rem; }
+.cat-pagefoot { position: absolute; left: 16mm; right: 16mm; bottom: 8mm; display: flex; justify-content: space-between; gap: 1.5rem; font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-soft); border-top: 1px solid var(--line); padding-top: 0.7rem; }
+/* Couverture */
+.cat-cover { justify-content: flex-end; }
+.cat-cover-art { position: absolute; inset: 0 0 34%; background-size: cover; background-position: center; background-color: var(--sand); }
+.cat-cover-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cat-cover-text { position: relative; padding-top: 2.2rem; }
+.cat-cover-text h2 { font-family: var(--serif); font-size: 4.2rem; font-weight: 300; line-height: 1.05; margin-bottom: 0.8rem; }
+.cat-cover-text .cat-sub { color: var(--ink-soft); line-height: 1.7; max-width: 34em; }
+/* Fiche pièce */
+.cat-visual { position: relative; height: 120mm; flex: none; background-size: cover; background-position: center; background-color: var(--sand); margin-bottom: 9mm; }
+.cat-visual img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cat-piece h3 { font-family: var(--serif); font-size: 2.5rem; font-weight: 400; margin-bottom: 0.9rem; }
+.cat-desc { color: var(--ink-soft); line-height: 1.8; font-size: 0.96rem; max-width: 44em; margin-bottom: 1.6rem; }
+.cat-specs { border-top: 1px solid var(--line); }
+.cat-spec { display: flex; justify-content: space-between; align-items: baseline; gap: 2rem; padding: 0.8rem 0; border-bottom: 1px solid var(--line); }
+.cat-spec span { font-size: 0.6rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-soft); }
+.cat-spec strong { font-family: var(--serif); font-weight: 400; font-size: 1.15rem; text-align: right; }
+/* Dernière page */
+.cat-back { justify-content: center; text-align: center; }
+.cat-back .cat-eyebrow { margin-bottom: 1.2rem; }
+.cat-back h3 { font-family: var(--serif); font-size: 2.6rem; font-weight: 400; margin-bottom: 0.9rem; }
+.cat-contact { font-size: 1.05rem; letter-spacing: 0.04em; margin-bottom: 1.8rem; }
+.cat-note { color: var(--ink-soft); max-width: 36em; margin: 0 auto; line-height: 1.8; font-size: 0.92rem; }
+
+@media print {
+  @page { size: A4; margin: 0; }
+  body.catalog-open { overflow: visible; }
+  body.catalog-open > *:not(#furniture-catalog) { display: none !important; }
+  body:not(.catalog-open) #furniture-catalog { display: none !important; }
+  #furniture-catalog { position: static; background: none; opacity: 1; visibility: visible; }
+  .catalog-topbar { display: none; }
+  .catalog-scroll { height: auto; overflow: visible; padding: 0; }
+  .cat-page { width: 210mm; height: 297mm; min-height: 0; margin: 0; box-shadow: none; break-after: page; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
 /* ====== Équipe ====== */
 .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(1.2rem, 2vw, 2rem); }
 .team-card { text-align: left; }

@@ -194,6 +194,14 @@
     { "name": "Applique Calanque", "category": "Luminaire", "material": "Verre soufflé & bronze", "dimensions": "24 × 18 × 30 cm", "edition": "Série limitée — 25 ex.", "price": "Sur demande", "image": "art-sea", "desc": "Applique murale en verre soufflé teinté turquoise, monture en bronze patiné." },
     { "name": "Vase Sirocco", "category": "Objet", "material": "Grès émaillé", "dimensions": "Ø 24 × 46 cm", "edition": "Série limitée — 30 ex.", "price": "Sur demande", "image": "art-villa", "desc": "Vase tourné en grès, émail sablé évoquant les vents chauds de Méditerranée." }
   ],
+  "furnitureCatalog": {
+    "buttonLabel": "Ouvrir le catalogue (PDF)",
+    "title": "Catalogue",
+    "subtitle": "Mobilier & objets dessinés et fabriqués en atelier — pièces uniques et séries limitées.",
+    "cover": "art-design",
+    "contactTitle": "Commander ou demander une pièce",
+    "note": "Prix indicatifs — pièces uniques et séries limitées, disponibilité sur demande. Chaque pièce peut être adaptée (dimensions, essences, finitions) dans le cadre d'un projet."
+  },
   "team": [
     { "name": "Le Fondateur", "role": "Architecte fondateur", "initials": "LA", "bio": "Fondateur de l'atelier. Conçoit chaque projet à partir de son site, entre mer, falaises et vignes." },
     { "name": "Studio Conception", "role": "Architecture & BIM", "initials": "SC", "bio": "L'équipe de conception : esquisses, modélisation Revit et maquettes numériques explorables." },

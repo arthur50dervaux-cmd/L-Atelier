@@ -179,6 +179,7 @@
         <div class="section-head reveal" data-head="mobilier"></div>
         <div class="text-tabs reveal" id="furniture-filters"></div>
         <div class="furniture-grid" id="furniture-grid"></div>
+        <div class="catalog-cta reveal"><button id="btn-catalog" class="btn">Ouvrir le catalogue (PDF)</button></div>
       </div>
     </section>
 
@@ -304,6 +305,16 @@
         </aside>
       </div>
     </div>
+  </div>
+
+  <!-- Catalogue mobilier : feuilles A4 à l'écran, imprimables / enregistrables en PDF -->
+  <div id="furniture-catalog" class="catalog" aria-hidden="true">
+    <div class="catalog-topbar">
+      <button class="catalog-back" data-catalog-close>← Retour au site</button>
+      <span class="catalog-brand" data-bind="catalog-brand">L'Atelier</span>
+      <button class="catalog-print" data-catalog-print>Enregistrer en PDF ⤓</button>
+    </div>
+    <div class="catalog-scroll" id="catalog-pages" data-lenis-prevent></div>
   </div>
 
   <!-- Lecteur de films -->

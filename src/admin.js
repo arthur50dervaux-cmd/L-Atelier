@@ -565,8 +565,16 @@ function renderCinema(pane) {
 
 function renderMobilier(pane) {
   pane.append(
-    ...paneHeader('Mobilier & design', 'Les pièces dessinées et fabriquées par l\'atelier.'),
-    card('', listEditor({
+    ...paneHeader('Mobilier & design', 'Les pièces dessinées et fabriquées par l\'atelier. Le catalogue PDF se génère automatiquement à partir de cette liste (photos, matières, dimensions, éditions, prix).'),
+    card('Catalogue (PDF)', fieldGrid(
+      fText('Libellé du bouton sur le site', 'furnitureCatalog.buttonLabel'),
+      fText('Titre de couverture', 'furnitureCatalog.title'),
+      fText('Sous-titre de couverture', 'furnitureCatalog.subtitle', { textarea: true, rows: 2, full: true }),
+      fMedia('Photo de couverture', 'furnitureCatalog.cover'),
+      fText('Titre de la dernière page', 'furnitureCatalog.contactTitle'),
+      fText('Mention de la dernière page', 'furnitureCatalog.note', { textarea: true, full: true, help: 'ex. conditions, prix indicatifs, adaptation des pièces…' }),
+    )),
+    card('Pièces', listEditor({
       path: 'furniture',
       newItem: () => ({ name: 'Nouvelle pièce', category: 'Objet', material: '', dimensions: '', edition: 'Pièce unique', price: 'Sur demande', image: 'art-design', desc: '' }),
       itemTitle: (f) => f.name,
