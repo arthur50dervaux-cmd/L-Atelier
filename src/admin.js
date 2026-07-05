@@ -693,13 +693,23 @@ function renderContactPane(pane) {
     card('Lignes de coordonnées', listEditor({
       path: 'contact.lines',
       newItem: () => ({ label: 'Intitulé', value: '', link: '' }),
-      itemTitle: (l) => `${l.label} — ${l.value}`,
+      itemTitle: (l) => `${l.label} — ${l.value || '(vide : masquée sur le site)'}`,
       buildFields: (p) => [fieldGrid(
         fText('Intitulé', `${p}.label`),
-        fText('Valeur affichée', `${p}.value`),
-        fText('Lien (optionnel)', `${p}.link`, { full: true, help: 'ex. mailto:…, tel:…, https://…' }),
+        fText('Valeur affichée', `${p}.value`, { help: 'Laissez vide pour masquer la ligne (ex. téléphone à définir plus tard).' }),
+        fText('Lien (optionnel)', `${p}.link`, { full: true, help: 'ex. mailto:…, tel:+33612345678, https://…' }),
       )],
       addLabel: '+ Ajouter une ligne',
+    })),
+    card('Réseaux sociaux', listEditor({
+      path: 'socials',
+      newItem: () => ({ label: 'Instagram', url: '' }),
+      itemTitle: (s) => `${s.label}${s.url ? '' : ' — (vide : masqué)'}`,
+      buildFields: (p) => [fieldGrid(
+        fText('Nom du réseau', `${p}.label`, { help: 'ex. Instagram, LinkedIn, Pinterest, YouTube…' }),
+        fText('Lien du profil', `${p}.url`, { full: true, help: 'ex. https://www.instagram.com/votrecompte — laissez vide pour masquer.' }),
+      )],
+      addLabel: '+ Ajouter un réseau',
     })),
     card('Pied de page', fieldGrid(
       fText('Texte du pied de page', 'footer.text', { full: true }),

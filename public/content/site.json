@@ -247,12 +247,17 @@
     "email": "arthur50dervaux@gmail.com",
     "lines": [
       { "label": "Email", "value": "arthur50dervaux@gmail.com", "link": "mailto:arthur50dervaux@gmail.com" },
+      { "label": "Téléphone", "value": "", "link": "" },
       { "label": "Agence", "value": "Côte d'Azur, France", "link": "" },
       { "label": "Disponibilité", "value": "Nouveaux projets 2026", "link": "" }
     ],
     "formNote": "Ouvre votre messagerie pour nous écrire directement.",
     "submitLabel": "Envoyer le message"
   },
+  "socials": [
+    { "label": "Instagram", "url": "https://www.instagram.com/" },
+    { "label": "LinkedIn", "url": "https://www.linkedin.com/" }
+  ],
   "footer": {
     "text": "L'Atelier — Architecture, immobilier & design méditerranéen. Tous droits réservés."
   },
