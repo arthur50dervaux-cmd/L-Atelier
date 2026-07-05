@@ -493,9 +493,17 @@ async function init() {
   const CT = C.contact || {};
   document.getElementById('contact-eyebrow').textContent = sections.contact?.eyebrow || 'Contact';
   document.getElementById('contact-title').innerHTML = brize(CT.title || '');
-  document.getElementById('contact-info').innerHTML = (CT.lines || []).map((l) => `
+  // Les lignes sans valeur (ex. téléphone pas encore défini) sont masquées.
+  document.getElementById('contact-info').innerHTML = (CT.lines || []).filter((l) => l.value).map((l) => `
     <li><span>${esc(l.label)}</span>${l.link ? `<a href="${esc(l.link)}">${esc(l.value)}</a>` : `<a>${esc(l.value)}</a>`}</li>`).join('');
   document.getElementById('contact-note').textContent = CT.formNote || '';
+
+  /* ---------- Réseaux sociaux (contact + pied de page) ---------- */
+  const socials = (C.socials || []).filter((s) => s.label && s.url);
+  const socialsHtml = socials.map((s) =>
+    `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a>`).join('');
+  document.getElementById('contact-socials').innerHTML = socialsHtml;
+  document.getElementById('footer-socials').innerHTML = socialsHtml;
   document.getElementById('contact-submit').textContent = CT.submitLabel || 'Envoyer';
   document.getElementById('contact-form').addEventListener('submit', (e) => {
     e.preventDefault();
