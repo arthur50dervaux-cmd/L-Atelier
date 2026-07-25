@@ -108,6 +108,28 @@ Les pages légales (mentions légales, confidentialité…) se créent dans
 page et s'ouvrent sans quitter le site. Dans le contenu, une ligne vide sépare
 les paragraphes et une ligne commençant par `#` devient un sous-titre.
 
+## L'expérience de défilement
+
+Le site se parcourt comme une séquence, sans aucune animation d'introduction :
+tout se joue au défilement. Chaque effet se désactive séparément dans le
+panneau **Expérience** de l'administration, et **tous** sont neutralisés pour
+les visiteurs dont le système demande un mouvement réduit.
+
+| Effet | Ce qu'il fait |
+|---|---|
+| Titres mot à mot | Chaque mot monte derrière un masque, en cascade |
+| Manifeste vivant | Le texte s'allume mot après mot au rythme de la lecture |
+| Chorégraphie du hero | L'image s'éloigne pendant que le titre s'efface : on « entre » dans le site |
+| **Panorama** | Une bande d'images plein écran défile horizontalement pendant que la page reste épinglée |
+| Curseur contextuel | Un anneau qui suit avec inertie, grossit et annonce l'action (« Découvrir », « Voir ») |
+| Boutons aimantés | Les boutons se laissent attirer par le curseur, avec retour élastique |
+| Bandeau défilant | Une ligne typographique géante qui accélère avec la vitesse de lecture |
+| Fond évolutif | La couleur de page se transforme d'une section à l'autre, sans césure |
+| Index de chapitre | Un repère discret à droite, soulignant la section en cours |
+
+Sur écran tactile, curseur et aimantation sont ignorés ; sous 900 px, le
+panorama devient une bande à faire glisser au doigt.
+
 ## Accessibilité & performance
 
 - Lien d'évitement, focus visibles, cartes activables au clavier, libellés

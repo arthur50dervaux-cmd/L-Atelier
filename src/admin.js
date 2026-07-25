@@ -3,6 +3,7 @@ import {
   fetchPublished, readDraft, DRAFT_KEY, PUBLISH_KEY, HISTORY_KEY,
   ART_GRADIENTS, ART_KEYS, visualUrl, safeLinkUrl,
   FONT_LABELS, DESIGN_DEFAULTS,
+  EXPERIENCE_DEFAULTS,
   createPasswordRecord, verifyPassword, passwordStrength,
   encryptSecret, decryptSecret,
   guardLockedFor, guardFailure, guardReset,
@@ -380,6 +381,7 @@ const ACCENTS = ['terracotta', 'gold', 'azur', 'turquoise', 'coral', 'olive', 's
 /** Sections intégrées, dans leur ordre naturel de création. */
 const SECTION_DEFS = {
   agence: { name: 'Agence', head: false },
+  panorama: { name: 'Panorama (bande horizontale)', head: false },
   expertise: { name: 'Expertise', head: true },
   conception: { name: 'Projets (conception)', head: true },
   immobilier: { name: 'Immobilier', head: true },
@@ -499,6 +501,47 @@ function renderDesign(pane) {
       c.append(btn);
       return c;
     })(),
+  );
+}
+
+function renderExperience(pane) {
+  pane.append(
+    ...paneHeader('Expérience', "Les effets qui font vivre le site au défilement. Chacun se désactive séparément ; tous sont automatiquement neutralisés pour les visiteurs qui ont demandé un mouvement réduit."),
+    card('Effets au défilement',
+      fToggle('Titres révélés mot à mot', 'experience.splitHeadings'),
+      fToggle("Manifeste qui s'allume à la lecture", 'experience.manifestoScroll'),
+      fToggle("Chorégraphie de l'image d'accueil (zoom et fondu)", 'experience.heroChoreography'),
+      fToggle("Fond qui se transforme d'une section à l'autre", 'experience.colorMorph'),
+      note('Ces effets ne changent jamais le contenu : le texte reste lisible et sélectionnable même désactivés.')),
+    card('Curseur & interactions',
+      fToggle('Curseur contextuel (affiche « Voir », « Découvrir »…)', 'experience.cursor'),
+      fToggle('Boutons aimantés par le curseur', 'experience.magnetic'),
+      note('Sur écran tactile, ces deux effets sont ignorés : le curseur système reste utilisé.')),
+    card('Bandeau défilant', fieldGrid(
+      fText('Texte du bandeau', 'experience.marqueeText', { full: true, help: 'Affiché en grand juste avant le pied de page, séparé par des ✦.' }),
+    ), fToggle('Afficher le bandeau', 'experience.marquee')),
+    card('Repères de lecture',
+      fToggle("Index de chapitre à droite de l'écran", 'experience.chapters'),
+      note("L'index reprend les entrées du menu et souligne la section en cours. Masqué sous 1100 px de large.")),
+    card('Panorama', fieldGrid(
+      fText('Sur-titre', 'panorama.eyebrow'),
+      fText('Titre', 'panorama.title', { textarea: true, rows: 2, help: 'Un retour à la ligne ici = un retour à la ligne à l\'écran.' }),
+      fText('Texte d\'introduction', 'panorama.sub', { textarea: true, rows: 2, full: true }),
+      fText('Invitation au défilement', 'panorama.hint'),
+    ), fToggle('Activer le panorama horizontal', 'experience.panorama'),
+    note('La bande d\'images défile horizontalement pendant que la page est épinglée. En dessous de 900 px, elle devient une bande à faire glisser au doigt. Il faut au moins 2 visuels.')),
+    card('Visuels du panorama', listEditor({
+      path: 'panorama.items',
+      newItem: () => ({ title: 'Nouveau visuel', place: '', image: 'art-sea', desc: '' }),
+      itemTitle: (i) => `${i.title}${i.place ? ` — ${i.place}` : ''}`,
+      buildFields: (p) => [fieldGrid(
+        fText('Titre', `${p}.title`),
+        fText('Lieu', `${p}.place`),
+        fMedia('Visuel', `${p}.image`),
+        fText('Description (fenêtre au clic)', `${p}.desc`, { textarea: true, full: true }),
+      )],
+      addLabel: '+ Ajouter un visuel',
+    })),
   );
 }
 
@@ -1227,6 +1270,7 @@ function pushHistory(label) {
 const PANELS = [
   { id: 'identite', icon: '◈', label: 'Identité & thème', render: renderIdentite, keywords: 'couleur palette marque nom logo' },
   { id: 'design', icon: '✦', label: 'Design & typographie', render: renderDesign, keywords: 'police taille densité animation grain arrondi accent' },
+  { id: 'experience', icon: '✧', label: 'Expérience', render: renderExperience, keywords: 'curseur panorama bandeau défilement effet waouh chapitre aimant' },
   { id: 'sections', icon: '☰', label: 'Sections, ordre & menu', render: renderSections, keywords: 'ordre menu visible masquer créer réordonner' },
   { id: 'hero', icon: '⌂', label: 'Accueil (hero)', render: renderHero, keywords: 'accueil photo titre manifeste' },
   { id: 'agence', icon: '❖', label: 'Agence', render: renderAgence, keywords: 'présentation portrait repères' },
@@ -1445,6 +1489,16 @@ function migrate() {
   if (!draft.ensap) draft.ensap = structuredClone(published?.ensap) || { paragraphs: [], cursus: [], school: {}, works: [] };
 
   draft.design = { ...DESIGN_DEFAULTS, ...(draft.design || {}) };
+  draft.experience = { ...EXPERIENCE_DEFAULTS, ...(draft.experience || {}) };
+  draft.panorama = draft.panorama || structuredClone(published?.panorama) || { title: 'Panorama', items: [] };
+  // Le panorama prend place après l'agence s'il n'a jamais été positionné.
+  if (!draft.sections.panorama) {
+    const keys = Object.keys(draft.sections);
+    const at = keys.indexOf('expertise');
+    const entry = structuredClone(published?.sections?.panorama) || { visible: true, navLabel: 'Panorama' };
+    keys.splice(at === -1 ? keys.length : at, 0, 'panorama');
+    draft.sections = Object.fromEntries(keys.map((k) => [k, k === 'panorama' ? entry : draft.sections[k]]));
+  }
   draft.customSections = draft.customSections || {};
   draft.socials = draft.socials || [];
   draft.legal = draft.legal || [];

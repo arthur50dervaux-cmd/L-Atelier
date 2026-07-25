@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { createViewer } from './viewer.js';
+import { initExperience } from './experience.js';
 import {
   loadContent, isPreview, applyTheme, applyDesign,
   visualBackground, visualUrl, safeLinkUrl,
@@ -96,6 +97,35 @@ async function init() {
     document.head.appendChild(script);
   }
 
+  /* ---------- Panorama : bande d'images plein écran ---------- */
+  // Rendu avant la mise en ordre des sections pour que la bande soit prête
+  // au moment où GSAP mesure sa largeur et l'épingle.
+  const panoEl = document.getElementById('panorama');
+  const PANO = C.panorama || {};
+  const panoItems = (PANO.items || []).filter((i) => i && (i.image || i.title));
+  if (panoEl) {
+    if (panoItems.length >= 2) {
+      panoEl.hidden = false;
+      document.getElementById('pano-eyebrow').textContent = PANO.eyebrow || '';
+      document.getElementById('pano-title').textContent = PANO.title || 'Panorama';
+      document.getElementById('pano-sub').textContent = PANO.sub || '';
+      document.getElementById('pano-hint').textContent = PANO.hint || 'Faites défiler';
+      document.getElementById('pano-track').innerHTML = panoItems.map((it, i) => `
+        <article class="pano-item" data-i="${i}" tabindex="0" role="button">
+          <div class="pano-visual">
+            ${visual(it.image, it.title || '')}
+            <span class="pano-index">${String(i + 1).padStart(2, '0')}</span>
+          </div>
+          <div class="pano-meta">
+            ${it.place ? `<p class="place">${esc(it.place)}</p>` : ''}
+            <h3>${esc(it.title || '')}</h3>
+          </div>
+        </article>`).join('');
+    } else {
+      panoEl.remove();
+    }
+  }
+
   /* ---------- Sections : ordre, visibilité, têtes numérotées, navigation ---------- */
   const sections = C.sections || {};
   const main = document.getElementById('top');
@@ -104,6 +134,7 @@ async function init() {
   const customDefs = C.customSections || {};
   let sectionIndex = 0;
   let navIndex = 0;
+  const chapters = [];
 
   /** Crée une section libre définie depuis l'administration. */
   function buildCustomSection(id, def) {
@@ -160,6 +191,7 @@ async function init() {
     }
     if (cfg.navLabel) {
       navIndex += 1;
+      chapters.push({ id, label: cfg.navLabel });
       navLinks.insertAdjacentHTML('beforeend', `<a href="#${esc(id)}">${esc(cfg.navLabel)}</a>`);
       overlayLinks.insertAdjacentHTML('beforeend',
         `<a href="#${esc(id)}" style="--i:${navIndex}"><span class="idx">${String(navIndex).padStart(2, '0')}</span>${esc(cfg.navLabel)}</a>`);
@@ -779,13 +811,9 @@ async function init() {
     });
   });
 
-  /* ============ Parallaxe douce du hero ============ */
-  if (!reduceMotion) {
-    gsap.to('.hero-media', {
-      yPercent: 12, ease: 'none',
-      scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true },
-    });
-  }
+  // La parallaxe du hero est désormais gérée par la couche d'expérience
+  // (chorégraphie complète : zoom, dérive, fondu du titre) — deux animations
+  // sur le même élément se seraient contredites.
 
   /* ============ Rendu initial des projets ============ */
   renderProjects(tabDefs[0]?.id || 'avenir');
@@ -890,6 +918,20 @@ async function init() {
     closeModal(); closeFilm(); closePhoto(); closeDetail(); closeCatalog(); closeLegal();
     toggleMenu(false);
   });
+
+  /* ============ Panorama : ouverture d'un visuel ============ */
+  document.querySelectorAll('#pano-track .pano-item').forEach((item) => {
+    const it = panoItems[Number(item.dataset.i)];
+    if (!it) return;
+    const open = () => openItemModal({ title: it.title, place: it.place, desc: it.desc, image: it.image });
+    item.addEventListener('click', open);
+    item.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+  });
+
+  /* ============ Couche d'expérience ============ */
+  // Activée en dernier : elle transforme des éléments déjà rendus (titres
+  // découpés, fonds, épinglage) et a besoin des mesures définitives.
+  initExperience({ config: C.experience, chapters });
 
   // Le contenu a pu grandir après le rendu : on recalcule les déclencheurs.
   ScrollTrigger.refresh();

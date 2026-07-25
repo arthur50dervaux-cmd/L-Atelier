@@ -181,6 +181,24 @@ export const DESIGN_DEFAULTS = {
   accent: 'terracotta',
 };
 
+/**
+ * Couche « expérience » : effets de défilement, curseur, panorama.
+ * Vit ici (et non dans experience.js) pour que l'administration puisse les
+ * proposer sans embarquer GSAP dans son propre bundle.
+ */
+export const EXPERIENCE_DEFAULTS = {
+  splitHeadings: true,
+  manifestoScroll: true,
+  heroChoreography: true,
+  cursor: true,
+  magnetic: true,
+  marquee: true,
+  marqueeText: 'Architecture — Immobilier — Maquettes 3D — Mobilier — Méditerranée',
+  colorMorph: true,
+  chapters: true,
+  panorama: true,
+};
+
 const num = (v, fallback) => {
   const n = Number(v);
   return Number.isFinite(n) ? n : fallback;
