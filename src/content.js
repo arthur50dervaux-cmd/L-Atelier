@@ -287,6 +287,9 @@ export async function verifyPassword(password, record, legacyHash) {
   return false;
 }
 
+/** Mots de passe trop devinables : le mot seul, éventuellement suivi de chiffres. */
+const COMMON_WORDS = ['azerty', 'qwerty', 'motdepasse', 'password', 'atelier', 'admin', 'bonjour', 'soleil'];
+
 /** Estimation simple de la robustesse d'un mot de passe (0 à 4). */
 export function passwordStrength(password) {
   const pw = String(password || '');
@@ -295,7 +298,16 @@ export function passwordStrength(password) {
   if (pw.length >= 16) score++;
   if (/[a-z]/.test(pw) && /[A-Z]/.test(pw)) score++;
   if (/\d/.test(pw) && /[^\w\s]/.test(pw)) score++;
-  if (/^(.)\1+$/.test(pw) || /^(1234|azerty|qwerty|motdepasse|password|atelier)/i.test(pw)) score = 0;
+
+  // On ne disqualifie que les mots de passe réellement triviaux : une suite
+  // d'un même caractère, une séquence de clavier, ou un mot courant seul
+  // (« atelier2026 »). Un mot courant *inclus* dans une longue phrase de passe
+  // reste parfaitement valable.
+  const letters = pw.toLowerCase().replace(/[^a-z]/g, '');
+  const trivial = /^(.)\1+$/.test(pw)
+    || /^(1234|12345|abcd|0000)/.test(pw)
+    || (COMMON_WORDS.includes(letters) && pw.length < 16);
+  if (trivial) score = 0;
   return Math.min(score, 4);
 }
 
