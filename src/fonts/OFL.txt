@@ -1,0 +1,14 @@
+Les polices Cormorant Garamond et Jost présentes dans ce dossier sont
+distribuées sous SIL Open Font License, Version 1.1.
+
+Cormorant Garamond — Copyright 2015 The Cormorant Project Authors
+  https://github.com/CatharsisFonts/Cormorant
+Jost — Copyright 2020 The Jost Project Authors
+  https://github.com/indestructible-type/Jost
+
+Texte complet de la licence : https://scripts.sil.org/OFL
+
+Elles sont auto-hébergées (et non chargées depuis Google Fonts) afin
+qu'aucune requête ne parte vers un service tiers : le site est plus rapide,
+respecte la vie privée des visiteurs et sa politique de sécurité (CSP) peut
+interdire toute origine externe pour les polices.
