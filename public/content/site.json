@@ -1,7 +1,11 @@
 {
   "meta": {
     "title": "L'Atelier — Agence d'architecture, immobilier & design méditerranéen",
-    "description": "L'Atelier — agence d'architecture méditerranéenne. Conception, projets, immobilier de prestige, maquettes 3D, films & photographies qualité cinéma, mobilier et design d'intérieur."
+    "description": "L'Atelier — agence d'architecture méditerranéenne. Conception, projets, immobilier de prestige, maquettes 3D, films & photographies qualité cinéma, mobilier et design d'intérieur.",
+    "canonical": "https://arthur50dervaux-cmd.github.io/L-Atelier/",
+    "ogTitle": "",
+    "ogDescription": "",
+    "ogImage": ""
   },
   "brand": {
     "name": "L'Atelier",
@@ -816,7 +820,10 @@
       }
     ],
     "formNote": "Ouvre votre messagerie pour nous écrire directement.",
-    "submitLabel": "Envoyer le message"
+    "submitLabel": "Envoyer le message",
+    "phone": "",
+    "city": "Côte d'Azur",
+    "country": "FR"
   },
   "socials": [
     {
@@ -832,6 +839,36 @@
     "text": "L'Atelier — Architecture, immobilier & design méditerranéen. Tous droits réservés."
   },
   "admin": {
-    "passwordHash": "c1f64352efb87f56d333ff3d2a1c27f4f03edf539cb6535088eb8bafb7d2487b"
+    "passwordHash": "c1f64352efb87f56d333ff3d2a1c27f4f03edf539cb6535088eb8bafb7d2487b",
+    "sessionTtl": 60,
+    "maxAttempts": 5
+  },
+  "design": {
+    "titleFont": "cormorant",
+    "bodyFont": "jost",
+    "scale": 1,
+    "bodySize": 1,
+    "titleWeight": 400,
+    "bodyWeight": 300,
+    "tracking": 1,
+    "density": 1,
+    "maxWidth": 1360,
+    "hairline": 1,
+    "radius": 0,
+    "imageRounding": 0,
+    "motion": 1,
+    "revealDistance": 32,
+    "hoverZoom": 1.05,
+    "grain": 0.035,
+    "heroOverlay": 0.42,
+    "heroHeight": 100,
+    "cardRatio": "4/3",
+    "accent": "terracotta"
+  },
+  "customSections": {},
+  "legal": [],
+  "seo": {
+    "schemaType": "ArchitecturalService",
+    "structuredData": true
   }
 }

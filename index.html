@@ -3,32 +3,50 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>L'Atelier — Agence d'architecture, immobilier & design méditerranéen</title>
-  <meta name="description" content="L'Atelier — agence d'architecture méditerranéenne. Conception, projets, immobilier de prestige, maquettes 3D, films & photographies qualité cinéma, mobilier et design d'intérieur." />
-  <meta property="og:title" content="L'Atelier — Architecture, immobilier & design méditerranéen" />
-  <meta property="og:description" content="Architecture résidentielle, immobilier de prestige, films qualité cinéma et mobilier dessiné en atelier, sur la Méditerranée." />
-  <meta property="og:type" content="website" />
+
+  <!--
+    Politique de sécurité du contenu. Elle est déclarée ici (et non seulement
+    dans public/_headers) parce que GitHub Pages n'envoie pas d'en-têtes
+    personnalisés : sans cette balise, le site n'aurait aucune CSP en ligne.
+    Aucun script tiers, aucune police tierce : tout est servi par le site.
+  -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https:; worker-src 'self' blob:; manifest-src 'self'" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+  <title>L'Atelier — Agence d'architecture, immobilier &amp; design méditerranéen</title>
+  <meta name="description" content="L'Atelier — agence d'architecture méditerranéenne. Conception, projets, immobilier de prestige, maquettes 3D, films &amp; photographies qualité cinéma, mobilier et design d'intérieur." />
   <meta name="theme-color" content="#f6f2ea" />
+  <link rel="canonical" href="https://arthur50dervaux-cmd.github.io/L-Atelier/" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="manifest" href="site.webmanifest" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="L'Atelier" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:title" content="L'Atelier — Architecture, immobilier &amp; design méditerranéen" />
+  <meta property="og:description" content="Architecture résidentielle, immobilier de prestige, films qualité cinéma et mobilier dessiné en atelier, sur la Méditerranée." />
+  <meta property="og:image" content="" />
+  <meta name="twitter:card" content="summary_large_image" />
 </head>
 <body>
 
+  <a class="skip-link" href="#top">Aller au contenu</a>
+
   <div id="loader" aria-hidden="true"></div>
+  <div id="scroll-progress" aria-hidden="true"><span></span></div>
+  <div class="grain" aria-hidden="true"></div>
 
   <div id="preview-banner" hidden>Préversion du brouillon — les visiteurs voient la version publiée. <a href="admin.html">Retour à l'admin</a></div>
 
   <header id="nav">
     <a href="#top" class="brand" data-bind="brand">L'Atelier</a>
-    <nav class="nav-links" id="nav-links"></nav>
-    <button id="burger" aria-label="Ouvrir le menu"><span class="burger-label">Menu</span><span class="burger-lines"><span></span><span></span></span></button>
+    <nav class="nav-links" id="nav-links" aria-label="Navigation principale"></nav>
+    <button id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu-overlay"><span class="burger-label">Menu</span><span class="burger-lines" aria-hidden="true"><span></span><span></span></span></button>
   </header>
 
   <!-- Menu plein écran -->
-  <div id="menu-overlay">
-    <nav id="overlay-links"></nav>
+  <div id="menu-overlay" aria-hidden="true">
+    <nav id="overlay-links" aria-label="Menu complet"></nav>
     <div class="overlay-foot">
       <span data-bind="overlay-brand"></span>
       <span id="overlay-contact"></span>
@@ -37,21 +55,23 @@
 
   <main id="top">
 
-    <!-- HERO : une image, un titre (façon Kretz) -->
-    <section id="hero">
-      <div class="hero-image" id="hero-image"></div>
+    <!-- HERO : une image, un titre -->
+    <section id="hero" data-fixed>
+      <div class="hero-media">
+        <img id="hero-image" alt="" fetchpriority="high" decoding="async" />
+      </div>
       <div class="hero-text">
         <p class="eyebrow" id="hero-eyebrow"></p>
         <h1 id="hero-title"></h1>
         <p class="role" id="hero-role"></p>
       </div>
       <div class="hero-bottom">
-        <div class="scroll-cue"><span data-bind="scroll-cue">Découvrir</span><div class="scroll-cue-line"></div></div>
+        <button class="scroll-cue" id="scroll-cue" type="button"><span data-bind="scroll-cue">Découvrir</span><span class="scroll-cue-line" aria-hidden="true"></span></button>
       </div>
     </section>
 
     <!-- MANIFESTE -->
-    <section id="intro" class="section">
+    <section id="intro" class="section" data-fixed>
       <p class="manifesto reveal" data-bind="manifesto"></p>
     </section>
 
@@ -85,7 +105,7 @@
     <section id="conception" class="section alt">
       <div class="section-inner">
         <div class="section-head reveal" data-head="conception"></div>
-        <div class="text-tabs reveal" id="project-tabs"></div>
+        <div class="text-tabs reveal" id="project-tabs" role="tablist"></div>
         <div class="project-grid" id="project-grid"></div>
       </div>
     </section>
@@ -94,7 +114,7 @@
     <section id="immobilier" class="section">
       <div class="section-inner">
         <div class="section-head reveal" data-head="immobilier"></div>
-        <div class="text-tabs reveal" id="property-filters"></div>
+        <div class="text-tabs reveal" id="property-filters" role="tablist"></div>
         <div class="property-grid" id="property-grid"></div>
       </div>
     </section>
@@ -136,7 +156,7 @@
               <button data-viewer-full>Plein écran</button>
               <label class="sun-control">
                 <span>Soleil</span>
-                <input type="range" min="0" max="1" step="0.01" value="0.32" data-viewer-sun />
+                <input type="range" min="0" max="1" step="0.01" value="0.32" data-viewer-sun aria-label="Position du soleil" />
               </label>
             </div>
             <div class="viewer-hint">Glissez pour pivoter · molette pour zoomer</div>
@@ -152,7 +172,7 @@
         <div class="film-feature reveal">
           <div class="film-player" id="film-showreel">
             <div class="film-poster">
-              <button class="film-play" aria-label="Lire le film"><span class="play-icon">▶</span><span class="play-label" id="showreel-label"></span></button>
+              <button class="film-play" aria-label="Lire le film"><span class="play-icon" aria-hidden="true">▶</span><span class="play-label" id="showreel-label"></span></button>
             </div>
           </div>
         </div>
@@ -177,7 +197,7 @@
     <section id="mobilier" class="section alt">
       <div class="section-inner">
         <div class="section-head reveal" data-head="mobilier"></div>
-        <div class="text-tabs reveal" id="furniture-filters"></div>
+        <div class="text-tabs reveal" id="furniture-filters" role="tablist"></div>
         <div class="furniture-grid" id="furniture-grid"></div>
         <div class="catalog-cta reveal"><button id="btn-catalog" class="btn">Ouvrir le catalogue (PDF)</button></div>
       </div>
@@ -231,12 +251,13 @@
             <ul class="contact-info" id="contact-info"></ul>
             <div class="contact-socials" id="contact-socials"></div>
           </div>
-          <form id="contact-form" class="contact-form reveal" autocomplete="off">
-            <div class="form-row"><label>Nom<input type="text" name="name" required /></label><label>Email<input type="email" name="email" required /></label></div>
+          <form id="contact-form" class="contact-form reveal" autocomplete="off" novalidate>
+            <div class="form-row"><label>Nom<input type="text" name="name" required autocomplete="name" /></label><label>Email<input type="email" name="email" required autocomplete="email" /></label></div>
             <label>Nature du projet<input type="text" name="subject" placeholder="Villa, vignoble, achat, réhabilitation…" /></label>
             <label>Message<textarea name="message" rows="4" required></textarea></label>
             <button type="submit" class="btn" id="contact-submit">Envoyer le message</button>
             <p class="form-note" id="contact-note"></p>
+            <p class="form-error" id="contact-error" role="alert" hidden></p>
           </form>
         </div>
       </div>
@@ -250,14 +271,15 @@
       <div class="footer-socials" id="footer-socials"></div>
       <p class="footer-text">© <span id="year"></span> <span id="footer-text"></span></p>
       <div class="footer-actions">
-        <a href="admin.html" class="footer-admin" title="Administration du site">Admin</a>
+        <nav class="footer-legal" id="footer-legal" aria-label="Informations légales"></nav>
+        <a href="admin.html" class="footer-admin" title="Administration du site" rel="nofollow">Admin</a>
         <button id="to-top">Haut de page ↑</button>
       </div>
     </div>
   </footer>
 
   <!-- Modale projet / mobilier -->
-  <div id="modal" class="modal">
+  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal-backdrop" data-close></div>
     <div class="modal-panel">
       <button class="modal-close" data-close>Fermer ✕</button>
@@ -269,14 +291,14 @@
     </div>
   </div>
 
-  <!-- Page détail d'un bien (façon Kretz) -->
-  <div id="property-detail" class="detail">
+  <!-- Page détail d'un bien -->
+  <div id="property-detail" class="detail" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="detail-topbar">
       <button class="detail-back" data-detail-close>← Retour aux biens</button>
       <span class="detail-brand" data-bind="detail-brand">L'Atelier</span>
       <a class="detail-contact-link" href="#contact" data-detail-close>Nous contacter</a>
     </div>
-    <div class="detail-scroll">
+    <div class="detail-scroll" data-lenis-prevent>
       <div class="detail-gallery">
         <div class="detail-main" data-detail-main></div>
         <div class="detail-thumbs" data-detail-thumbs></div>
@@ -294,7 +316,7 @@
           <ul class="detail-features" data-detail-features></ul>
           <h3 class="detail-sub">Localisation</h3>
           <p class="detail-place" data-detail-region></p>
-          <a class="btn" data-detail-map target="_blank" rel="noopener">Voir sur la carte ↗</a>
+          <a class="btn" data-detail-map target="_blank" rel="noopener noreferrer">Voir sur la carte ↗</a>
         </div>
         <aside class="detail-aside">
           <div class="detail-card">
@@ -310,7 +332,7 @@
   </div>
 
   <!-- Catalogue mobilier : feuilles A4 à l'écran, imprimables / enregistrables en PDF -->
-  <div id="furniture-catalog" class="catalog" aria-hidden="true">
+  <div id="furniture-catalog" class="catalog" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="catalog-topbar">
       <button class="catalog-back" data-catalog-close>← Retour au site</button>
       <span class="catalog-brand" data-bind="catalog-brand">L'Atelier</span>
@@ -319,8 +341,23 @@
     <div class="catalog-scroll" id="catalog-pages" data-lenis-prevent></div>
   </div>
 
+  <!-- Pages légales (mentions, confidentialité…) -->
+  <div id="legal-page" class="legal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="detail-topbar">
+      <button class="detail-back" data-legal-close>← Retour au site</button>
+      <span class="detail-brand" data-bind="legal-brand">L'Atelier</span>
+      <span></span>
+    </div>
+    <div class="legal-scroll" data-lenis-prevent>
+      <article class="legal-body">
+        <h2 id="legal-title"></h2>
+        <div id="legal-content"></div>
+      </article>
+    </div>
+  </div>
+
   <!-- Lecteur de films -->
-  <div id="film-modal" class="modal film-modal">
+  <div id="film-modal" class="modal film-modal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal-backdrop" data-film-close></div>
     <div class="film-modal-panel">
       <button class="modal-close" data-film-close>Fermer ✕</button>
@@ -330,7 +367,7 @@
   </div>
 
   <!-- Visionneuse photo -->
-  <div id="photo-modal" class="modal photo-modal">
+  <div id="photo-modal" class="modal photo-modal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal-backdrop" data-photo-close></div>
     <div class="photo-modal-panel">
       <button class="modal-close" data-photo-close>Fermer ✕</button>

@@ -1,3 +1,5 @@
+@import './fonts.css';
+
 /* ===================== Administration — L'Atelier ===================== */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -136,3 +138,50 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 500; }
   .admin-sidebar { flex-direction: row; flex-wrap: wrap; border-right: none; border-bottom: 1px solid var(--a-line); }
   .publish-grid { grid-template-columns: 1fr; }
 }
+
+/* ===================== Composants ajoutés ===================== */
+
+/* Curseurs de réglage (design, animations) */
+.range-field { display: flex; flex-direction: column; gap: 0.5rem; }
+.range-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+.range-label { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--a-ink-soft); }
+.range-head code { font-size: 0.78rem; color: var(--a-gold); }
+.range-field input[type="range"] { width: 100%; accent-color: var(--a-gold); }
+
+/* Palettes prêtes à l'emploi */
+.preset-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.9rem; }
+.preset { display: flex; flex-direction: column; gap: 0.6rem; padding: 0.9rem; border: 1px solid var(--a-line); border-radius: 10px; background: var(--a-panel); text-align: left; transition: border-color 0.2s ease, transform 0.2s ease; }
+.preset:hover { border-color: var(--a-gold); transform: translateY(-2px); }
+.preset-swatches { display: flex; gap: 4px; }
+.preset-swatch { width: 100%; height: 26px; border-radius: 4px; border: 1px solid rgba(0, 0, 0, 0.08); }
+.preset-name { font-size: 0.78rem; color: var(--a-ink); }
+
+/* Robustesse du mot de passe */
+.pw-meter { height: 4px; background: var(--a-line); border-radius: 4px; overflow: hidden; margin-top: 0.9rem; }
+.pw-meter span { display: block; height: 100%; width: 0; background: var(--a-danger); transition: width 0.3s ease, background 0.3s ease; }
+.pw-meter[data-score="2"] span { background: var(--a-gold); }
+.pw-meter[data-score="3"] span,
+.pw-meter[data-score="4"] span { background: #4c8a52; }
+
+/* Médiathèque */
+.media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; }
+.media-item { display: flex; flex-direction: column; gap: 0.45rem; padding: 0.7rem; border: 1px solid var(--a-line); border-radius: 10px; }
+.media-item .media-thumb { height: 110px; margin: 0; }
+.media-name { font-size: 0.68rem; word-break: break-all; color: var(--a-ink-soft); }
+
+/* Historique */
+.history-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--a-line); font-size: 0.85rem; }
+.history-row:last-child { border-bottom: none; }
+
+/* Divers */
+.btn-row { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+.card-sub { margin: 1.6rem 0 0.8rem; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--a-ink-soft); }
+.field-help.spaced { margin-top: 0.8rem; }
+.btn-ghost.spaced, .btn-danger.spaced { margin-top: 0.8rem; }
+.list-item-title.muted { opacity: 0.55; }
+.btn-ghost.small, .btn-danger.small { padding: 0.4rem 0.8rem; font-size: 0.68rem; }
+.switch-label { font-size: 0.78rem; }
+#admin-search { max-width: 210px; padding: 0.5rem 0.8rem; border: 1px solid var(--a-line); border-radius: 8px; background: var(--a-panel); color: var(--a-ink); font-size: 0.8rem; }
+#admin-search:focus { outline: none; border-color: var(--a-gold); }
+.login-lock { margin-top: 0.7rem; font-size: 0.82rem; color: var(--a-danger); }
+@media (max-width: 720px) { #admin-search { display: none; } }
