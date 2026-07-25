@@ -53,7 +53,21 @@
     </div>
   </div>
 
+  <!-- Index de chapitre (grand écran) -->
+  <nav id="chapters" aria-label="Chapitres" hidden></nav>
+
   <main id="top">
+
+    <!-- PANORAMA : bande d'images qui défile horizontalement (section épinglée) -->
+    <section id="panorama" hidden>
+      <div class="pano-head">
+        <p class="eyebrow" id="pano-eyebrow"></p>
+        <h2 id="pano-title"></h2>
+        <p id="pano-sub"></p>
+      </div>
+      <div class="pano-track" id="pano-track"></div>
+      <p class="pano-hint" id="pano-hint">Faites défiler</p>
+    </section>
 
     <!-- HERO : une image, un titre -->
     <section id="hero" data-fixed>
@@ -264,6 +278,9 @@
     </section>
 
   </main>
+
+  <!-- Bandeau défilant, juste avant le pied de page -->
+  <div id="marquee" hidden></div>
 
   <footer id="footer">
     <div class="footer-inner">

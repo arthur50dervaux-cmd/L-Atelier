@@ -54,6 +54,10 @@
       "visible": true,
       "navLabel": "Agence"
     },
+    "panorama": {
+      "visible": true,
+      "navLabel": "Panorama"
+    },
     "expertise": {
       "visible": true,
       "navLabel": "",
@@ -870,5 +874,61 @@
   "seo": {
     "schemaType": "ArchitecturalService",
     "structuredData": true
+  },
+  "panorama": {
+    "eyebrow": "Regards",
+    "title": "Une architecture\nde plein air",
+    "sub": "Quelques fragments de nos projets, à parcourir horizontalement.",
+    "hint": "Faites défiler",
+    "items": [
+      {
+        "title": "Villa Horizon",
+        "place": "Saint-Tropez",
+        "image": "art-villa",
+        "desc": "Composition de volumes purs en béton clair et verre autour d'un patio à ciel ouvert."
+      },
+      {
+        "title": "Résidence des Calanques",
+        "place": "Cassis",
+        "image": "art-cliff",
+        "desc": "Résidence en terrasses ancrée dans la roche calcaire, toits végétalisés."
+      },
+      {
+        "title": "Maison des Vignes",
+        "place": "Coteaux du Lubéron",
+        "image": "art-vine",
+        "desc": "Demeure en pierre sèche et bois brut, enchâssée dans les rangs de vigne."
+      },
+      {
+        "title": "Villa Aurore",
+        "place": "Villefranche-sur-Mer",
+        "image": "art-sea",
+        "desc": "Villa belvédère en gradins sur la rade de Villefranche."
+      },
+      {
+        "title": "Domaine de la Restanque",
+        "place": "Bandol",
+        "image": "art-domaine",
+        "desc": "Réhabilitation du chai et de la maison de maître."
+      },
+      {
+        "title": "Suite Méridienne",
+        "place": "Mougins",
+        "image": "art-interior",
+        "desc": "Réhabilitation intérieure d'une bastide, curage et réseaux repensés."
+      }
+    ]
+  },
+  "experience": {
+    "splitHeadings": true,
+    "manifestoScroll": true,
+    "heroChoreography": true,
+    "cursor": true,
+    "magnetic": true,
+    "marquee": true,
+    "marqueeText": "Architecture — Immobilier — Maquettes 3D — Mobilier — Méditerranée",
+    "colorMorph": true,
+    "chapters": true,
+    "panorama": true
   }
 }
