@@ -45,6 +45,17 @@ async function init() {
     return `<div class="visual-bg" style="background-image:${bg(v)}">${img}</div>`;
   };
 
+  /**
+   * Si une photo est introuvable, on retire l'image : le dégradé de repli
+   * reprend la place proprement, au lieu d'afficher le texte alternatif
+   * par-dessus la carte. L'écoute est en phase de capture car l'événement
+   * `error` des images ne remonte pas.
+   */
+  document.addEventListener('error', (e) => {
+    const img = e.target;
+    if (img instanceof HTMLImageElement && (img.closest('.visual-bg') || img.closest('.hero-media'))) img.remove();
+  }, true);
+
   /* ---------- Meta, thème, design, marque ---------- */
   applyTheme(C.theme);
   applyDesign(C.design);
