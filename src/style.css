@@ -687,11 +687,11 @@ body.menu-open #chapters, body.detail-open #chapters, body.catalog-open #chapter
 
 /* ---- Panorama horizontal épinglé ---- */
 #panorama { position: relative; height: 100svh; overflow: hidden; background: var(--azur-deep); color: var(--cream); display: flex; align-items: center; }
-.pano-head { position: absolute; top: clamp(5rem, 12vh, 8rem); left: var(--pad-x); z-index: 3; max-width: 22em; pointer-events: none; }
+.pano-head { will-change: opacity, transform; position: absolute; top: clamp(5rem, 12vh, 8rem); left: var(--pad-x); z-index: 3; max-width: 22em; pointer-events: none; }
 .pano-head .eyebrow { color: var(--gold-soft); }
 .pano-head h2 { font-size: var(--t-1); color: var(--cream); }
 .pano-head p { margin-top: 0.9rem; color: var(--cream-dim); font-size: 0.95rem; line-height: 1.7; max-width: 34em; }
-.pano-track { display: flex; align-items: center; gap: clamp(1.2rem, 2.5vw, 2.4rem); padding: 0 var(--pad-x); will-change: transform; }
+.pano-track { display: flex; align-items: center; gap: clamp(1.2rem, 2.5vw, 2.4rem); padding: 0 var(--pad-x) 0 min(44vw, 620px); will-change: transform; }
 .pano-item { position: relative; flex: none; width: clamp(260px, 34vw, 520px); cursor: pointer; }
 .pano-visual { position: relative; height: clamp(320px, 54vh, 620px); overflow: hidden; background: color-mix(in srgb, var(--cream) 12%, transparent); border-radius: var(--image-radius); }
 .pano-visual .visual-bg { inset: 0 -8%; }
@@ -705,7 +705,7 @@ body.menu-open #chapters, body.detail-open #chapters, body.catalog-open #chapter
 /* Repli mobile / mouvement réduit : bande à défilement tactile */
 #panorama.pano-static { height: auto; padding: var(--space-section) 0; display: block; }
 #panorama.pano-static .pano-head { position: static; padding: 0 var(--pad-x); margin-bottom: 2.4rem; max-width: none; }
-#panorama.pano-static .pano-track { overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 1rem; -webkit-overflow-scrolling: touch; }
+#panorama.pano-static .pano-track { padding-left: var(--pad-x); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 1rem; -webkit-overflow-scrolling: touch; }
 #panorama.pano-static .pano-item { scroll-snap-align: center; }
 #panorama.pano-static .pano-hint { position: static; padding: 1.4rem var(--pad-x) 0; }
 

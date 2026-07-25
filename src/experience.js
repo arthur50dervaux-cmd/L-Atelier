@@ -340,17 +340,24 @@ export function initPanorama() {
     },
   });
 
-  // Chaque visuel dérive légèrement dans son cadre : la profondeur naît de ce
-  // décalage entre le cadre et l'image.
-  track.querySelectorAll('.pano-item').forEach((item) => {
-    const img = item.querySelector('.visual-bg');
-    if (!img) return;
-    gsap.fromTo(img, { xPercent: -6 }, {
-      xPercent: 6,
-      ease: 'none',
-      scrollTrigger: { trigger: item, containerAnimation: undefined, start: 'top top', end: 'bottom top', scrub: true },
+  // Le titre laisse la place aux images dès que la bande avance : sans cela,
+  // les visuels passeraient derrière le texte et le rendraient illisible.
+  const head = section.querySelector('.pano-head');
+  const hint = section.querySelector('.pano-hint');
+  if (head) {
+    gsap.to([head, hint].filter(Boolean), {
+      opacity: 0,
+      y: -18,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: section,
+        start: 'top top',
+        end: () => `+=${distance() * 0.22}`,
+        scrub: 0.5,
+        invalidateOnRefresh: true,
+      },
     });
-  });
+  }
 }
 
 /* ============================================================
