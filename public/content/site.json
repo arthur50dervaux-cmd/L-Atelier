@@ -13,23 +13,23 @@
     "loaderLabel": "L'Atelier — composition de l'expérience"
   },
   "theme": {
-    "bg": "#f6f2ea",
-    "bgLight": "#fdfbf6",
-    "cream": "#f6f2ea",
-    "creamDim": "#d8d1c2",
-    "ink": "#1b1a17",
-    "inkSoft": "#6f6a5f",
+    "bg": "#ffffff",
+    "bgLight": "#f7f6f3",
+    "cream": "#f4f3f0",
+    "creamDim": "#b8b5ae",
+    "ink": "#121212",
+    "inkSoft": "#767470",
     "gold": "#b9862f",
     "goldSoft": "#d3ab63",
     "azur": "#2a7e9b",
-    "azurDeep": "#0d3b4f",
+    "azurDeep": "#1a1a1a",
     "turquoise": "#3ea3b5",
     "coral": "#c96f4a",
     "coralSoft": "#dd9a7c",
-    "terracotta": "#b4512e",
+    "terracotta": "#8a3a1c",
     "olive": "#7d8a4c",
-    "sand": "#ece5d4",
-    "sea": "#14505f",
+    "sand": "#efede8",
+    "sea": "#1a1a1a",
     "rose": "#c98a94"
   },
   "visuals": {
@@ -50,20 +50,6 @@
   },
   "manifesto": "Chaque projet commence par une question : que mérite ce lieu ? Entre la roche, la mer et la vigne, nous dessinons des architectures qui s'effacent devant leur paysage — et qui, pourtant, le révèlent.",
   "sections": {
-    "agence": {
-      "visible": true,
-      "navLabel": "Agence"
-    },
-    "panorama": {
-      "visible": true,
-      "navLabel": "Panorama"
-    },
-    "expertise": {
-      "visible": true,
-      "navLabel": "",
-      "eyebrow": "Expertise",
-      "title": "Une agence, cinq savoir-faire"
-    },
     "conception": {
       "visible": true,
       "navLabel": "Projets",
@@ -71,12 +57,26 @@
       "title": "Nos projets, à chaque étape",
       "sub": "Des concours aux livraisons, suivez l'avancée de l'atelier."
     },
+    "panorama": {
+      "visible": true,
+      "navLabel": "Panorama"
+    },
     "immobilier": {
       "visible": true,
       "navLabel": "Immobilier",
       "eyebrow": "Immobilier",
       "title": "Biens d'exception à la vente",
       "sub": "Une sélection confidentielle de propriétés de prestige sur la Méditerranée."
+    },
+    "agence": {
+      "visible": true,
+      "navLabel": "Agence"
+    },
+    "expertise": {
+      "visible": true,
+      "navLabel": "",
+      "eyebrow": "Expertise",
+      "title": "Une agence, cinq savoir-faire"
     },
     "maquette": {
       "visible": true,
@@ -854,19 +854,19 @@
     "bodySize": 1,
     "titleWeight": 400,
     "bodyWeight": 300,
-    "tracking": 1,
-    "density": 1,
-    "maxWidth": 1360,
+    "tracking": 0.92,
+    "density": 1.12,
+    "maxWidth": 1440,
     "hairline": 1,
     "radius": 0,
     "imageRounding": 0,
     "motion": 1,
-    "revealDistance": 32,
-    "hoverZoom": 1.05,
-    "grain": 0.035,
-    "heroOverlay": 0.42,
+    "revealDistance": 24,
+    "hoverZoom": 1.035,
+    "grain": 0,
+    "heroOverlay": 0.34,
     "heroHeight": 100,
-    "cardRatio": "4/3",
+    "cardRatio": "3/2",
     "accent": "terracotta"
   },
   "customSections": {},
@@ -876,7 +876,7 @@
     "structuredData": true
   },
   "panorama": {
-    "eyebrow": "Regards",
+    "eyebrow": "Sélection",
     "title": "Une architecture\nde plein air",
     "sub": "Quelques fragments de nos projets, à parcourir horizontalement.",
     "hint": "Faites défiler",
@@ -923,12 +923,12 @@
     "splitHeadings": true,
     "manifestoScroll": true,
     "heroChoreography": true,
-    "cursor": true,
-    "magnetic": true,
-    "marquee": true,
+    "cursor": false,
+    "magnetic": false,
+    "marquee": false,
     "marqueeText": "Architecture — Immobilier — Maquettes 3D — Mobilier — Méditerranée",
-    "colorMorph": true,
-    "chapters": true,
+    "colorMorph": false,
+    "chapters": false,
     "panorama": true
   }
 }

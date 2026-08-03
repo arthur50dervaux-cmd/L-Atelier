@@ -716,3 +716,73 @@ body.menu-open #chapters, body.detail-open #chapters, body.catalog-open #chapter
   body.has-cursor, body.has-cursor a, body.has-cursor button { cursor: auto; }
   .marquee-track { transform: none !important; }
 }
+
+/* ============================================================
+   ÉDITION « RETENUE » — inspirée des agences de référence
+   (Snøhetta, ANMA, AAB, Bome, Studio AC, Kretz, Valmont Riviera)
+   Principe : la photographie porte la page, le fond s'efface,
+   la typographie se fait précise plutôt que grande.
+   ============================================================ */
+
+/* ---- Les projets et les biens passent à deux colonnes : les images
+        doublent de surface, ce qui est le vrai levier de qualité. ---- */
+@media (min-width: 1025px) {
+  .project-grid, .property-grid { grid-template-columns: repeat(2, 1fr); gap: clamp(2.5rem, 5vw, 5rem) clamp(2rem, 4vw, 4rem); }
+  /* Décalage vertical de la colonne de droite : respiration éditoriale
+     que l'on retrouve sur la plupart des sites d'agence. */
+  .project-grid > *:nth-child(even), .property-grid > *:nth-child(even) { transform: translateY(clamp(2rem, 6vw, 5.5rem)); }
+  .project-grid > *:nth-child(even).reveal.in,
+  .property-grid > *:nth-child(even).reveal.in { transform: translateY(clamp(2rem, 6vw, 5.5rem)); }
+  .cinema-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ---- Micro-typographie : libellés plus petits, plus espacés, plus discrets ---- */
+.eyebrow { font-size: 0.6rem; letter-spacing: calc(0.28em * var(--tracking)); color: var(--ink-soft); }
+.section-head { border-top-width: var(--hairline); padding-top: 1.1rem; }
+.section-index { font-family: var(--sans); font-style: normal; font-size: 0.6rem; letter-spacing: 0.2em; color: var(--ink-soft); }
+.section-head h2 { max-width: 16em; letter-spacing: -0.012em; }
+.project-meta .place, .property-meta .place, .cinema-meta .place, .pano-meta .place {
+  font-size: 0.58rem; letter-spacing: calc(0.22em * var(--tracking)); color: var(--ink-soft);
+}
+.project-meta h3, .property-meta h3 { letter-spacing: -0.008em; }
+.project-meta, .property-meta { padding-top: 1.3rem; }
+
+/* ---- Cartes : plus de calme, le survol se fait sentir sans s'exhiber ---- */
+.card-badge, .status-badge { background: transparent; color: var(--ink); padding: 0.6rem 0; top: auto; bottom: 100%; margin-bottom: 0.5rem; }
+.card-badge.strong { background: transparent; color: var(--accent); }
+.status-badge.sold, .status-badge.pending { background: transparent; }
+.status-badge.sold { color: var(--ink-soft); }
+.status-badge.pending { color: var(--gold); }
+.property-meta { border-bottom: none; }
+.property-line { margin-top: 0.9rem; padding-top: 0.9rem; border-top: var(--hairline) solid var(--line); }
+
+/* ---- Hero : la photo respire, le titre se fait plus sobre ---- */
+.hero-text h1 { text-shadow: none; letter-spacing: -0.015em; }
+.hero-text .eyebrow { color: rgba(255, 255, 255, 0.72); }
+
+/* ---- Panorama en registre clair : une galerie, non un intermède spectaculaire ---- */
+#panorama { background: var(--bg-light); color: var(--ink); }
+.pano-head .eyebrow { color: var(--ink-soft); }
+.pano-head h2 { color: var(--ink); }
+.pano-head p { color: var(--ink-soft); }
+.pano-visual { background: var(--sand); }
+.pano-meta .place { color: var(--ink-soft); }
+.pano-meta h3 { color: var(--ink); }
+.pano-index { color: var(--ink-soft); text-shadow: none; top: auto; bottom: 100%; left: 0; margin-bottom: 0.5rem; font-family: var(--sans); font-style: normal; font-size: 0.58rem; letter-spacing: 0.2em; }
+.pano-hint { color: var(--ink-soft); }
+.pano-hint::after { background: linear-gradient(to right, var(--ink-soft), transparent); }
+
+/* ---- Bandes sombres : encre plutôt que bleu, comme chez les références ---- */
+.section.dark { background: var(--ink); }
+.model-viewer { background: radial-gradient(circle at 50% 30%, #232323 0%, #131313 75%); }
+
+/* ---- Pied de page : plus sobre ---- */
+.footer-brand { font-size: clamp(1.6rem, 4vw, 2.6rem); letter-spacing: calc(0.22em * var(--tracking)); }
+
+/* ---- Étiquettes de statut : dans la légende, jamais sur la photo ---- */
+.card-tag { margin-top: 0.5rem; font-size: 0.58rem; letter-spacing: calc(0.22em * var(--tracking)); text-transform: uppercase; color: var(--accent); }
+.status-tag { margin-left: 0.7rem; padding-left: 0.7rem; border-left: var(--hairline) solid var(--line); color: var(--ink-soft); }
+.status-tag.sold { color: var(--ink); }
+.status-tag.pending { color: var(--gold); }
+/* Les anciens badges superposés n'ont plus lieu d'être */
+.card-badge, .status-badge { display: none; }
