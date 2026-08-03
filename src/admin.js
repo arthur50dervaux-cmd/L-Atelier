@@ -353,7 +353,12 @@ const THEME_COLORS = [
 
 /** Palettes prêtes à l'emploi, applicables en un clic. */
 const PALETTES = {
-  'Méditerranée (par défaut)': {
+  'Éditorial blanc (recommandé)': {
+    bg: '#ffffff', bgLight: '#f7f6f3', cream: '#f4f3f0', creamDim: '#b8b5ae', ink: '#121212', inkSoft: '#767470',
+    gold: '#b9862f', goldSoft: '#d3ab63', azur: '#2a7e9b', azurDeep: '#1a1a1a', turquoise: '#3ea3b5',
+    coral: '#c96f4a', coralSoft: '#dd9a7c', terracotta: '#8a3a1c', olive: '#7d8a4c', sand: '#efede8', sea: '#1a1a1a', rose: '#c98a94',
+  },
+  'Méditerranée (crème)': {
     bg: '#f6f2ea', bgLight: '#fdfbf6', cream: '#f6f2ea', creamDim: '#d8d1c2', ink: '#1b1a17', inkSoft: '#6f6a5f',
     gold: '#b9862f', goldSoft: '#d3ab63', azur: '#2a7e9b', azurDeep: '#0d3b4f', turquoise: '#3ea3b5',
     coral: '#c96f4a', coralSoft: '#dd9a7c', terracotta: '#b4512e', olive: '#7d8a4c', sand: '#ece5d4', sea: '#14505f', rose: '#c98a94',
@@ -504,9 +509,40 @@ function renderDesign(pane) {
   );
 }
 
+/** Deux registres d'ensemble, pour régler le site en un clic. */
+const EXPERIENCE_PRESETS = {
+  'Retenue — à la manière des grandes agences': {
+    splitHeadings: true, manifestoScroll: true, heroChoreography: true, panorama: true,
+    cursor: false, magnetic: false, marquee: false, colorMorph: false, chapters: false,
+  },
+  'Signature — tous les effets': {
+    splitHeadings: true, manifestoScroll: true, heroChoreography: true, panorama: true,
+    cursor: true, magnetic: true, marquee: true, colorMorph: true, chapters: true,
+  },
+};
+
 function renderExperience(pane) {
   pane.append(
     ...paneHeader('Expérience', "Les effets qui font vivre le site au défilement. Chacun se désactive séparément ; tous sont automatiquement neutralisés pour les visiteurs qui ont demandé un mouvement réduit."),
+    (() => {
+      const c = card('Registre d\'ensemble');
+      const row = el('<div class="btn-row"></div>');
+      Object.entries(EXPERIENCE_PRESETS).forEach(([name, preset]) => {
+        const btn = el('<button type="button" class="btn-ghost"></button>');
+        btn.textContent = name;
+        btn.addEventListener('click', () => {
+          draft.experience = { ...draft.experience, ...preset };
+          saveDraft(); openPanel('experience');
+          toast(`Registre « ${name.split(' —')[0]} » appliqué.`);
+        });
+        row.append(btn);
+      });
+      c.append(row, note(
+        'La retenue ne garde que les effets au service du contenu : les titres, le manifeste, '
+        + "l'ouverture et le panorama. C'est le registre des sites d'agence de référence.",
+      ));
+      return c;
+    })(),
     card('Effets au défilement',
       fToggle('Titres révélés mot à mot', 'experience.splitHeadings'),
       fToggle("Manifeste qui s'allume à la lecture", 'experience.manifestoScroll'),

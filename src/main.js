@@ -264,18 +264,19 @@ async function init() {
     if (!projectGrid) return;
     const list = C.projects?.[state] || [];
     projectGrid.innerHTML = list.map((p, i) => {
-      let badge = '';
-      if (state === 'concours' && p.status) badge = `<span class="card-badge strong">${esc(p.status)}</span>`;
-      else if (state === 'avenir' && p.year) badge = `<span class="card-badge">${esc(p.year)}</span>`;
-      else if (state === 'termines' && p.year) badge = `<span class="card-badge">Livré ${esc(p.year)}</span>`;
+      // L'année figure déjà dans la légende : seul un statut de concours
+      // apporte une information, et il se lit sous le titre, pas sur la photo.
+      const badge = state === 'concours' && p.status
+        ? `<p class="card-tag">${esc(p.status)}</p>` : '';
       const progressBar = state === 'encours' && p.progress != null
         ? `<div class="progress"><div class="progress-bar" style="width:${Math.max(0, Math.min(100, Number(p.progress) || 0))}%"></div></div>
            <p class="progress-label">${esc(p.phase || '')} · ${Number(p.progress) || 0}%</p>` : '';
       return `<article class="project-card reveal" data-i="${i}" tabindex="0" role="button">
-          <div class="project-visual media-frame reveal-mask">${visual(p.image, p.title)}${badge}</div>
+          <div class="project-visual media-frame reveal-mask">${visual(p.image, p.title)}</div>
           <div class="project-meta">
             <p class="place">${esc(p.place)}${p.year ? ` — ${esc(p.year)}` : ''}</p>
             <h3>${esc(p.title)}</h3>
+            ${badge}
             ${progressBar}
           </div>
         </article>`;
@@ -308,12 +309,9 @@ async function init() {
     const statusClass = (s) => (s === 'Vendu' ? 'sold' : s === 'Sous compromis' ? 'pending' : 'sale');
     propertyGrid.innerHTML = properties.map((b, i) => `
       <article class="property-card reveal" data-type="${esc(b.type)}" data-i="${i}" tabindex="0" role="button">
-        <div class="property-visual media-frame reveal-mask">
-          ${visual(b.image, b.title)}
-          <span class="status-badge ${statusClass(b.status)}">${esc(b.status)}</span>
-        </div>
+        <div class="property-visual media-frame reveal-mask">${visual(b.image, b.title)}</div>
         <div class="property-meta">
-          <p class="place">${esc(b.place)} — ${esc(b.type)}</p>
+          <p class="place">${esc(b.place)} — ${esc(b.type)}<span class="status-tag ${statusClass(b.status)}">${esc(b.status)}</span></p>
           <h3>${esc(b.title)}</h3>
           <div class="property-line">
             <div class="property-specs">
@@ -637,7 +635,7 @@ async function init() {
     const works = E.works || [];
     worksGrid.innerHTML = works.map((w, i) => `
       <article class="project-card reveal" data-i="${i}" tabindex="0" role="button">
-        <div class="project-visual media-frame reveal-mask">${visual(w.image, w.title)}${w.year ? `<span class="card-badge">${esc(w.year)}</span>` : ''}</div>
+        <div class="project-visual media-frame reveal-mask">${visual(w.image, w.title)}</div>
         <div class="project-meta">
           <p class="place">${esc([w.category, w.year].filter(Boolean).join(' — '))}</p>
           <h3>${esc(w.title)}</h3>
