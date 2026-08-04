@@ -730,9 +730,9 @@ body.menu-open #chapters, body.detail-open #chapters, body.catalog-open #chapter
   .project-grid, .property-grid { grid-template-columns: repeat(2, 1fr); gap: clamp(2.5rem, 5vw, 5rem) clamp(2rem, 4vw, 4rem); }
   /* Décalage vertical de la colonne de droite : respiration éditoriale
      que l'on retrouve sur la plupart des sites d'agence. */
-  .project-grid > *:nth-child(even), .property-grid > *:nth-child(even) { transform: translateY(clamp(2rem, 6vw, 5.5rem)); }
+  .project-grid > *:nth-child(even), .property-grid > *:nth-child(even) { transform: translateY(clamp(1.4rem, 3vw, 3rem)); }
   .project-grid > *:nth-child(even).reveal.in,
-  .property-grid > *:nth-child(even).reveal.in { transform: translateY(clamp(2rem, 6vw, 5.5rem)); }
+  .property-grid > *:nth-child(even).reveal.in { transform: translateY(clamp(1.4rem, 3vw, 3rem)); }
   .cinema-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
@@ -786,3 +786,49 @@ body.menu-open #chapters, body.detail-open #chapters, body.catalog-open #chapter
 .status-tag.pending { color: var(--gold); }
 /* Les anciens badges superposés n'ont plus lieu d'être */
 .card-badge, .status-badge { display: none; }
+
+/* ============================================================
+   CONDENSATION — un site professionnel se lit vite.
+   Moins de hauteur perdue, une hiérarchie à deux niveaux.
+   ============================================================ */
+
+/* Têtes de section : le numéro et le titre sur une même ligne de base,
+   le sous-titre en retrait discret. On gagne une strate de lecture. */
+.section-head { gap: 0.9rem 1.8rem; padding-top: 1rem; margin-bottom: calc(clamp(2rem, 3.5vw, 3.2rem) * var(--density)); }
+.section-head h2 { font-size: clamp(1.8rem, 3.2vw, 2.7rem); max-width: 14em; }
+.section-head-main .eyebrow { margin-bottom: 0.45rem; }
+.section-head-main .eyebrow:empty { display: none; }
+.section-sub { margin-top: 0.6rem; font-size: 0.9rem; max-width: 44ch; }
+.section { padding: calc(clamp(3.5rem, 6.5vw, 6rem) * var(--density)) var(--pad-x); }
+
+/* Manifeste : une respiration, pas une page entière */
+#intro { padding-top: calc(clamp(4rem, 8vw, 7rem) * var(--density)); padding-bottom: calc(clamp(4rem, 8vw, 7rem) * var(--density)); }
+.manifesto { font-size: clamp(1.3rem, 2.4vw, 1.95rem); max-width: 24ch; line-height: 1.45; }
+.manifesto::before { height: 40px; margin-bottom: 1.6rem; }
+
+/* Agence : colonne de texte plus étroite, donc plus lisible */
+.about-content p:not(.eyebrow) { max-width: 58ch; line-height: 1.8; margin-bottom: 1rem; }
+.timeline { margin-top: 1.8rem; }
+.timeline li { padding: 0.85rem 0; font-size: 0.9rem; }
+.timeline-year { min-width: 110px; font-size: 1rem; }
+
+/* Expertise : cartes plus basses */
+.service { padding: 1.7rem 1.4rem 2rem; }
+.service h3 { font-size: 1.3rem; margin: 0.7rem 0; }
+.service p { font-size: 0.87rem; line-height: 1.65; }
+
+/* Onglets et filtres : moins d'air au-dessus des grilles */
+.text-tabs { margin-bottom: calc(clamp(1.5rem, 2.5vw, 2.2rem) * var(--density)); }
+.text-tab { padding-bottom: 0.8rem; font-size: 0.66rem; }
+
+/* Pied de page : compact, sans monogramme démesuré */
+#footer { padding: clamp(2.5rem, 4vw, 3.5rem) var(--pad-x) 1.8rem; }
+.footer-inner { gap: 1.2rem; }
+.footer-brand { font-size: clamp(1.1rem, 2vw, 1.5rem); letter-spacing: calc(0.3em * var(--tracking)); padding-left: 0.3em; }
+.footer-text { font-size: 0.72rem; }
+.footer-actions { padding-top: 1.1rem; gap: 1.5rem; }
+
+/* Équipe et mobilier : vignettes plus contenues */
+.team-card h3 { font-size: 1.15rem; margin-top: 0.8rem; }
+.team-bio { font-size: 0.84rem; }
+.furniture-meta h3 { font-size: 1.1rem; }
