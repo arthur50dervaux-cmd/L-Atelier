@@ -48,25 +48,25 @@
     "role": "Côte d'Azur — Méditerranée",
     "image": "art-sea"
   },
-  "manifesto": "Chaque projet commence par une question : que mérite ce lieu ? Entre la roche, la mer et la vigne, nous dessinons des architectures qui s'effacent devant leur paysage — et qui, pourtant, le révèlent.",
+  "manifesto": "Le site prime sur le geste. Nous dessinons des architectures qui s'effacent devant leur paysage — et qui, pourtant, le révèlent.",
   "sections": {
     "conception": {
       "visible": true,
       "navLabel": "Projets",
-      "eyebrow": "Conception",
+      "eyebrow": "",
       "title": "Nos projets, à chaque étape",
-      "sub": "Des concours aux livraisons, suivez l'avancée de l'atelier."
+      "sub": "Des concours aux livraisons."
     },
     "panorama": {
       "visible": true,
-      "navLabel": "Panorama"
+      "navLabel": ""
     },
     "immobilier": {
       "visible": true,
       "navLabel": "Immobilier",
-      "eyebrow": "Immobilier",
+      "eyebrow": "",
       "title": "Biens d'exception à la vente",
-      "sub": "Une sélection confidentielle de propriétés de prestige sur la Méditerranée."
+      "sub": "Une sélection confidentielle sur la Méditerranée."
     },
     "agence": {
       "visible": true,
@@ -83,18 +83,18 @@
       "navLabel": "Maquette 3D",
       "eyebrow": "Maquette interactive",
       "title": "Explorez le projet en 3D",
-      "sub": "Maquettes issues de Revit ou scans de modèles réduits — vues, matériaux, étude d'ensoleillement et mode cinématique."
+      "sub": "Vues, matériaux, ensoleillement et mode cinématique."
     },
     "films": {
       "visible": false,
-      "navLabel": "Films",
+      "navLabel": "",
       "eyebrow": "Films",
       "title": "Rendus cinématographiques",
       "sub": "Films de synthèse photoréalistes en très haute définition."
     },
     "cinema": {
       "visible": false,
-      "navLabel": "Cinéma",
+      "navLabel": "",
       "eyebrow": "Cinématographique",
       "title": "Films & photographies qualité cinéma",
       "sub": "Au-delà de l'architecture, un regard cinéma sur la lumière, la matière et le paysage méditerranéen — courts-métrages, time-lapses et séries photographiques."
@@ -102,32 +102,32 @@
     "mobilier": {
       "visible": true,
       "navLabel": "Mobilier",
-      "eyebrow": "Mobilier & design",
+      "eyebrow": "",
       "title": "Pièces dessinées par l'atelier",
-      "sub": "Mobilier d'intérieur et objets conçus et fabriqués en atelier — pièces uniques et séries limitées, pensés comme une architecture miniature."
+      "sub": "Pièces uniques et séries limitées, dessinées en atelier."
     },
     "equipe": {
       "visible": true,
-      "navLabel": "Équipe",
-      "eyebrow": "Équipe",
+      "navLabel": "",
+      "eyebrow": "",
       "title": "Les visages de l'atelier",
-      "sub": "Une équipe pluridisciplinaire, du dessin au chantier."
+      "sub": "Du dessin au chantier."
     },
     "ensap": {
       "visible": true,
-      "navLabel": "ENSAP Bordeaux",
+      "navLabel": "",
       "eyebrow": "ENSAP Bordeaux",
       "title": "Mes études d'architecture",
-      "sub": "Une sélection de travaux réalisés à l'École nationale supérieure d'architecture et de paysage de Bordeaux — ateliers de projet, analyses et workshops."
+      "sub": "Une sélection de travaux d'école."
     },
     "philosophy": {
-      "visible": true,
+      "visible": false,
       "navLabel": "",
       "eyebrow": "Approche",
       "title": "Trois convictions"
     },
     "stats": {
-      "visible": true,
+      "visible": false,
       "navLabel": ""
     },
     "contact": {
@@ -850,13 +850,13 @@
   "design": {
     "titleFont": "cormorant",
     "bodyFont": "jost",
-    "scale": 1,
-    "bodySize": 1,
+    "scale": 0.94,
+    "bodySize": 0.97,
     "titleWeight": 400,
     "bodyWeight": 300,
     "tracking": 0.92,
-    "density": 1.12,
-    "maxWidth": 1440,
+    "density": 1.0,
+    "maxWidth": 1280,
     "hairline": 1,
     "radius": 0,
     "imageRounding": 0,
@@ -878,7 +878,7 @@
   "panorama": {
     "eyebrow": "Sélection",
     "title": "Une architecture\nde plein air",
-    "sub": "Quelques fragments de nos projets, à parcourir horizontalement.",
+    "sub": "",
     "hint": "Faites défiler",
     "items": [
       {

@@ -326,13 +326,16 @@ export function initPanorama() {
   }
 
   const distance = () => track.scrollWidth - window.innerWidth + window.innerWidth * 0.08;
+  // Le parcours vertical ne coûte que 55 % de la course horizontale : la bande
+  // défile plus vite et la page reste courte, ce qu'exige un site professionnel.
+  const scrollCost = () => distance() * 0.55;
   gsap.to(track, {
     x: () => -distance(),
     ease: 'none',
     scrollTrigger: {
       trigger: section,
       start: 'top top',
-      end: () => `+=${distance()}`,
+      end: () => `+=${scrollCost()}`,
       pin: true,
       scrub: 1,
       anticipatePin: 1,
@@ -352,7 +355,7 @@ export function initPanorama() {
       scrollTrigger: {
         trigger: section,
         start: 'top top',
-        end: () => `+=${distance() * 0.22}`,
+        end: () => `+=${scrollCost() * 0.22}`,
         scrub: 0.5,
         invalidateOnRefresh: true,
       },
